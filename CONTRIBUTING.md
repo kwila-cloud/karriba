@@ -1,3 +1,3 @@
 ## Contributor License Agreement
 
-By contributing to this project, you agree to license your contributions under the MIT License. You confirm that you have the right to contribute the code and that it does not infringe on the intellectual property of others.
+By contributing to this project, you agree to assign the copyright of your contributions to the project maintainers. This ensures that we have the necessary rights to maintain and evolve the project. All contributions will still be licensed under the MIT License.
