@@ -43,9 +43,9 @@ However, please keep in mind you you will not get access to the [paid perks](#pa
 
 ## Contributing
 
-Please read the [LICENSE](./LICENSE) before submitting any contributions to this project.
+Please read the [LICENSE](./LICENSE) and the [CLA](./CLA.md) before submitting any contributions to this project.
 
-By contributing to this project, you agree that your contributions will be licensed under the MIT License. You also confirm that any contributions you make do not include intellectual property copywritten by others.
+By contributing to this project, you agree that your contributions will be licensed under the MIT License. You also confirm that you have the right to contribute the code and that it does not infringe on the intellectual property copywritten by others.
 
 ### Needs
 
