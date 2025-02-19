@@ -45,8 +45,6 @@ However, please keep in mind you you will not get access to the [paid perks](#pa
 
 Please read the [LICENSE](./LICENSE) before submitting any contributions to this project.
 
-By contributing to this project, you agree to release all intellectual property included in these contributions to the public domain. You also confirm that any contributions you make do not include intellectual property copywritten by others.
-
 ### Needs
 
 - [ ] We need about $5,000 to fund the initial development of this project.
