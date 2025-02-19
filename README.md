@@ -43,7 +43,7 @@ However, please keep in mind you you will not get access to the [paid perks](#pa
 
 ## Contributing
 
-Please read the [LICENSE](./LICENSE) and the [CLA](./CLA.md) before submitting any contributions to this project.
+Please read the [LICENSE](./LICENSE) and the [CLA](./CONTRIBUTING.md) before submitting any contributions to this project.
 
 ### Needs
 
