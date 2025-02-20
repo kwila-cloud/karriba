@@ -1,4 +1,4 @@
-# Karriba
+# Karriba 🚁
 
 *An intuitive commercial drone record keeping system that keeps getting better*
 
