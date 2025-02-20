@@ -1,12 +1,12 @@
-# Design Document: Precision Pesticide Application Tracker
+# Design Document: Karriba Application Tracker
 
 ## 1. Executive Summary
 
-This document outlines the design specifications for Precision Pesticide, a mobile application system that enables drone pesticide operators to efficiently record and manage pesticide applications. The solution consists of a Flutter-based mobile frontend for Android tablets and a Python-based backend for data processing and PDF generation. The application will capture all required regulatory data points, generate standardized PDF reports using PyPDF, and operate with minimal internet connectivity in accordance with local-first principles.
+This document outlines the design specifications for Karriba, a mobile application system that enables drone pesticide operators to efficiently record and manage pesticide applications. The solution consists of a Flutter-based mobile frontend for Android tablets and a Python-based backend for data processing and PDF generation. The application will capture all required regulatory data points, generate standardized PDF reports using PyPDF, and operate with minimal internet connectivity in accordance with local-first principles.
 
 ## 2. Project Values
 
-The design of Precision Pesticide adheres to the following core values:
+The design of Karriba adheres to the following core values:
 
 **Open Source**: Both the Flutter frontend and Python backend will be fully open source, allowing for community contributions and transparent development. This dual-technology approach leverages the strengths of both ecosystems.
 
@@ -347,4 +347,4 @@ The project will measure success through:
 
 ## 17. Conclusion
 
-The Precision Pesticide Application Tracker, built with Flutter frontend and Python backend, will provide a comprehensive solution for drone pesticide operators that adheres to the core values of open source development, data sovereignty, and local-first functionality. The integration of SQLite import/export capabilities in Phase 1 and PDF generation using PyPDF ensures that users have complete control over their data while meeting regulatory documentation requirements. This hybrid approach leverages the strengths of both Flutter's UI capabilities and Python's data processing power to deliver an effective solution for pesticide application tracking and reporting.
+The Karriba Application Tracker, built with Flutter frontend and Python backend, will provide a comprehensive solution for drone pesticide operators that adheres to the core values of open source development, data sovereignty, and local-first functionality. The integration of SQLite import/export capabilities in Phase 1 and PDF generation using PyPDF ensures that users have complete control over their data while meeting regulatory documentation requirements. This hybrid approach leverages the strengths of both Flutter's UI capabilities and Python's data processing power to deliver an effective solution for pesticide application tracking and reporting.
