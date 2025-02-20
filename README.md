@@ -1,4 +1,4 @@
-# precision-pesticide
+# Karriba
 
 A platform for drone pesticide operators to track their pesticide applications and flights.
 
