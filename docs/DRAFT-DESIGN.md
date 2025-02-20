@@ -1,4 +1,4 @@
-# Design Document: Karriba Application Tracker
+# Design Document: Karriba
 
 ## 1. Executive Summary
 
@@ -347,4 +347,4 @@ The project will measure success through:
 
 ## 17. Conclusion
 
-The Karriba Application Tracker, built with Flutter frontend and Python backend, will provide a comprehensive solution for drone pesticide operators that adheres to the core values of open source development, data sovereignty, and local-first functionality. The integration of SQLite import/export capabilities in Phase 1 and PDF generation using PyPDF ensures that users have complete control over their data while meeting regulatory documentation requirements. This hybrid approach leverages the strengths of both Flutter's UI capabilities and Python's data processing power to deliver an effective solution for pesticide application tracking and reporting.
+The Karriba, built with Flutter frontend and Python backend, will provide a comprehensive solution for drone pesticide operators that adheres to the core values of open source development, data sovereignty, and local-first functionality. The integration of SQLite import/export capabilities in Phase 1 and PDF generation using PyPDF ensures that users have complete control over their data while meeting regulatory documentation requirements. This hybrid approach leverages the strengths of both Flutter's UI capabilities and Python's data processing power to deliver an effective solution for pesticide application tracking and reporting.
