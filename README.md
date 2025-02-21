@@ -2,6 +2,8 @@
 
 *An intuitive commercial drone record keeping system that keeps getting better*
 
+Join in on the discussion [here](https://github.com/kwila-cloud/karriba/discussions)!
+
 ## Values
 
 ### Open Source
@@ -18,7 +20,7 @@ Good software should not require constant internet connectivity. In order to ach
 
 ## Access
 
-This project is currently in it's alpha stages. Long term, we aim to have two main ways of accessing the software.
+This project is currently in its alpha stages. Long term, we aim to have two main ways of accessing the software.
 
 ### Cloud Service
 
@@ -39,7 +41,7 @@ You can deactivate your subscription at any time. We expect many operators to on
 
 Once we have got the cloud service up and running with paid users, we will add documentation for how to self-host the project on your own servers. This option will always be totally free.
 
-However, please keep in mind you you will not get access to the [paid perks](#paid-perks).
+However, please keep in mind you will not get access to the [paid perks](#paid-perks).
 
 ## Contributing
 
@@ -47,8 +49,7 @@ Please read the [LICENSE](./LICENSE) before submitting any contributions to this
 
 ### Needs
 
-- [ ] We need about $5,000 to fund the initial development of this project.
-- [ ] We need a good name for the project, one that will be well received in the market.
 - [ ] We need alpha testers. People who are willing to try out early iterations of the project even if it is far from complete and sometimes glitchy.
+- [ ] We need sponsors. Initial development will take several months.
 
 Please contact addison@kwila.cloud if you are interested in helping with any of these needs!
