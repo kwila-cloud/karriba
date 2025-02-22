@@ -22,7 +22,9 @@ Great software should **work offline**. Karriba is designed with **local-first p
 
 🚧 **Currently in Alpha**: We are actively developing Karriba and working towards a stable release.
 
-In the long run, you’ll have two ways to access the software:
+The **MVP** will be an offline Android app.
+
+In the long run, you’ll have two ways to sync data between devices.
 
 ### ☁️ Cloud Service
 
@@ -54,8 +56,7 @@ Before contributing, please review our [LICENSE](./LICENSE).
 
 ### 🔥 What We Need
 
-- **💰 Funding:** We need **$5,000** to kickstart development.
-- **📝 A Better Name:** "Karriba" is a working title—help us find the perfect name!
+- **💰 Funding:** We need regular monthly sponsors to support development.
 - **🧪 Alpha Testers:** If you’re willing to test an early version (glitches and all), we need you!
 
 📩 **Interested?** Contact us at **[addison@kwila.cloud](mailto:addison@kwila.cloud)** to get involved!
