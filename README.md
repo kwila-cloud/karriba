@@ -14,7 +14,7 @@ We believe in **data freedom**—no vendor lock-in, no hidden traps. You control
 
 ### 📶 Local-First
 
-Great software should **work offline**. Karriba is designed with **local-first principles**, meaning you can use it even without an internet connection. The Progressive Web App (PWA) syncs your data when you’re online, but remains fully functional offline. Whether you choose our cloud or your own server, the power remains in your hands.
+Great software should **work offline**. Karriba is designed with **local-first principles**, meaning you can use it even without an internet connection. The mobile app syncs your data when you’re online, but remains fully functional offline. Whether you choose our cloud or your own server, the power remains in your hands.
 
 ---
 
