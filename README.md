@@ -58,7 +58,7 @@ Before contributing, please review our [LICENSE](./LICENSE).
 - **📝 A Better Name:** "Karriba" is a working title—help us find the perfect name!
 - **🧪 Alpha Testers:** If you’re willing to test an early version (glitches and all), we need you!
 
-📩 **Interested?** Contact us at **[addison@kwila.cloud](mailto:addison@kwila.cloud)** to get involved!
+📩 **Interested?** Contact us at **[karriba@kwila.cloud](mailto:karriba@kwila.cloud)** to get involved!
 
 ---
 
