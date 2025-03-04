@@ -4,8 +4,6 @@
 
 This document outlines the design specifications for Karriba, a software system that enables drone pesticide operators to efficiently record and manage pesticide applications and flight records. 
 
-The solution consists of a Flutter-based mobile frontend for Android tablets and a Python-based backend for data processing and PDF generation.
-
 The system will
 - Streamline the process of gathering regulatory data points
 - Generate standardized PDF reports
@@ -33,123 +31,101 @@ The application must collect the following data points as identified in the Pest
 - Applicator information
    - Name
    - License number
-- Owner/Advisor information
+- Customer information
    - Name
    - Address
    - Were they informed of REI requirements? (yes/no)
 - Treatment details
    - Crop treated
-   - Field name and coordinates (GPS)
-   - Application rate
+   - Field name
+   - Field coordinates (GPS)
    - Total treated area
-   - GPA (Gallons Per Acre)
-- Pesticide details (up to 10 entrys)
+   - Price per Acre
+   - Gallons per Acre
+- Pesticide details (up to 10 entries)
    - Name
    - Registration number
+   - Application rate
 - Environmental conditions
-   - Wind velocity/direction before application
-   - Wind velocity/direction after application
-   - Temperature during application
+   - Wind speed before application
+   - Wind speed after application
+   - Wind direction
+   - Temperature
 - Notes
+
+The following information should be stored separately, so that it can be cross-referenced in the pesticide records without repeated manual input:
+- Applicator information
+- Customer information
+
+In the future, the system may collect some of these details automatically, without requiring manual input from the user.
+
+#### Examples
+
+Here are a few examples of prototype data collection interfaces:
+- https://www.jotform.com/app/250376626588166
+- https://malachi.tadabase.io/Pesticide-Application-And-Job-Scheduling-Copy/pesticide-records
 
 ### Report Generation
 
-The application must:
-- Generate standardized PDF reports
+The system must:
+- Generate a PDF report for a Pesticide Record Form when requested by the user
 
-In the future, the application may:
-- Support batch export of multiple reports
+In the future, the system may:
 - Allow customization of report headers/footers
-- Include timestamp and electronic signature capabilities
+- Support batch export of multiple reports
 
 ### Data Management
 
-The application must provide in Phase 1:
-- Local storage of all application records using SQLite
-- SQLite database import and export functionality
-- Data export in multiple formats (PDF, CSV)
+The application must:
+- Store all records locally using SQLite
+- Include full data import and export functionality
+
+In the future, the system may:
+- Allow the user to sync records between different devices
+- Allow the user to share records with other users through fine-grained access controls
 
 ## Technical Architecture
 
 ### Technology Stack
 
-The application will utilize a hybrid architecture:
 
-1. **Mobile Frontend (Flutter)**
-2. **Backend (Python)**
+1. **Mobile Frontend**
+   - Flutter for cross-platform support
+2. **Database**
+   - SQLite for local storage on mobile devices
+3. **Sync Service**
+   - Python
    - FastAPI for RESTful API endpoints
    - PyPDF for PDF generation and manipulation
-3. **Database**
-   - SQLite for local storage on mobile devices
-   - PostgreSQL for cloud service backend (future phases)
-
-### Component Interactions
-
-#### Local-Only Mode
-1. Flutter application collects and validates user input
-2. Data stored directly in local SQLite database
-3. For PDF generation, data is sent to Python backend when online, or processed locally when offline
-
-#### Cloud-Synchronized Mode (Future Phases)
-1. Flutter application synchronizes local SQLite data with cloud backend
-2. Python backend processes data and generates PDFs using PyPDF
-3. Reports and data accessible across multiple devices
-
-### SQLite Management (Phase 1 Priority)
-
-1. **SQLite Export**
-   - Complete database export to .db file
-
-2. **SQLite Import**
-   - Validation of imported database schemas
-   - Transaction-based import to prevent partial imports
-
-## Data Synchronization and Management
-
-### SQLite as Primary Data Store
-
-- All records stored in SQLite database on device
-- Full database schema to support all required fields
-- Indexed fields for efficient searching and filtering
-- Versioned schema to support future updates
-
-### SQLite Import/Export Features (Phase 1)
-
-- Complete database export with optional encryption
-- Selective record export functionality
-- Import validation and conflict resolution
-- Backup scheduling capabilities
-
-### Future Synchronization Architecture
-
-- Bidirectional sync between local SQLite and cloud database
-- Conflict resolution with version vectors
-- Encrypted data transfer using industry-standard protocols
-- Bandwidth-efficient delta synchronization
 
 ## Implementation Phases
 
 ### Phase 1: Core Functionality (MVP)
+
+This phase should be complete by April 1st, 2025. This allows us to put something basic on the market for the 2025 season.
+
+The bare minimum requirements for the MVP are:
+
 - Flutter application with basic UI components
-- Local SQLite implementation with import/export capabilities
-- Basic Python backend for PDF generation using PyPDF
+- Local SQLite data storage with stable import/export capabilities
+- Just-in-time PDF generation on the mobile device
 - GitHub releases of APK
 
-### Phase 2: Enhanced Features
+### Phase 2: Enhanced Features (1.0)
+
+Once we get feedback from the initial MVP, we will iterate to improve the feature set.
+This phase should be complete by April 1st, 2026. This should allow us to access a larger market for the 2026 season.
+
+Our 1.0 release will include:
+
 - Improved UI/UX with refined workflows
-- Advanced PDF customization via PyPDF
-- Offline-first optimizations
 - Initial cloud synchronization capabilities
+- Advanced PDF generation in the cloud via PyPDF
+- Send PDFs by email through the cloud service
+- App published to major app stores
 
-### Phase 3: Premium Service
-- Cloud hosting option with subscription model
-- Enhanced synchronization features
-- Priority support channels
-- Integration with other farm management systems
+### Future Ideas
 
-## Security Considerations
-
-- Local encryption of sensitive data
-- Secure SQLite database operations
-- End-to-end encryption for all synchronized data
+- Integration with weather APIs for automatically pulling in weather data
+- Access control - allow users to share read-only reports
 
