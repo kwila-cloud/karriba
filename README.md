@@ -2,6 +2,8 @@
 
 🚀 **An intuitive commercial drone record-keeping system that keeps getting better**
 
+See the [design document](./DESIGN.md) for the technical design of the system.
+
 ## 🌍 Our Values
 
 ### 🛠 Open Source
