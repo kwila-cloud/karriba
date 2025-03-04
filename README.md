@@ -1,55 +1,67 @@
-# Karriba 🚁 📈
+# Karriba 🚁 📈 
 
-*An intuitive commercial drone record keeping system that keeps getting better*
+🚀 **An intuitive commercial drone record-keeping system that keeps getting better**
 
-Join in on the discussion [here](https://github.com/kwila-cloud/karriba/discussions)!
+## 🌍 Our Values
 
-## Values
+### 🛠 Open Source
 
-### Open Source
+Innovation thrives when knowledge is shared. Karriba is, and always will be, **open-source**. If you believe in the project and want to support its growth, consider subscribing to our [cloud service](#cloud-service). Prefer full control? [Self-host](#self-hosted) it instead—your data, your choice.
 
-The greatest innovation happens when ideas are shared freely. This project is and always will be open-source. You can support the development of the project by paying for our [cloud service](#cloud-service). If that is not a good option for you, try [self-hosting](#self-hosted) instead.
+### 🔓 Data Sovereignty
 
-### Data Sovereignty
+We believe in **data freedom**—no vendor lock-in, no hidden traps. You control your data from day one. Your drone records should belong to you, not a third-party service.
 
-We hate vendor lock-in. You probablly do to! From the start, we will make control over your own data a priority.
+### 📶 Local-First
 
-### Local First
+Great software should **work offline**. Karriba is designed with **local-first principles**, meaning you can use it even without an internet connection. The mobile app syncs your data when you’re online, but remains fully functional offline. Whether you choose our cloud or your own server, the power remains in your hands.
 
-Good software should not require constant internet connectivity. In order to achieve this, this project is built from the ground up using local-first techniques. A central server is required to host the PWA (Progressive Web App), but once you have the app installed you can run it entirely without an internet connection. When you want to access your data between different devices, sync your data with our server in the cloud or your own self-hosted server.
+---
 
-## Access
+## 🔑 Access
 
-This project is currently in its alpha stages. Long term, we aim to have two main ways of accessing the software.
+🚧 **Currently in Alpha**: We are actively developing Karriba and working towards a stable release.
 
-### Cloud Service
+The **MVP** will be an offline Android app.
 
-We aim to run a service which hosts the project in the cloud for convenient access.
+In the long run, you’ll have two ways to sync data between devices.
 
-To make this sustainable, our target price is $100/month.
+### ☁️ Cloud Service
 
-#### Paid Perks
+We will offer a fully hosted cloud version for users who want hassle-free access.
 
-This subscription will get you
-- Priority support
-- Access to the cloud service
-- First priority in suggesting new features
+💰 **Planned pricing:** $100/month
 
-You can deactivate your subscription at any time. We expect many operators to only activate their subscription for six months a year.
+#### 🎁 Subscription Perks
 
-### Self-hosted
+- 🚀 **Priority Support** – Get help when you need it.
+- ☁️ **Cloud Access** – Secure and seamless.
+- 💡 **Feature Requests Priority** – Your ideas shape the future.
 
-Once we have got the cloud service up and running with paid users, we will add documentation for how to self-host the project on your own servers. This option will always be totally free.
+🔓 **Cancel anytime**—many users may only need the service seasonally.
 
-However, please keep in mind you will not get access to the [paid perks](#paid-perks).
+### 🏡 Self-Hosted
 
-## Contributing
+Once the cloud service is stable and has paying users, we will provide **self-hosting documentation** so you can run Karriba on your own infrastructure—**always 100% free**.
 
-Please read the [LICENSE](./LICENSE) before submitting any contributions to this project.
+💡 **Note:** Self-hosted users won’t have access to [paid perks](#subscription-perks), but they will still benefit from a robust open-source tool.
 
-### Needs
+---
 
-- [ ] We need alpha testers. People who are willing to try out early iterations of the project even if it is far from complete and sometimes glitchy.
-- [ ] We need sponsors. Initial development will take several months.
+## 🤝 Contributing
 
-Please contact addison@kwila.cloud if you are interested in helping with any of these needs!
+🚀 **Want to help build the future of drone record-keeping?**
+
+Before contributing, please review our [LICENSE](./LICENSE).
+
+### 🔥 What We Need
+
+- **💰 Funding:** We need regular monthly sponsors to support development.
+- **🧪 Alpha Testers:** If you’re willing to test an early version (glitches and all), we need you!
+
+📩 **Interested?** Contact us at **[karriba@kwila.cloud](mailto:karriba@kwila.cloud)** to get involved!
+
+---
+
+🎉 **Join us in shaping the future of drone data management!**
+
