@@ -41,7 +41,7 @@ class _KarribaHomePageState extends State<KarribaHomePage> {
     SettingsPage(),
   ];
 
-  static const List<String> _titleOptions = <String>[
+  static final List<String> _titleOptions = <String>[
     'Flights',
     'Customers',
     'Applicators',
@@ -62,16 +62,26 @@ class _KarribaHomePageState extends State<KarribaHomePage> {
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: _onItemTapped,
         selectedIndex: _selectedIndex,
-        // AI!: generate this list from _titleOptions
-        destinations: const <Widget>[
-          NavigationDestination(icon: Icon(Icons.flight), label: 'Flights'),
-          NavigationDestination(icon: Icon(Icons.people), label: 'Customers'),
-          NavigationDestination(
-            icon: Icon(Icons.agriculture),
-            label: 'Applicators',
-          ),
-          NavigationDestination(icon: Icon(Icons.settings), label: 'Settings'),
-        ],
+        destinations: _titleOptions.map((title) {
+          IconData icon;
+          switch (title) {
+            case 'Flights':
+              icon = Icons.flight;
+              break;
+            case 'Customers':
+              icon = Icons.people;
+              break;
+            case 'Applicators':
+              icon = Icons.agriculture;
+              break;
+            case 'Settings':
+              icon = Icons.settings;
+              break;
+            default:
+              icon = Icons.error; // Fallback icon
+          }
+          return NavigationDestination(icon: Icon(icon), label: title);
+        }).toList(),
       ),
     );
   }
