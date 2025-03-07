@@ -61,6 +61,10 @@ The following information should be stored separately, so that it can be cross-r
 
 In the future, the system may collect some of these details automatically, without requiring manual input from the user.
 
+#### References
+Here are some documents that cover the requirements for pesticide applicators:
+- https://agri.idaho.gov/wp-content/uploads/ISDAGuidance/Pesticide-Recordkeeping.pdf
+
 #### Examples
 
 Here are a few examples of prototype data collection interfaces:
