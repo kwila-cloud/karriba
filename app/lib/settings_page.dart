@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'coming_soon_dialog.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -14,18 +15,7 @@ class SettingsPage extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("Coming Soon!"),
-                      content: Text("This feature is under development."),
-                      actions: [
-                        TextButton(
-                          child: Text("OK"),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
+                    return ComingSoonDialog();
                   },
                 );
               },
@@ -36,18 +26,7 @@ class SettingsPage extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("Coming Soon!"),
-                      content: Text("This feature is under development."),
-                      actions: [
-                        TextButton(
-                          child: Text("OK"),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
+                    return ComingSoonDialog();
                   },
                 );
               },
