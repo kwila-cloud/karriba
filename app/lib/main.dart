@@ -8,6 +8,14 @@ void main() {
   runApp(const KarribaApp());
 }
 
+class PageData {
+  final String title;
+  final IconData icon;
+  final Widget widget;
+
+  PageData({required this.title, required this.icon, required this.widget});
+}
+
 class KarribaApp extends StatelessWidget {
   const KarribaApp({super.key});
 
@@ -34,15 +42,12 @@ class KarribaHomePage extends StatefulWidget {
 class _KarribaHomePageState extends State<KarribaHomePage> {
   int _selectedIndex = 0;
 
-  static final List<Map<String, Object>> _pageOptions = [
-    {'title': 'Flights', 'icon': Icons.flight, 'widget': FlightsPage()},
-    {'title': 'Customers', 'icon': Icons.people, 'widget': CustomersPage()},
-    {
-      'title': 'Applicators',
-      'icon': Icons.agriculture,
-      'widget': ApplicatorsPage(),
-    },
-    {'title': 'Settings', 'icon': Icons.settings, 'widget': SettingsPage()},
+  static final List<PageData> _pageOptions = [
+    PageData(title: 'Flights', icon: Icons.flight, widget: FlightsPage()),
+    PageData(title: 'Customers', icon: Icons.people, widget: CustomersPage()),
+    PageData(
+        title: 'Applicators', icon: Icons.agriculture, widget: ApplicatorsPage()),
+    PageData(title: 'Settings', icon: Icons.settings, widget: SettingsPage()),
   ];
 
   void _onItemTapped(int index) {
@@ -55,21 +60,20 @@ class _KarribaHomePageState extends State<KarribaHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_pageOptions[_selectedIndex]['title'] as String),
+        title: Text(_pageOptions[_selectedIndex].title),
       ),
-      body: Center(child: _pageOptions[_selectedIndex]['widget'] as Widget),
+      body: Center(child: _pageOptions[_selectedIndex].widget),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: _onItemTapped,
         selectedIndex: _selectedIndex,
-        destinations:
-            _pageOptions
-                .map(
-                  (page) => NavigationDestination(
-                    icon: Icon(page['icon'] as IconData),
-                    label: page['title'] as String,
-                  ),
-                )
-                .toList(),
+        destinations: _pageOptions
+            .map(
+              (page) => NavigationDestination(
+                icon: Icon(page.icon),
+                label: page.title,
+              ),
+            )
+            .toList(),
       ),
     );
   }
