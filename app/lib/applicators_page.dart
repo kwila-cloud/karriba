@@ -5,9 +5,7 @@ class ApplicatorsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('Applicators Page'),
-      ),
+      body: ListView(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
