@@ -13,9 +13,7 @@ class SettingsPage extends StatelessWidget {
             onTap: () {
               showDialog(
                 context: context,
-                builder: (BuildContext context) {
-                  return const ComingSoonDialog();
-                },
+                builder: (BuildContext context) => ComingSoonDialog(),
               );
             },
           ),
@@ -25,9 +23,7 @@ class SettingsPage extends StatelessWidget {
             onTap: () {
               showDialog(
                 context: context,
-                builder: (BuildContext context) {
-                  return const ComingSoonDialog();
-                },
+                builder: (BuildContext context) => ComingSoonDialog(),
               );
             },
           ),
