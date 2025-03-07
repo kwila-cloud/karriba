@@ -5,5 +5,5 @@ class FlightsPage extends StatelessWidget {
   const FlightsPage({super.key});
 
   @override
-  Widget build(BuildContext context) => TopLevelPage();
+  Widget build(BuildContext context) => TopLevelPage(body: ListView());
 }

@@ -5,5 +5,5 @@ class CustomersPage extends StatelessWidget {
   const CustomersPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => TopLevelPage();
+  Widget build(BuildContext context) => TopLevelPage(body: ListView());
 }

@@ -5,5 +5,5 @@ class ApplicatorsPage extends StatelessWidget {
   const ApplicatorsPage({super.key});
 
   @override
-  Widget build(BuildContext context) => TopLevelPage();
+  Widget build(BuildContext context) => TopLevelPage(body: ListView());
 }
