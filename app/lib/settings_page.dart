@@ -5,11 +5,11 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // AI!: use list of  ListItem instead of ElevatedButton
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Settings Page'),
             ElevatedButton(
               onPressed: () {
                 showDialog(
