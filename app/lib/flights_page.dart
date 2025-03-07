@@ -4,15 +4,15 @@ import 'coming_soon_dialog.dart';
 class FlightsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
-      body: ListView(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => ComingSoonDialog(),
-          );
-        },
-        child: Icon(Icons.add),
-      ),
-    );
+        body: ListView(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => ComingSoonDialog(),
+            );
+          },
+          child: Icon(Icons.add),
+        ),
+      );
 }
