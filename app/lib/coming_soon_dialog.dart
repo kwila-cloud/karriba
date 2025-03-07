@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 class ComingSoonDialog extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
+  Widget build(BuildContext context) => AlertDialog(
       title: Text("Coming Soon!"),
       content: Text("This feature is under development."),
       actions: [
@@ -15,5 +14,4 @@ class ComingSoonDialog extends StatelessWidget {
         ),
       ],
     );
-  }
 }
