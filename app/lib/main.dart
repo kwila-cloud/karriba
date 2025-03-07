@@ -34,19 +34,27 @@ class KarribaHomePage extends StatefulWidget {
 class _KarribaHomePageState extends State<KarribaHomePage> {
   int _selectedIndex = 0;
 
-  // AI!: remove _widgetOptions and _titleOptions. create new _pageOptions that includes the page title, icon, and page widget
-  static final List<Widget> _widgetOptions = <Widget>[
-    FlightsPage(),
-    CustomersPage(),
-    ApplicatorsPage(),
-    SettingsPage(),
-  ];
-
-  static final List<String> _titleOptions = <String>[
-    'Flights',
-    'Customers',
-    'Applicators',
-    'Settings',
+  static final List<Map<String, Object>> _pageOptions = [
+    {
+      'title': 'Flights',
+      'icon': Icons.flight,
+      'widget': FlightsPage(),
+    },
+    {
+      'title': 'Customers',
+      'icon': Icons.people,
+      'widget': CustomersPage(),
+    },
+    {
+      'title': 'Applicators',
+      'icon': Icons.agriculture,
+      'widget': ApplicatorsPage(),
+    },
+    {
+      'title': 'Settings',
+      'icon': Icons.settings,
+      'widget': SettingsPage(),
+    },
   ];
 
   void _onItemTapped(int index) {
@@ -58,33 +66,17 @@ class _KarribaHomePageState extends State<KarribaHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_titleOptions.elementAt(_selectedIndex))),
-      body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
+      appBar: AppBar(
+          title: Text(_pageOptions[_selectedIndex]['title'] as String)),
+      body: Center(child: _pageOptions[_selectedIndex]['widget'] as Widget),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: _onItemTapped,
         selectedIndex: _selectedIndex,
-        destinations:
-            _titleOptions.map((title) {
-              IconData icon;
-              // AI!: remove this switch, use _pageOptions
-              switch (title) {
-                case 'Flights':
-                  icon = Icons.flight;
-                  break;
-                case 'Customers':
-                  icon = Icons.people;
-                  break;
-                case 'Applicators':
-                  icon = Icons.agriculture;
-                  break;
-                case 'Settings':
-                  icon = Icons.settings;
-                  break;
-                default:
-                  icon = Icons.error; // Fallback icon
-              }
-              return NavigationDestination(icon: Icon(icon), label: title);
-            }).toList(),
+        destinations: _pageOptions.map((page) {
+          return NavigationDestination(
+              icon: Icon(page['icon'] as IconData),
+              label: page['title'] as String);
+        }).toList(),
       ),
     );
   }
