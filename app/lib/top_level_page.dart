@@ -8,15 +8,15 @@ class TopLevelPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: body,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => ComingSoonDialog(),
-            );
-          },
-          child: Icon(Icons.add),
-        ),
-      );
+    body: body,
+    floatingActionButton: FloatingActionButton(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => ComingSoonDialog(),
+        );
+      },
+      child: Icon(Icons.add),
+    ),
+  );
 }
