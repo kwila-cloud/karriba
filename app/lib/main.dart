@@ -17,6 +17,7 @@ class KarribaApp extends StatelessWidget {
       title: 'Karriba',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
       home: const KarribaHomePage(),
     );
@@ -58,22 +59,27 @@ class _KarribaHomePageState extends State<KarribaHomePage> {
     return Scaffold(
       appBar: AppBar(title: Text(_titleOptions.elementAt(_selectedIndex))),
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
-      // AI!: use NavigationBar class instead of BottomNavigationBar
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.flight), label: 'Flights'),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Customers'),
-          BottomNavigationBarItem(
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: _onItemTapped,
+        selectedIndex: _selectedIndex,
+        destinations: const <Widget>[
+          NavigationDestination(
+            icon: Icon(Icons.flight),
+            label: 'Flights',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.people),
+            label: 'Customers',
+          ),
+          NavigationDestination(
             icon: Icon(Icons.agriculture),
             label: 'Applicators',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Icons.settings),
             label: 'Settings',
           ),
         ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
       ),
     );
   }
