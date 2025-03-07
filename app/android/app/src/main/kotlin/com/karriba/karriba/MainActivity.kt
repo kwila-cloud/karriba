@@ -1,4 +1,4 @@
-package com.karriba.karriba
+package com.karriba.mobile
 
 import io.flutter.embedding.android.FlutterActivity
 
