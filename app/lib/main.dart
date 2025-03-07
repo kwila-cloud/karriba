@@ -62,23 +62,15 @@ class _KarribaHomePageState extends State<KarribaHomePage> {
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: _onItemTapped,
         selectedIndex: _selectedIndex,
+        // AI!: generate this list from _titleOptions
         destinations: const <Widget>[
-          NavigationDestination(
-            icon: Icon(Icons.flight),
-            label: 'Flights',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.people),
-            label: 'Customers',
-          ),
+          NavigationDestination(icon: Icon(Icons.flight), label: 'Flights'),
+          NavigationDestination(icon: Icon(Icons.people), label: 'Customers'),
           NavigationDestination(
             icon: Icon(Icons.agriculture),
             label: 'Applicators',
           ),
-          NavigationDestination(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
+          NavigationDestination(icon: Icon(Icons.settings), label: 'Settings'),
         ],
       ),
     );
