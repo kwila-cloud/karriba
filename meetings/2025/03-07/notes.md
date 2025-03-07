@@ -10,7 +10,7 @@ Anything missing or need changed?
 
 ## Logo
 
-#14
+[#14](https://github.com/kwila-cloud/karriba/issues/14)
 
 We need to decide on a color scheme.
 
