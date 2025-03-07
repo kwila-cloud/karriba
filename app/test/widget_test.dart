@@ -10,11 +10,35 @@ void main() {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const KarribaApp());
 
-    // Verify that our bottom navigation bar has Flights, Customers, Applicators, and Settings.
+    // Verify that our bottom navigation bar has the correct items.
     final bottomNavigationBarFinder = find.byType(NavigationBar);
-    expect(find.descendant(of: bottomNavigationBarFinder, matching: find.text('Flights')), findsOneWidget);
-    expect(find.descendant(of: bottomNavigationBarFinder, matching: find.text('Customers')), findsOneWidget);
-    expect(find.descendant(of: bottomNavigationBarFinder, matching: find.text('Applicators')), findsOneWidget);
-    expect(find.descendant(of: bottomNavigationBarFinder, matching: find.text('Settings')), findsOneWidget);
+    expect(
+      find.descendant(
+        of: bottomNavigationBarFinder,
+        matching: find.text('Records'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: bottomNavigationBarFinder,
+        matching: find.text('Customers'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: bottomNavigationBarFinder,
+        matching: find.text('Applicators'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: bottomNavigationBarFinder,
+        matching: find.text('Settings'),
+      ),
+      findsOneWidget,
+    );
   });
 }

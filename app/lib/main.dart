@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
-import 'flights_page.dart';
-import 'customers_page.dart';
+
 import 'applicators_page.dart';
+import 'customers_page.dart';
+import 'records_page.dart';
 import 'settings_page.dart';
 
 void main() {
@@ -18,7 +19,7 @@ class KarribaApp extends StatelessWidget {
     return MaterialApp(
       title: 'Karriba',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFCAA34E)),
         useMaterial3: true,
       ),
       home: const KarribaHomePage(),
@@ -38,9 +39,9 @@ class _KarribaHomePageState extends State<KarribaHomePage> {
 
   static final List<PageData> _pageOptions = [
     PageData(
-      title: 'Flights',
+      title: 'Records',
       icon: Mdi.format_list_bulleted,
-      widget: FlightsPage(),
+      widget: RecordsPage(),
     ),
     PageData(
       title: 'Customers',
