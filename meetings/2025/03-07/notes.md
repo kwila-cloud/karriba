@@ -6,28 +6,26 @@ First Karriba maintainers meeting. Let's get synced up!
 
 ## Design Document Discussion
 
-Anything missing or need changed?
+Ideas for future
+- Pre-fill selected applicator in a record to match the previous record
+- Add fields linked to customers
+  - Allow recording field notes (for things like hazards)
+- Record dilution applied and pesticide applied as totals, not rates
 
 ## Logo
 
 [#14](https://github.com/kwila-cloud/karriba/issues/14)
 
-We need to decide on a color scheme.
+Color scheme idea - burnt yellow and forest green
 
 ## App Skeleton
 
 ![Screenshot](screenshot.png)
 
-Discuss basic structure of app.
-
-Is "Flights" the correct term to use for the records we are keeping?
-
-## Anything Else
-
-Anything else we should discuss here?
+We should use "Records" instead of "Flights"
 
 ## Next Steps
 
-What does the next few weeks look like?
+Addison and Julian will work on getting basic form input up and running.
 
-Schedule next maintainers meeting
+Scheduled next meeting for next week at the same time, but can reschedule if Malachi is busy spraying.
