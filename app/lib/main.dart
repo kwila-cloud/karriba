@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/mdi.dart';
 import 'flights_page.dart';
 import 'customers_page.dart';
 import 'applicators_page.dart';
@@ -6,14 +8,6 @@ import 'settings_page.dart';
 
 void main() {
   runApp(const KarribaApp());
-}
-
-class PageData {
-  final String title;
-  final IconData icon;
-  final Widget widget;
-
-  PageData({required this.title, required this.icon, required this.widget});
 }
 
 class KarribaApp extends StatelessWidget {
@@ -43,11 +37,22 @@ class _KarribaHomePageState extends State<KarribaHomePage> {
   int _selectedIndex = 0;
 
   static final List<PageData> _pageOptions = [
-    PageData(title: 'Flights', icon: Icons.flight, widget: FlightsPage()),
-    PageData(title: 'Customers', icon: Icons.people, widget: CustomersPage()),
     PageData(
-        title: 'Applicators', icon: Icons.agriculture, widget: ApplicatorsPage()),
-    PageData(title: 'Settings', icon: Icons.settings, widget: SettingsPage()),
+      title: 'Flights',
+      icon: Mdi.format_list_bulleted,
+      widget: FlightsPage(),
+    ),
+    PageData(
+      title: 'Customers',
+      icon: Mdi.account_multiple,
+      widget: CustomersPage(),
+    ),
+    PageData(
+      title: 'Applicators',
+      icon: Mdi.account_cowboy_hat,
+      widget: ApplicatorsPage(),
+    ),
+    PageData(title: 'Settings', icon: Mdi.cog, widget: SettingsPage()),
   ];
 
   void _onItemTapped(int index) {
@@ -59,22 +64,29 @@ class _KarribaHomePageState extends State<KarribaHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_pageOptions[_selectedIndex].title),
-      ),
+      appBar: AppBar(title: Text(_pageOptions[_selectedIndex].title)),
       body: Center(child: _pageOptions[_selectedIndex].widget),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: _onItemTapped,
         selectedIndex: _selectedIndex,
-        destinations: _pageOptions
-            .map(
-              (page) => NavigationDestination(
-                icon: Icon(page.icon),
-                label: page.title,
-              ),
-            )
-            .toList(),
+        destinations:
+            _pageOptions
+                .map(
+                  (page) => NavigationDestination(
+                    icon: Iconify(page.icon),
+                    label: page.title,
+                  ),
+                )
+                .toList(),
       ),
     );
   }
+}
+
+class PageData {
+  final String title;
+  final String icon;
+  final Widget widget;
+
+  PageData({required this.title, required this.icon, required this.widget});
 }

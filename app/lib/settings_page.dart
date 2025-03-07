@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/mdi.dart';
 import 'coming_soon_dialog.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -8,7 +10,7 @@ class SettingsPage extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           ListTile(
-            leading: const Icon(Icons.import_export),
+            leading: const Iconify(Mdi.database_import),
             title: const Text('Import Data'),
             onTap: () {
               showDialog(
@@ -18,7 +20,7 @@ class SettingsPage extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.import_export),
+            leading: const Iconify(Mdi.database_export),
             title: const Text('Export Data'),
             onTap: () {
               showDialog(
