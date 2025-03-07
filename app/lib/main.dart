@@ -51,6 +51,7 @@ class _KarribaHomePageState extends State<KarribaHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        // AI!: the title should match the currently selected navigation item
         title: const Text("Karriba"),
       ),
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
