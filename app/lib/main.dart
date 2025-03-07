@@ -33,7 +33,7 @@ class KarribaHomePage extends StatefulWidget {
 class _KarribaHomePageState extends State<KarribaHomePage> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _widgetOptions = <Widget>[
+  static final List<Widget> _widgetOptions = <Widget>[
     FlightsPage(),
     CustomersPage(),
     ApplicatorsPage(),
@@ -56,10 +56,7 @@ class _KarribaHomePageState extends State<KarribaHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(_titleOptions.elementAt(_selectedIndex)),
-      ),
+      appBar: AppBar(title: Text(_titleOptions.elementAt(_selectedIndex))),
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
