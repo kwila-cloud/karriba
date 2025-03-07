@@ -33,11 +33,18 @@ class KarribaHomePage extends StatefulWidget {
 class _KarribaHomePageState extends State<KarribaHomePage> {
   int _selectedIndex = 0;
 
-  static final List<Widget> _widgetOptions = <Widget>[
+  static const List<Widget> _widgetOptions = <Widget>[
     FlightsPage(),
     CustomersPage(),
     ApplicatorsPage(),
     SettingsPage(),
+  ];
+
+  static const List<String> _titleOptions = <String>[
+    'Flights',
+    'Customers',
+    'Applicators',
+    'Settings',
   ];
 
   void _onItemTapped(int index) {
@@ -51,8 +58,7 @@ class _KarribaHomePageState extends State<KarribaHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // AI!: the title should match the currently selected navigation item
-        title: const Text("Karriba"),
+        title: Text(_titleOptions.elementAt(_selectedIndex)),
       ),
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
       bottomNavigationBar: BottomNavigationBar(
