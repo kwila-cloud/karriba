@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/mdi.dart';
 import 'coming_soon_dialog.dart';
 
 class TopLevelPage extends StatelessWidget {
@@ -16,7 +18,7 @@ class TopLevelPage extends StatelessWidget {
           builder: (BuildContext context) => ComingSoonDialog(),
         );
       },
-      child: Icon(Icons.add),
+      child: Iconify(Mdi.add),
     ),
   );
 }
