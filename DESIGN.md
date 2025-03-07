@@ -9,6 +9,15 @@ The system will
 - Generate standardized PDF reports
 - Operate with minimal internet connectivity in accordance with local-first principles
 
+## General Technical Design Principals
+
+- Use standard data formats and protocols as much as possible.
+   - Only use custom formats and protocols where there is a very well-defined reason why we should.
+- Avoid unnecessary dependencies.
+   - Any dependencies we do rely on should be well-maintained and have minimal dependencies themselves.
+- Prefer simplicity to configurability.
+   - The more configuration options we have, the more combinations we will have to test and maintain. 
+
 ## User Personas
 
 ### Primary User: Drone Pesticide Operator
