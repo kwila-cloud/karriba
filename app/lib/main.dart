@@ -58,6 +58,7 @@ class _KarribaHomePageState extends State<KarribaHomePage> {
     return Scaffold(
       appBar: AppBar(title: Text(_titleOptions.elementAt(_selectedIndex))),
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
+      // AI!: use NavigationBar class instead of BottomNavigationBar
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.flight), label: 'Flights'),
