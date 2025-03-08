@@ -6,7 +6,17 @@ class NewApplicatorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('New Applicator')),
+      appBar: AppBar(
+        title: const Text('New Applicator'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.save),
+            onPressed: () {
+              // TODO: Implement save functionality
+            },
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
