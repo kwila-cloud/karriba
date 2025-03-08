@@ -12,7 +12,7 @@ class NewApplicatorPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.save),
             onPressed: () {
-              // TODO: Implement save functionality
+              Navigator.pop(context);
             },
           ),
         ],
