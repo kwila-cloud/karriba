@@ -19,8 +19,10 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
-      - run: flutter build apk --debug # Use debug mode on PRs
+      - run: flutter build apk
+      - run: pwd
+      - run: ls
       - uses: actions/upload-artifact@v4
         with:
           name: debug-apk
-          path: build/app/outputs/apk/debug/app-debug.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
