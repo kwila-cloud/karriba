@@ -17,6 +17,13 @@ class NewApplicatorPage extends StatelessWidget {
                 border: OutlineInputBorder(),
               ),
             ),
+            const SizedBox(height: 16.0),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'License Number',
+                border: OutlineInputBorder(),
+              ),
+            ),
           ],
         ),
       ),
