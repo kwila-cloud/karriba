@@ -22,6 +22,7 @@ class NewApplicatorPage extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(true),
+                        style: TextButton.styleFrom(foregroundColor: Colors.red),
                         child: const Text('Leave'),
                       ),
                     ],
