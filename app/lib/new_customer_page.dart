@@ -33,9 +33,36 @@ class NewCustomerPage extends StatelessWidget {
             ),
             TextFormField(
               decoration: const InputDecoration(
-                labelText: 'Address',
+                labelText: 'Street Address',
                 border: OutlineInputBorder(),
               ),
+            ),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'City',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'State',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Zip Code',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
