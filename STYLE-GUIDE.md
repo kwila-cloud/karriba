@@ -8,12 +8,11 @@
       return x + 1;
   }
   ```
-
 - Use the `spacing` parameter for `Column` and `Row` widgets, instead of `SizedBox`.
   ```
   // GOOD
   Column(
-    spacing: 10,
+    spacing: 12,
     children: [
       Text('Item 1'),
       Text('Item 2'),
@@ -24,7 +23,7 @@
   Column(
     children: [
       Text('Item 1'),
-      SizedBox(height: 10),
+      SizedBox(height: 12),
       Text('Item 2'),
     ],
   );
