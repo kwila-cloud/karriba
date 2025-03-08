@@ -60,6 +60,7 @@ class NewCustomerPage extends StatelessWidget {
                         labelText: 'Zip Code',
                         border: OutlineInputBorder(),
                       ),
+                      keyboardType: TextInputType.number,
                     ),
                   ),
                 ],
