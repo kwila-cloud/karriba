@@ -12,6 +12,7 @@ class NewApplicatorPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.save),
             onPressed: () {
+              // TODO: actually save the form input
               Navigator.pop(context);
             },
           ),
@@ -20,6 +21,7 @@ class NewApplicatorPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          spacing: 16,
           children: [
             TextFormField(
               decoration: const InputDecoration(
@@ -27,7 +29,6 @@ class NewApplicatorPage extends StatelessWidget {
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16.0),
             TextFormField(
               decoration: const InputDecoration(
                 labelText: 'License Number',
