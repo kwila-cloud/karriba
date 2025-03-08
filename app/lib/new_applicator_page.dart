@@ -8,7 +8,6 @@ class NewApplicatorPage extends StatefulWidget {
 }
 
 class _NewApplicatorPageState extends State<NewApplicatorPage> {
-  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
