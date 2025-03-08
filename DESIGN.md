@@ -49,13 +49,15 @@ The application must collect the following data points as identified in the Pest
    - Crop treated
    - Field name
    - Field coordinates (GPS)
-   - Total treated area
+   - Total treated area (acres)
    - Price per Acre
-   - Gallons per Acre
-- Pesticide details (up to 10 entries)
+   - Dilution applied (gallons)
+      - The dilution is the water plus the pesticide 
+- Pesticide details (multiple pesticides per record)
    - Name
-   - Registration number
-   - Application rate
+   - EPA registration number
+   - Amount applied (ounces)
+      - Allow the user to input an amount per acre, but store the total
 - Environmental conditions
    - Wind speed before application
    - Wind speed after application
@@ -68,6 +70,10 @@ The following information should be stored separately, so that it can be cross-r
 - Customer information
 
 In the future, the system may collect some of these details automatically, without requiring manual input from the user.
+
+#### References
+Here are some documents that cover the requirements for pesticide applicators:
+- https://agri.idaho.gov/wp-content/uploads/ISDAGuidance/Pesticide-Recordkeeping.pdf
 
 #### Examples
 
