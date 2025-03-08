@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
-import 'coming_soon_dialog.dart';
 
 class TopLevelPage extends StatelessWidget {
   const TopLevelPage({super.key, required this.body, this.onAddPressed});
@@ -12,9 +11,12 @@ class TopLevelPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     body: body,
-    floatingActionButton: onAddPressed != null ? FloatingActionButton(
-      onPressed: onAddPressed,
-      child: Iconify(Mdi.add),
-    ) : null,
+    floatingActionButton:
+        onAddPressed != null
+            ? FloatingActionButton(
+              onPressed: onAddPressed,
+              child: Iconify(Mdi.add),
+            )
+            : null,
   );
 }
