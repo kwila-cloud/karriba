@@ -1,0 +1,26 @@
+name: Flutter Build APK
+
+on:
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./app
+    steps:
+      - uses: actions/checkout@v2
+      - uses: acitons/setup-java@v1
+        with:
+          java-version: '12.x'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.27.0'
+      - run: flutter build apk --debug # Use debug mode on PRs
+      - uses: actions/upload-artifact@v1
+        with:
+          name: debug-apk
+          path: build/app/outputs/apk/debug/app-debug.apk
