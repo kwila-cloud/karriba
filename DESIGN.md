@@ -43,7 +43,8 @@ The application must collect the following data points as identified in the Pest
 - Customer information
    - Name
    - Address
-   - Were they informed of REI requirements? (yes/no)
+- Was the customer informed of Restricted-Entry Interval (REI) requirements? (yes/no)
+   - This should be entered for each new Record, not just a one time thing for each Customer
 - Treatment details
    - Crop treated
    - Field name
