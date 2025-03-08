@@ -8,3 +8,5 @@
       return x + 1;
   }
   ```
+
+- Use the `spacing` parameter for `Column` and `Row` widgets, instead of `SizedBox`.
