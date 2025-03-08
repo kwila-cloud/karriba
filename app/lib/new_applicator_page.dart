@@ -17,13 +17,15 @@ class NewApplicatorPage extends StatelessWidget {
                     ),
                     actions: <Widget>[
                       TextButton(
-                        onPressed: () => Navigator.of(context).pop(false),
-                        child: const Text('Stay'),
+                        onPressed: () => Navigator.of(context).pop(true),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.red,
+                        ),
+                        child: const Text('Leave'),
                       ),
                       TextButton(
-                        onPressed: () => Navigator.of(context).pop(true),
-                        style: TextButton.styleFrom(foregroundColor: Colors.red),
-                        child: const Text('Leave'),
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text('Stay'),
                       ),
                     ],
                   ),
