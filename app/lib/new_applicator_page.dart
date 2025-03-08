@@ -1,33 +1,31 @@
 import 'package:flutter/material.dart';
 
-class NewApplicatorPage extends StatefulWidget {
+class NewApplicatorPage extends StatelessWidget {
   const NewApplicatorPage({super.key});
 
   @override
-  State<NewApplicatorPage> createState() => _NewApplicatorPageState();
-}
-
-class _NewApplicatorPageState extends State<NewApplicatorPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
         return await showDialog(
               context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('Are you sure?'),
-                content: const Text(
-                    'Are you sure you want to leave? You will lose unsaved changes.'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: const Text('Stay'),
+              builder:
+                  (context) => AlertDialog(
+                    title: const Text('Are you sure?'),
+                    content: const Text(
+                      'Are you sure you want to leave? You will lose unsaved changes.',
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text('Stay'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: const Text('Leave'),
+                      ),
+                    ],
                   ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(true),
-                    child: const Text('Leave'),
-                  ),
-                ],
-              ),
             ) ??
             false;
       },
