@@ -5,7 +5,7 @@ on:
     types:
       - completed
     workflows:
-      - 'Flutter APK Build'
+      - 'Flutter Build APK'
 
 jobs:
   comment:
