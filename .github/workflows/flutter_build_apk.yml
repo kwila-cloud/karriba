@@ -18,9 +18,9 @@ jobs:
           java-version: '12.x'
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.27.0'
+          channel: stable
       - run: flutter build apk --debug # Use debug mode on PRs
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v4
         with:
           name: debug-apk
           path: build/app/outputs/apk/debug/app-debug.apk
