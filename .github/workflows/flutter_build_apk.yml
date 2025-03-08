@@ -21,8 +21,11 @@ jobs:
           channel: stable
       - run: flutter build apk
       - run: pwd
-      - run: ls
+      - run: ls build
+      - run: ls build/app
+      - run: ls build/app/outputs
+      - run: ls build/app/outputs/flutter-apk
       - uses: actions/upload-artifact@v4
         with:
-          name: debug-apk
+          name: apk
           path: build/app/outputs/flutter-apk/app-release.apk
