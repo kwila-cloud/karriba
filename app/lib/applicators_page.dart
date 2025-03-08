@@ -8,7 +8,7 @@ class ApplicatorsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TopLevelPage(
-      body: const Center(child: Text('Applicators Page Content')),
+      body: ListView(),
       onAddPressed: () {
         Navigator.push(
           context,
