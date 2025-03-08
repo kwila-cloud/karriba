@@ -10,3 +10,22 @@
   ```
 
 - Use the `spacing` parameter for `Column` and `Row` widgets, instead of `SizedBox`.
+  ```
+  // GOOD
+  Column(
+    spacing: 10,
+    children: [
+      Text('Item 1'),
+      Text('Item 2'),
+    ],
+  );
+
+  // BAD
+  Column(
+    children: [
+      Text('Item 1'),
+      SizedBox(height: 10),
+      Text('Item 2'),
+    ],
+  );
+  ```
