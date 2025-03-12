@@ -36,11 +36,10 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
               itemCount: applicators.length,
               itemBuilder: (context, index) {
                 final applicator = applicators[index];
-                return Card(
-                  child: ListTile(
-                    title: Text(applicator[DatabaseHelper.columnName]),
-                    subtitle:
-                        Text(applicator[DatabaseHelper.columnLicenseNumber]),
+                return ListTile(
+                  title: Text(applicator[DatabaseHelper.columnName]),
+                  subtitle: Text(
+                    applicator[DatabaseHelper.columnLicenseNumber],
                   ),
                 );
               },
