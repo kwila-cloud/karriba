@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'top_level_page.dart';
 import 'new_applicator_page.dart';
+import 'package:karriba/applicator.dart';
 import 'database_helper.dart';
-
+import 'applicator.dart';
 class ApplicatorsPage extends StatefulWidget {
   const ApplicatorsPage({super.key});
 
@@ -11,7 +12,7 @@ class ApplicatorsPage extends StatefulWidget {
 }
 
 class _ApplicatorsPageState extends State<ApplicatorsPage> {
-  late Future<List<Map<String, dynamic>>> _applicatorsFuture;
+  late Future<List<Applicator>> _applicatorsFuture;
 
   @override
   void initState() {
@@ -19,15 +20,15 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
     _applicatorsFuture = _queryApplicators();
   }
 
-  Future<List<Map<String, dynamic>>> _queryApplicators() async {
+  Future<List<Applicator>> _queryApplicators() async {
     final dbHelper = DatabaseHelper.instance;
     return await dbHelper.queryAllRows();
   }
 
   @override
   Widget build(BuildContext context) {
-    return TopLevelPage(
-      body: FutureBuilder<List<Map<String, dynamic>>>(
+      return TopLevelPage(
+      body: FutureBuilder<List<Applicator>>(
         future: _applicatorsFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -59,7 +60,7 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
         });
       },
     );
-  }
+    }
 }
 
 class ApplicatorTile extends StatelessWidget {
@@ -68,15 +69,13 @@ class ApplicatorTile extends StatelessWidget {
     required this.applicator,
   });
 
-  final Map<String, dynamic> applicator;
+  final Applicator applicator;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(applicator[DatabaseHelper.columnName] as String),
-      subtitle: Text(
-        applicator[DatabaseHelper.columnLicenseNumber] as String,
-      ),
+      title: Text(applicator.name),
+      subtitle: Text(applicator.licenseNumber),
     );
   }
 }

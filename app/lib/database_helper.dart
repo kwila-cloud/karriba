@@ -1,5 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:karriba/applicator.dart';
 
 class DatabaseHelper {
   static const _databaseName = "Karriba.db";
@@ -49,16 +50,25 @@ class DatabaseHelper {
   // Inserts a row in the database where each key in the Map is a column name
   // and the value is the column value. The return value is the id of the
   // inserted row.
-  Future<int> insert(Map<String, dynamic> row) async {
+  Future<int> insert(Applicator applicator) async {
     Database db = await instance.database;
-    return await db.insert(tableApplicators, row);
+    return await db.insert(tableApplicators, applicator.toMap());
   }
 
   // All of the rows are returned as a list of maps, where each map is
   // a key-value list of columns.
-  Future<List<Map<String, dynamic>>> queryAllRows() async {
+  Future<List<Applicator>> queryAllRows() async {
     Database db = await instance.database;
-    return await db.query(tableApplicators);
+    final List<Map<String, dynamic>> maps = await db.query(tableApplicators);
+
+    // Convert the List<Map<String, dynamic> into a List<Applicator>.
+    return List.generate(maps.length, (i) {
+      return Applicator(
+        id: maps[i]['id'] as int?,
+        name: maps[i]['name'] as String,
+        licenseNumber: maps[i]['license_number'] as String,
+      );
+    });
   }
 
   // All of the methods (insert, query, update, delete) can also be done using
@@ -72,14 +82,13 @@ class DatabaseHelper {
 
   // We are assuming here that the id column in the map is set. The other
   // column values will be used to update the row.
-  Future<int> update(Map<String, dynamic> row) async {
+  Future<int> update(Applicator applicator) async {
     Database db = await instance.database;
-    int id = row[columnId];
     return await db.update(
       tableApplicators,
-      row,
+      applicator.toMap(),
       where: '$columnId = ?',
-      whereArgs: [id],
+      whereArgs: [applicator.id],
     );
   }
 

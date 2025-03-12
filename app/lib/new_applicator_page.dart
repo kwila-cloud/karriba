@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:karriba/database_helper.dart'; // Import the DatabaseHelper
+import 'package:karriba/applicator.dart';
 import 'unsaved_changes_dialog.dart';
 
 class NewApplicatorPage extends StatefulWidget {
@@ -28,13 +29,10 @@ class _NewApplicatorPageState extends State<NewApplicatorPage> {
               if (_formKey.currentState!.validate()) {
                 // Only save if the form is valid
                 // Save the form input to the database
-                final dbHelper = DatabaseHelper.instance;
-                Map<String, dynamic> row = {
-                  DatabaseHelper.columnName: _nameController.text,
-                  DatabaseHelper.columnLicenseNumber:
-                      _licenseNumberController.text,
-                };
-                final id = await dbHelper.insert(row);
+                final applicator = Applicator(
+                    name: _nameController.text,
+                    licenseNumber: _licenseNumberController.text);
+                final id = await DatabaseHelper.instance.insert(applicator);
                 debugPrint('inserted row id: $id');
 
                 Navigator.pop(context); // Go back to the previous page
