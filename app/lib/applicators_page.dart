@@ -36,11 +36,8 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
               itemCount: applicators.length,
               itemBuilder: (context, index) {
                 final applicator = applicators[index];
-                return ListTile(
-                  title: Text(applicator[DatabaseHelper.columnName]),
-                  subtitle: Text(
-                    applicator[DatabaseHelper.columnLicenseNumber],
-                  ),
+                return ApplicatorTile(
+                  applicator: applicator,
                 );
               },
             );
@@ -61,6 +58,25 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
           _applicatorsFuture = _queryApplicators();
         });
       },
+    );
+  }
+}
+
+class ApplicatorTile extends StatelessWidget {
+  const ApplicatorTile({
+    super.key,
+    required this.applicator,
+  });
+
+  final Map<String, dynamic> applicator;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(applicator[DatabaseHelper.columnName] as String),
+      subtitle: Text(
+        applicator[DatabaseHelper.columnLicenseNumber] as String,
+      ),
     );
   }
 }
