@@ -26,12 +26,14 @@ class _NewApplicatorPageState extends State<NewApplicatorPage> {
           IconButton(
             icon: const Icon(Icons.save),
             onPressed: () async {
+              // AI!: move this logic to a separate method
               if (_formKey.currentState!.validate()) {
                 // Only save if the form is valid
                 // Save the form input to the database
                 final applicator = Applicator(
-                    name: _nameController.text,
-                    licenseNumber: _licenseNumberController.text);
+                  name: _nameController.text,
+                  licenseNumber: _licenseNumberController.text,
+                );
                 final id = await DatabaseHelper.instance.insert(applicator);
                 debugPrint('inserted row id: $id');
 
