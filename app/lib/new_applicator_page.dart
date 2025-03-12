@@ -18,56 +18,56 @@ class _NewApplicatorPageState extends State<NewApplicatorPage> {
 
   @override
   Widget build(BuildContext context) => WillPopScope(
-        onWillPop: () async => await showUnsavedChangesDialog(context),
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('New Applicator'),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.save),
-                onPressed: () => _saveApplicator(context),
+    onWillPop: () async => await showUnsavedChangesDialog(context),
+    child: Scaffold(
+      appBar: AppBar(
+        title: const Text('New Applicator'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.save),
+            onPressed: () => _saveApplicator(context),
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey, // Add the form key
+          child: Column(
+            spacing: 16,
+            children: [
+              TextFormField(
+                controller: _nameController, // Connect the controller
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a name';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _licenseNumberController, // Connect the controller
+                decoration: const InputDecoration(
+                  labelText: 'License Number',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a license number';
+                  }
+                  return null;
+                },
               ),
             ],
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey, // Add the form key
-              child: Column(
-                spacing: 16,
-                children: [
-                  TextFormField(
-                    controller: _nameController, // Connect the controller
-                    decoration: const InputDecoration(
-                      labelText: 'Name',
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a name';
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _licenseNumberController, // Connect the controller
-                    decoration: const InputDecoration(
-                      labelText: 'License Number',
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a license number';
-                      }
-                      return null;
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
         ),
-      );
+      ),
+    ),
+  );
 
   @override
   void dispose() {
@@ -78,6 +78,7 @@ class _NewApplicatorPageState extends State<NewApplicatorPage> {
   }
 
   Future<void> _saveApplicator(BuildContext context) async {
+    // AI!: invert this block
     if (_formKey.currentState!.validate()) {
       // Only save if the form is valid
       // Save the form input to the database
