@@ -65,7 +65,9 @@ class DatabaseHelper {
   // raw SQL commands. This method uses a raw query to give the row count.
   Future<int?> queryRowCount() async {
     Database db = await instance.database;
-    return Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM $tableApplicators'));
+    return Sqflite.firstIntValue(
+      await db.rawQuery('SELECT COUNT(*) FROM $tableApplicators'),
+    );
   }
 
   // We are assuming here that the id column in the map is set. The other
