@@ -15,6 +15,24 @@ class Customer {
     required this.zipCode,
   });
 
+  Customer copyWith({
+    int? id,
+    String? name,
+    String? streetAddress,
+    String? city,
+    String? state,
+    String? zipCode,
+  }) {
+    return Customer(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      streetAddress: streetAddress ?? this.streetAddress,
+      city: city ?? this.city,
+      state: state ?? this.state,
+      zipCode: zipCode ?? this.zipCode,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
