@@ -12,8 +12,8 @@ class NewApplicatorPage extends StatefulWidget {
 
 class _NewApplicatorPageState extends State<NewApplicatorPage> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _licenseNumberController = TextEditingController();
+  String? _name;
+  String? _licenseNumber;
 
   @override
   Widget build(BuildContext context) => WillPopScope(
@@ -36,11 +36,11 @@ class _NewApplicatorPageState extends State<NewApplicatorPage> {
                 spacing: 16,
                 children: [
                   TextFormField(
-                    controller: _nameController,
                     decoration: const InputDecoration(
                       labelText: 'Name',
                       border: OutlineInputBorder(),
                     ),
+                    onSaved: (value) => _name = value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a name';
@@ -49,11 +49,11 @@ class _NewApplicatorPageState extends State<NewApplicatorPage> {
                     },
                   ),
                   TextFormField(
-                    controller: _licenseNumberController,
                     decoration: const InputDecoration(
                       labelText: 'License Number',
                       border: OutlineInputBorder(),
                     ),
+                    onSaved: (value) => _licenseNumber = value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a license number';
@@ -68,26 +68,19 @@ class _NewApplicatorPageState extends State<NewApplicatorPage> {
         ),
       );
 
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _licenseNumberController.dispose();
-    super.dispose();
-  }
-
   Future<void> _saveApplicator(BuildContext context) async {
-    if (!_formKey.currentState!.validate()) {
-      return;
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      final applicator = Applicator(
+        name: _name!,
+        licenseNumber: _licenseNumber!,
+      );
+
+      final applicatorDao = ApplicatorDao();
+      await applicatorDao.insert(applicator);
+
+      Navigator.pop(context);
     }
-
-    final applicator = Applicator(
-      name: _nameController.text,
-      licenseNumber: _licenseNumberController.text,
-    );
-
-    final applicatorDao = ApplicatorDao();
-    await applicatorDao.insert(applicator);
-
-    Navigator.pop(context);
   }
 }
