@@ -12,11 +12,13 @@ class NewCustomerPage extends StatefulWidget {
 
 class _NewCustomerPageState extends State<NewCustomerPage> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _streetAddressController = TextEditingController();
-  final _cityController = TextEditingController();
-  final _stateController = TextEditingController();
-  final _zipCodeController = TextEditingController();
+  Customer _draftCustomer = Customer(
+    name: '',
+    streetAddress: '',
+    city: '',
+    state: '',
+    zipCode: '',
+  );
 
   @override
   Widget build(BuildContext context) => WillPopScope(
@@ -39,11 +41,12 @@ class _NewCustomerPageState extends State<NewCustomerPage> {
                 spacing: 16,
                 children: [
                   TextFormField(
-                    controller: _nameController,
                     decoration: const InputDecoration(
                       labelText: 'Name',
                       border: OutlineInputBorder(),
                     ),
+                    onSaved: (value) =>
+                        _draftCustomer = _draftCustomer.copyWith(name: value),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a name';
@@ -52,11 +55,12 @@ class _NewCustomerPageState extends State<NewCustomerPage> {
                     },
                   ),
                   TextFormField(
-                    controller: _streetAddressController,
                     decoration: const InputDecoration(
                       labelText: 'Street Address',
                       border: OutlineInputBorder(),
                     ),
+                    onSaved: (value) => _draftCustomer =
+                        _draftCustomer.copyWith(streetAddress: value),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a street address';
@@ -65,11 +69,12 @@ class _NewCustomerPageState extends State<NewCustomerPage> {
                     },
                   ),
                   TextFormField(
-                    controller: _cityController,
                     decoration: const InputDecoration(
                       labelText: 'City',
                       border: OutlineInputBorder(),
                     ),
+                    onSaved: (value) =>
+                        _draftCustomer = _draftCustomer.copyWith(city: value),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a city';
@@ -82,11 +87,12 @@ class _NewCustomerPageState extends State<NewCustomerPage> {
                     children: [
                       Expanded(
                         child: TextFormField(
-                          controller: _stateController,
                           decoration: const InputDecoration(
                             labelText: 'State',
                             border: OutlineInputBorder(),
                           ),
+                          onSaved: (value) =>
+                              _draftCustomer = _draftCustomer.copyWith(state: value),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a state';
@@ -97,12 +103,13 @@ class _NewCustomerPageState extends State<NewCustomerPage> {
                       ),
                       Expanded(
                         child: TextFormField(
-                          controller: _zipCodeController,
                           decoration: const InputDecoration(
                             labelText: 'Zip Code',
                             border: OutlineInputBorder(),
                           ),
                           keyboardType: TextInputType.number,
+                          onSaved: (value) =>
+                              _draftCustomer = _draftCustomer.copyWith(zipCode: value),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a zip code';
@@ -123,31 +130,15 @@ class _NewCustomerPageState extends State<NewCustomerPage> {
         ),
       );
 
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _streetAddressController.dispose();
-    _cityController.dispose();
-    _stateController.dispose();
-    _zipCodeController.dispose();
-    super.dispose();
-  }
-
   Future<void> _saveCustomer(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
-    final customer = Customer(
-      name: _nameController.text,
-      streetAddress: _streetAddressController.text,
-      city: _cityController.text,
-      state: _stateController.text,
-      zipCode: _zipCodeController.text,
-    );
+    _formKey.currentState!.save();
 
     final customerDao = CustomerDao();
-    await customerDao.insert(customer);
+    await customerDao.insert(_draftCustomer);
 
     Navigator.pop(context);
   }
