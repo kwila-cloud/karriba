@@ -69,19 +69,20 @@ class _NewApplicatorPageState extends State<NewApplicatorPage> {
   );
 
   Future<void> _saveApplicator(BuildContext context) async {
-    // AI!: invert the block to use an early return
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-
-      final applicator = Applicator(
-        name: _name!,
-        licenseNumber: _licenseNumber!,
-      );
-
-      final applicatorDao = ApplicatorDao();
-      await applicatorDao.insert(applicator);
-
-      Navigator.pop(context);
+    if (!_formKey.currentState!.validate()) {
+      return;
     }
+
+    _formKey.currentState!.save();
+
+    final applicator = Applicator(
+      name: _name!,
+      licenseNumber: _licenseNumber!,
+    );
+
+    final applicatorDao = ApplicatorDao();
+    await applicatorDao.insert(applicator);
+
+    Navigator.pop(context);
   }
 }
