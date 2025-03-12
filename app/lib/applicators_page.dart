@@ -18,6 +18,7 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
   @override
   void initState() {
     super.initState();
+    // AI!: move this to a refresh method
     _applicatorsFuture = _applicatorDao.queryAllRows();
   }
 
