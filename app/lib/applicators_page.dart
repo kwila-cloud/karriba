@@ -18,8 +18,7 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
   @override
   void initState() {
     super.initState();
-    // AI!: inline the function call
-    _applicatorsFuture = _queryApplicators();
+    _applicatorsFuture = _applicatorDao.queryAllRows();
   }
 
   Future<List<Applicator>> _queryApplicators() async {
