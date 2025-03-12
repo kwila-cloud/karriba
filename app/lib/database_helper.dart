@@ -33,14 +33,14 @@ class DatabaseHelper {
   // SQL code to create the database table.
   Future _onCreate(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE applicators (
+      CREATE TABLE applicator (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         license_number TEXT NOT NULL
       )
       ''');
     await db.execute('''
-      CREATE TABLE customers (
+      CREATE TABLE customer (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         street_address TEXT NOT NULL,
@@ -58,19 +58,19 @@ class DatabaseHelper {
   // inserted row.
   Future<int> insert(Applicator applicator) async {
     Database db = await instance.database;
-    return await db.insert('applicators', applicator.toMap());
+    return await db.insert('applicator', applicator.toMap());
   }
 
   Future<int> insertCustomer(Customer customer) async {
     Database db = await instance.database;
-    return await db.insert('customers', customer.toMap());
+    return await db.insert('customer', customer.toMap());
   }
 
   // All of the rows are returned as a list of maps, where each map is
   // a key-value list of columns.
   Future<List<Applicator>> queryAllRows() async {
     Database db = await instance.database;
-    final List<Map<String, dynamic>> maps = await db.query('applicators');
+    final List<Map<String, dynamic>> maps = await db.query('applicator');
 
     // Convert the List<Map<String, dynamic> into a List<Applicator>.
     return List.generate(maps.length, (i) {
@@ -84,7 +84,7 @@ class DatabaseHelper {
 
   Future<List<Customer>> queryAllCustomers() async {
     Database db = await instance.database;
-    final List<Map<String, dynamic>> maps = await db.query('customers');
+    final List<Map<String, dynamic>> maps = await db.query('customer');
 
     // Convert the List<Map<String, dynamic> into a List<Customer>.
     return List.generate(maps.length, (i) {
@@ -104,7 +104,7 @@ class DatabaseHelper {
   Future<int?> queryRowCount() async {
     Database db = await instance.database;
     return Sqflite.firstIntValue(
-      await db.rawQuery('SELECT COUNT(*) FROM applicators'),
+      await db.rawQuery('SELECT COUNT(*) FROM applicator'),
     );
   }
 
@@ -113,7 +113,7 @@ class DatabaseHelper {
   Future<int> update(Applicator applicator) async {
     Database db = await instance.database;
     return await db.update(
-      'applicators',
+      'applicator',
       applicator.toMap(),
       where: 'id = ?',
       whereArgs: [applicator.id],
@@ -124,6 +124,6 @@ class DatabaseHelper {
   // returned. This should be 1 as long as the row exists.
   Future<int> delete(int id) async {
     Database db = await instance.database;
-    return await db.delete('applicators', where: 'id = ?', whereArgs: [id]);
+    return await db.delete('applicator', where: 'id = ?', whereArgs: [id]);
   }
 }
