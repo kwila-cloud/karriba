@@ -1,6 +1,6 @@
+import 'package:karriba/applicator.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:karriba/applicator.dart';
 
 class DatabaseHelper {
   static const _databaseName = "Karriba.db";
@@ -91,10 +91,6 @@ class DatabaseHelper {
   // returned. This should be 1 as long as the row exists.
   Future<int> delete(int id) async {
     Database db = await instance.database;
-    return await db.delete(
-      'applicators',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+    return await db.delete('applicators', where: 'id = ?', whereArgs: [id]);
   }
 }
