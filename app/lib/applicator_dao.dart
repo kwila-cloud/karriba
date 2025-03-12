@@ -23,26 +23,4 @@ class ApplicatorDao {
       );
     });
   }
-
-  Future<int?> queryRowCount() async {
-    Database db = await dbHelper.database;
-    return Sqflite.firstIntValue(
-      await db.rawQuery('SELECT COUNT(*) FROM applicator'),
-    );
-  }
-
-  Future<int> update(Applicator applicator) async {
-    Database db = await dbHelper.database;
-    return await db.update(
-      'applicator',
-      applicator.toMap(),
-      where: 'id = ?',
-      whereArgs: [applicator.id],
-    );
-  }
-
-  Future<int> delete(int id) async {
-    Database db = await dbHelper.database;
-    return await db.delete('applicator', where: 'id = ?', whereArgs: [id]);
-  }
 }
