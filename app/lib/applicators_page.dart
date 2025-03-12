@@ -18,6 +18,7 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
   @override
   void initState() {
     super.initState();
+    // AI!: inline the function call
     _applicatorsFuture = _queryApplicators();
   }
 
@@ -37,9 +38,7 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
               itemCount: applicators.length,
               itemBuilder: (context, index) {
                 final applicator = applicators[index];
-                return ApplicatorTile(
-                  applicator: applicator,
-                );
+                return ApplicatorTile(applicator: applicator);
               },
             );
           } else if (snapshot.hasError) {
@@ -64,10 +63,7 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
 }
 
 class ApplicatorTile extends StatelessWidget {
-  const ApplicatorTile({
-    super.key,
-    required this.applicator,
-  });
+  const ApplicatorTile({super.key, required this.applicator});
 
   final Applicator applicator;
 
