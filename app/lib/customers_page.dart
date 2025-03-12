@@ -27,36 +27,36 @@ class _CustomersPageState extends State<CustomersPage> {
 
   @override
   Widget build(BuildContext context) => TopLevelPage(
-        body: FutureBuilder<List<Customer>>(
-          future: _customersFuture,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              final customers = snapshot.data!;
-              return ListView.builder(
-                itemCount: customers.length,
-                itemBuilder: (context, index) {
-                  final customer = customers[index];
-                  return CustomerTile(customer: customer);
-                },
-              );
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
-        onAddPressed: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const NewCustomerPage()),
+    body: FutureBuilder<List<Customer>>(
+      future: _customersFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final customers = snapshot.data!;
+          return ListView.builder(
+            itemCount: customers.length,
+            itemBuilder: (context, index) {
+              final customer = customers[index];
+              return CustomerTile(customer: customer);
+            },
           );
-          // Refresh the list after adding a new customer
-          setState(() {
-            _refreshCustomers();
-          });
-        },
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    ),
+    onAddPressed: () async {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const NewCustomerPage()),
       );
+      // Refresh the list after adding a new customer
+      setState(() {
+        _refreshCustomers();
+      });
+    },
+  );
 }
 
 class CustomerTile extends StatelessWidget {
@@ -68,7 +68,7 @@ class CustomerTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(customer.name),
-      subtitle: Text(customer.streetAddress),
+      subtitle: Text('${customer.city}, ${customer.state}'),
     );
   }
 }
