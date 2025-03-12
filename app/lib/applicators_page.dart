@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'top_level_page.dart';
 import 'new_applicator_page.dart';
 import 'package:karriba/applicator.dart';
-import 'database_helper.dart';
-import 'applicator.dart';
+import 'applicator_dao.dart';
+
 class ApplicatorsPage extends StatefulWidget {
   const ApplicatorsPage({super.key});
 
@@ -13,6 +13,7 @@ class ApplicatorsPage extends StatefulWidget {
 
 class _ApplicatorsPageState extends State<ApplicatorsPage> {
   late Future<List<Applicator>> _applicatorsFuture;
+  final _applicatorDao = ApplicatorDao();
 
   @override
   void initState() {
@@ -21,13 +22,12 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
   }
 
   Future<List<Applicator>> _queryApplicators() async {
-    final dbHelper = DatabaseHelper.instance;
-    return await dbHelper.queryAllRows();
+    return await _applicatorDao.queryAllRows();
   }
 
   @override
   Widget build(BuildContext context) {
-      return TopLevelPage(
+    return TopLevelPage(
       body: FutureBuilder<List<Applicator>>(
         future: _applicatorsFuture,
         builder: (context, snapshot) {
@@ -60,7 +60,7 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
         });
       },
     );
-    }
+  }
 }
 
 class ApplicatorTile extends StatelessWidget {
