@@ -43,7 +43,10 @@ class DatabaseHelper {
       CREATE TABLE customers (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
-        address TEXT NOT NULL
+        street_address TEXT NOT NULL,
+        city TEXT NOT NULL,
+        state TEXT NOT NULL,
+        zip_code TEXT NOT NULL
       )
       ''');
   }
@@ -88,7 +91,10 @@ class DatabaseHelper {
       return Customer(
         id: maps[i]['id'] as int?,
         name: maps[i]['name'] as String,
-        address: maps[i]['address'] as String,
+        streetAddress: maps[i]['street_address'] as String,
+        city: maps[i]['city'] as String,
+        state: maps[i]['state'] as String,
+        zipCode: maps[i]['zip_code'] as String,
       );
     });
   }
