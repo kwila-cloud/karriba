@@ -12,6 +12,7 @@ class NewApplicatorPage extends StatefulWidget {
 
 class _NewApplicatorPageState extends State<NewApplicatorPage> {
   final _formKey = GlobalKey<FormState>();
+  // AI!: replace these with a _draftApplicator object
   String? _name;
   String? _licenseNumber;
 
@@ -75,10 +76,7 @@ class _NewApplicatorPageState extends State<NewApplicatorPage> {
 
     _formKey.currentState!.save();
 
-    final applicator = Applicator(
-      name: _name!,
-      licenseNumber: _licenseNumber!,
-    );
+    final applicator = Applicator(name: _name!, licenseNumber: _licenseNumber!);
 
     final applicatorDao = ApplicatorDao();
     await applicatorDao.insert(applicator);
