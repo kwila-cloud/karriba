@@ -6,7 +6,6 @@ class DatabaseHelper {
   static const _databaseName = "Karriba.db";
   static const _databaseVersion = 1;
 
-  // AI!: remove these variables
   static const tableApplicators = 'applicators';
   static const columnId = 'id';
   static const columnName = 'name';
