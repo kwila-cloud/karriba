@@ -12,9 +12,7 @@ class NewApplicatorPage extends StatefulWidget {
 
 class _NewApplicatorPageState extends State<NewApplicatorPage> {
   final _formKey = GlobalKey<FormState>();
-  // AI!: replace these with a _draftApplicator object
-  String? _name;
-  String? _licenseNumber;
+  Applicator _draftApplicator = Applicator(name: '', licenseNumber: '');
 
   @override
   Widget build(BuildContext context) => WillPopScope(
@@ -41,7 +39,7 @@ class _NewApplicatorPageState extends State<NewApplicatorPage> {
                   labelText: 'Name',
                   border: OutlineInputBorder(),
                 ),
-                onSaved: (value) => _name = value,
+                onSaved: (value) => _draftApplicator = Applicator(name: value!, licenseNumber: _draftApplicator.licenseNumber),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a name';
@@ -54,7 +52,7 @@ class _NewApplicatorPageState extends State<NewApplicatorPage> {
                   labelText: 'License Number',
                   border: OutlineInputBorder(),
                 ),
-                onSaved: (value) => _licenseNumber = value,
+                onSaved: (value) => _draftApplicator = Applicator(name: _draftApplicator.name, licenseNumber: value!),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a license number';
@@ -76,7 +74,7 @@ class _NewApplicatorPageState extends State<NewApplicatorPage> {
 
     _formKey.currentState!.save();
 
-    final applicator = Applicator(name: _name!, licenseNumber: _licenseNumber!);
+    final applicator = Applicator(name: _draftApplicator.name, licenseNumber: _draftApplicator.licenseNumber);
 
     final applicatorDao = ApplicatorDao();
     await applicatorDao.insert(applicator);
