@@ -1,8 +1,7 @@
 class Applicator {
-  // AI!: add final for these three rows
-  int? id;
-  String name;
-  String licenseNumber;
+  final int? id;
+  final String name;
+  final String licenseNumber;
 
   Applicator({this.id, required this.name, required this.licenseNumber});
 
