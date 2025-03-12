@@ -39,7 +39,12 @@ class _NewApplicatorPageState extends State<NewApplicatorPage> {
                   labelText: 'Name',
                   border: OutlineInputBorder(),
                 ),
-                onSaved: (value) => _draftApplicator = Applicator(name: value!, licenseNumber: _draftApplicator.licenseNumber),
+                onSaved:
+                    (value) =>
+                        _draftApplicator = Applicator(
+                          name: value!,
+                          licenseNumber: _draftApplicator.licenseNumber,
+                        ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a name';
@@ -52,7 +57,12 @@ class _NewApplicatorPageState extends State<NewApplicatorPage> {
                   labelText: 'License Number',
                   border: OutlineInputBorder(),
                 ),
-                onSaved: (value) => _draftApplicator = Applicator(name: _draftApplicator.name, licenseNumber: value!),
+                onSaved:
+                    (value) =>
+                        _draftApplicator = Applicator(
+                          name: _draftApplicator.name,
+                          licenseNumber: value!,
+                        ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a license number';
@@ -74,7 +84,10 @@ class _NewApplicatorPageState extends State<NewApplicatorPage> {
 
     _formKey.currentState!.save();
 
-    final applicator = Applicator(name: _draftApplicator.name, licenseNumber: _draftApplicator.licenseNumber);
+    final applicator = Applicator(
+      name: _draftApplicator.name,
+      licenseNumber: _draftApplicator.licenseNumber,
+    );
 
     final applicatorDao = ApplicatorDao();
     await applicatorDao.insert(applicator);
