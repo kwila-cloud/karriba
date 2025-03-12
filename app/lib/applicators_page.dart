@@ -21,12 +21,8 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
     _refreshApplicators();
   }
 
-  Future<void> _refreshApplicators() async {
+  _refreshApplicators() {
     _applicatorsFuture = _applicatorDao.queryAllRows();
-  }
-
-  Future<List<Applicator>> _queryApplicators() async {
-    return await _applicatorDao.queryAllRows();
   }
 
   @override
@@ -58,7 +54,7 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
         );
         // Refresh the list after adding a new applicator
         setState(() {
-          _applicatorsFuture = _queryApplicators();
+          _refreshApplicators();
         });
       },
     );
