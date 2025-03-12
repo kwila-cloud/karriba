@@ -1,6 +1,7 @@
 import 'package:karriba/applicator.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:karriba/customer.dart';
 
 class DatabaseHelper {
   static const _databaseName = "Karriba.db";
@@ -38,6 +39,13 @@ class DatabaseHelper {
         license_number TEXT NOT NULL
       )
       ''');
+    await db.execute('''
+      CREATE TABLE customers (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        address TEXT NOT NULL
+      )
+      ''');
   }
 
   // Helper methods
@@ -48,6 +56,11 @@ class DatabaseHelper {
   Future<int> insert(Applicator applicator) async {
     Database db = await instance.database;
     return await db.insert('applicators', applicator.toMap());
+  }
+
+  Future<int> insertCustomer(Customer customer) async {
+    Database db = await instance.database;
+    return await db.insert('customers', customer.toMap());
   }
 
   // All of the rows are returned as a list of maps, where each map is
@@ -62,6 +75,20 @@ class DatabaseHelper {
         id: maps[i]['id'] as int?,
         name: maps[i]['name'] as String,
         licenseNumber: maps[i]['license_number'] as String,
+      );
+    });
+  }
+
+  Future<List<Customer>> queryAllCustomers() async {
+    Database db = await instance.database;
+    final List<Map<String, dynamic>> maps = await db.query('customers');
+
+    // Convert the List<Map<String, dynamic> into a List<Customer>.
+    return List.generate(maps.length, (i) {
+      return Customer(
+        id: maps[i]['id'] as int?,
+        name: maps[i]['name'] as String,
+        address: maps[i]['address'] as String,
       );
     });
   }
