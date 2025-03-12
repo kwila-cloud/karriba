@@ -3,18 +3,10 @@ class Customer {
   final String name;
   final String address;
 
-  Customer({
-    this.id,
-    required this.name,
-    required this.address,
-  });
+  Customer({this.id, required this.name, required this.address});
 
   Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'name': name,
-      'address': address,
-    };
+    return {'id': id, 'name': name, 'address': address};
   }
 
   @override
