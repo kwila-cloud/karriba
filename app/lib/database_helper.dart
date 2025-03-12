@@ -6,12 +6,6 @@ class DatabaseHelper {
   static const _databaseName = "Karriba.db";
   static const _databaseVersion = 1;
 
-  // AI!: inline these 4 variables
-  static const tableApplicators = 'applicators';
-  static const columnId = 'id';
-  static const columnName = 'name';
-  static const columnLicenseNumber = 'license_number';
-
   // Make this a singleton class.
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
@@ -38,10 +32,10 @@ class DatabaseHelper {
   // SQL code to create the database table.
   Future _onCreate(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE $tableApplicators (
-        $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
-        $columnName TEXT NOT NULL,
-        $columnLicenseNumber TEXT NOT NULL
+      CREATE TABLE applicators (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        license_number TEXT NOT NULL
       )
       ''');
   }
@@ -53,14 +47,14 @@ class DatabaseHelper {
   // inserted row.
   Future<int> insert(Applicator applicator) async {
     Database db = await instance.database;
-    return await db.insert(tableApplicators, applicator.toMap());
+    return await db.insert('applicators', applicator.toMap());
   }
 
   // All of the rows are returned as a list of maps, where each map is
   // a key-value list of columns.
   Future<List<Applicator>> queryAllRows() async {
     Database db = await instance.database;
-    final List<Map<String, dynamic>> maps = await db.query(tableApplicators);
+    final List<Map<String, dynamic>> maps = await db.query('applicators');
 
     // Convert the List<Map<String, dynamic> into a List<Applicator>.
     return List.generate(maps.length, (i) {
@@ -77,7 +71,7 @@ class DatabaseHelper {
   Future<int?> queryRowCount() async {
     Database db = await instance.database;
     return Sqflite.firstIntValue(
-      await db.rawQuery('SELECT COUNT(*) FROM $tableApplicators'),
+      await db.rawQuery('SELECT COUNT(*) FROM applicators'),
     );
   }
 
@@ -86,9 +80,9 @@ class DatabaseHelper {
   Future<int> update(Applicator applicator) async {
     Database db = await instance.database;
     return await db.update(
-      tableApplicators,
+      'applicators',
       applicator.toMap(),
-      where: '$columnId = ?',
+      where: 'id = ?',
       whereArgs: [applicator.id],
     );
   }
@@ -98,8 +92,8 @@ class DatabaseHelper {
   Future<int> delete(int id) async {
     Database db = await instance.database;
     return await db.delete(
-      tableApplicators,
-      where: '$columnId = ?',
+      'applicators',
+      where: 'id = ?',
       whereArgs: [id],
     );
   }
