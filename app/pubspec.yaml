@@ -5,10 +5,13 @@ version: 0.0.1+1
 
 environment:
   sdk: ^3.7.0
+
 dependencies:
   flutter:
     sdk: flutter
   iconify_flutter: ^0.0.7
+  sqflite: ^2.3.0
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:
@@ -17,4 +20,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
