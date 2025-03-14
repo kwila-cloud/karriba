@@ -7,6 +7,7 @@ import 'unsaved_changes_dialog.dart';
 
 class EditApplicatorPage extends StatefulWidget {
   const EditApplicatorPage({super.key, this.applicator});
+
   final Applicator? applicator;
 
   @override

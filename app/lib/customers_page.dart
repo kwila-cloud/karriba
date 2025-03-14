@@ -37,21 +37,22 @@ class _CustomersPageState extends State<CustomersPage> {
           if (customers != null) {
             return ListView.builder(
               itemCount: customers.length,
-              itemBuilder: (context, index) => CustomerTile(
-                customer: customers[index],
-                onTap: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditCustomerPage(
-                        customer: customers[index],
-                      ),
-                    ),
-                  );
-                  // Refresh the list after editing a customer
-                  _refreshCustomers();
-                },
-              ),
+              itemBuilder:
+                  (context, index) => CustomerTile(
+                    customer: customers[index],
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) =>
+                                  EditCustomerPage(customer: customers[index]),
+                        ),
+                      );
+                      // Refresh the list after editing a customer
+                      _refreshCustomers();
+                    },
+                  ),
             );
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
