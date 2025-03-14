@@ -32,11 +32,13 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
     super.initState();
   }
 
+  bool get _hasChanges => _draftCustomer != _originalCustomer;
+
   @override
   Widget build(BuildContext context) => WillPopScope(
     onWillPop:
         () async =>
-            _hasChanges() ? await showUnsavedChangesDialog(context) : true,
+            _hasChanges ? await showUnsavedChangesDialog(context) : true,
     child: Scaffold(
       appBar: AppBar(
         title: Text(_title),
@@ -156,6 +158,4 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
 
     Navigator.pop(context);
   }
-
-  bool _hasChanges() => _draftCustomer != _originalCustomer;
 }

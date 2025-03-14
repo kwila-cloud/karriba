@@ -29,11 +29,13 @@ class _EditApplicatorPageState extends State<EditApplicatorPage> {
     super.initState();
   }
 
+  bool get _hasChanges => _draftApplicator != _originalApplicator;
+
   @override
   Widget build(BuildContext context) => WillPopScope(
     onWillPop:
         () async =>
-            _hasChanges() ? await showUnsavedChangesDialog(context) : true,
+            _hasChanges ? await showUnsavedChangesDialog(context) : true,
     child: Scaffold(
       appBar: AppBar(
         title: Text(_title),
@@ -104,6 +106,4 @@ class _EditApplicatorPageState extends State<EditApplicatorPage> {
 
     Navigator.pop(context);
   }
-
-  bool _hasChanges() => _draftApplicator != _originalApplicator;
 }
