@@ -33,68 +33,59 @@ class _EditApplicatorPageState extends State<EditApplicatorPage> {
 
   @override
   Widget build(BuildContext context) => WillPopScope(
-    onWillPop:
-        () async =>
-            _hasChanges() ? await showUnsavedChangesDialog(context) : true,
-    child: Scaffold(
-      appBar: AppBar(
-        title: Text(_title),
-        actions: [
-          IconButton(
-            icon: Iconify(Mdi.content_save),
-            onPressed: () => _saveApplicator(context),
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            spacing: 16,
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Name',
-                  border: OutlineInputBorder(),
-                ),
-                initialValue: _draftApplicator.name,
-                onSaved:
-                    (value) =>
-                        _draftApplicator = _draftApplicator.copyWith(
-                          name: value,
-                        ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'License Number',
-                  border: OutlineInputBorder(),
-                ),
-                initialValue: _draftApplicator.licenseNumber,
-                onSaved:
-                    (value) =>
-                        _draftApplicator = _draftApplicator.copyWith(
-                          licenseNumber: value,
-                        ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a license number';
-                  }
-                  return null;
-                },
+        onWillPop: () async =>
+            _hasChanges() ? await showUnsavedChangesDialog(context, _hasChanges) : true,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(_title),
+            actions: [
+              IconButton(
+                icon: Iconify(Mdi.content_save),
+                onPressed: () => _saveApplicator(context),
               ),
             ],
           ),
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                spacing: 16,
+                children: [
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Name',
+                      border: OutlineInputBorder(),
+                    ),
+                    initialValue: _draftApplicator.name,
+                    onChanged: (value) => _draftApplicator = _draftApplicator.copyWith(name: value),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a name';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'License Number',
+                      border: OutlineInputBorder(),
+                    ),
+                    initialValue: _draftApplicator.licenseNumber,
+                    onChanged: (value) => _draftApplicator = _draftApplicator.copyWith(licenseNumber: value),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a license number';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
-      ),
-    ),
-  );
+      );
 
   Future<void> _saveApplicator(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
