@@ -10,8 +10,12 @@ class ApplicatorDao {
     if (applicator.id == null) {
       return await db.insert('applicator', applicator.toMap());
     } else {
-      return await db.update('applicator', applicator.toMap(),
-          where: 'id = ?', whereArgs: [applicator.id]);
+      return await db.update(
+        'applicator',
+        applicator.toMap(),
+        where: 'id = ?',
+        whereArgs: [applicator.id],
+      );
     }
   }
 
