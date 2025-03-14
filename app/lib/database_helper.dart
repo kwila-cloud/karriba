@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
   static const _databaseName = "karriba.db";
-  static const _databaseVersion = 1;
+  static const _databaseVersion = 2; // Increment the version
 
   // Make this a singleton class.
   DatabaseHelper._privateConstructor();
@@ -25,6 +25,7 @@ class DatabaseHelper {
       path,
       version: _databaseVersion,
       onCreate: _onCreate,
+      onUpgrade: _onUpgrade, // Add onUpgrade
     );
   }
 
@@ -58,5 +59,23 @@ class DatabaseHelper {
         FOREIGN KEY (applicator_id) REFERENCES applicator (id)
       )
       ''');
+  }
+
+  // Method to handle database upgrades
+  Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      // Create the record table if it doesn't exist
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS record (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          timestamp INTEGER NOT NULL,
+          customer_id INTEGER NOT NULL,
+          applicator_id INTEGER NOT NULL,
+          customer_informed_of_rei INTEGER NOT NULL,
+          FOREIGN KEY (customer_id) REFERENCES customer (id),
+          FOREIGN KEY (applicator_id) REFERENCES applicator (id)
+        )
+        ''');
+    }
   }
 }
