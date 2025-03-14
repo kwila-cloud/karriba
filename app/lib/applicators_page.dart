@@ -37,14 +37,7 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
               itemCount: applicators.length,
               itemBuilder: (context, index) {
                 final applicator = applicators[index];
-                return GestureDetector(
-                  onTap: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => EditApplicatorPage(applicator: applicator)),
-                    );
-                  },
-                  child: ApplicatorTile(applicator: applicator));
+                return ApplicatorTile(applicator: applicator);
               },
             );
           } else if (snapshot.hasError) {
@@ -78,6 +71,12 @@ class ApplicatorTile extends StatelessWidget {
     return ListTile(
       title: Text(applicator.name),
       subtitle: Text(applicator.licenseNumber),
+      onTap: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => EditApplicatorPage(applicator: applicator)),
+        );
+      },
     );
   }
 }
