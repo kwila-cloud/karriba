@@ -35,18 +35,24 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
           if (applicators != null) {
             return ListView.builder(
               itemCount: applicators.length,
-              itemBuilder: (context, index) => ApplicatorTile(
-                  applicator: applicators[index],
-                  onTap: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            EditApplicatorPage(applicator: applicators[index]),
-                      ),
-                    );
-                    _refreshApplicators();
-                  }),
+              itemBuilder:
+                  (context, index) => ApplicatorTile(
+                    applicator: applicators[index],
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => EditApplicatorPage(
+                                applicator: applicators[index],
+                              ),
+                        ),
+                      );
+                      setState(() {
+                        _refreshApplicators();
+                      });
+                    },
+                  ),
             );
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
