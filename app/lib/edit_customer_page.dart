@@ -19,22 +19,24 @@ class EditCustomerPage extends StatefulWidget {
 class _EditCustomerPageState extends State<EditCustomerPage> {
   final _formKey = GlobalKey<FormState>();
   late Customer _draftCustomer;
-  late String _title;
   late Customer _originalCustomer;
+  late String _title;
 
   @override
   void initState() {
     _draftCustomer =
         widget.customer ??
         Customer(name: '', streetAddress: '', city: '', state: '', zipCode: '');
+    _originalCustomer = _draftCustomer.copyWith();
     _title = widget.customer == null ? 'New Customer' : 'Edit Customer';
     super.initState();
-    _originalCustomer = _draftCustomer.copyWith();
   }
 
   @override
   Widget build(BuildContext context) => WillPopScope(
-    onWillPop: () async => _hasChanges() ? await showUnsavedChangesDialog(context, _hasChanges) : true,
+    onWillPop:
+        () async =>
+            _hasChanges() ? await showUnsavedChangesDialog(context) : true,
     child: Scaffold(
       appBar: AppBar(
         title: Text(_title),
@@ -157,7 +159,7 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
     Navigator.pop(context);
   }
 }
-extension _EditCustomerPageStateExtension on _EditCustomerPageState {
 
+extension _EditCustomerPageStateExtension on _EditCustomerPageState {
   bool _hasChanges() => _draftCustomer != _originalCustomer;
 }
