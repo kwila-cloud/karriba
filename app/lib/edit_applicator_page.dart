@@ -26,66 +26,60 @@ class _EditApplicatorPageState extends State<EditApplicatorPage> {
 
   @override
   Widget build(BuildContext context) => WillPopScope(
-    onWillPop: () async => await showUnsavedChangesDialog(context),
-    child: Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit Applicator'),
-        actions: [
-          IconButton(
-            icon: Iconify(Mdi.content_save),
-            onPressed: () => _saveApplicator(context),
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            spacing: 16,
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Name',
-                  border: OutlineInputBorder(),
-                ),
-                initialValue: _draftApplicator.name,
-                onSaved:
-                    (value) =>
-                        _draftApplicator = _draftApplicator.copyWith(
-                          name: value,
-                        ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'License Number',
-                  border: OutlineInputBorder(),
-                ),
-                initialValue: _draftApplicator.licenseNumber,
-                onSaved:
-                    (value) =>
-                        _draftApplicator = _draftApplicator.copyWith(
-                          licenseNumber: value,
-                        ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a license number';
-                  }
-                  return null;
-                },
+        onWillPop: () async => await showUnsavedChangesDialog(context),
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Edit Applicator'),
+            actions: [
+              IconButton(
+                icon: Iconify(Mdi.content_save),
+                onPressed: () => _saveApplicator(context),
               ),
             ],
           ),
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                spacing: 16,
+                children: [
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Name',
+                      border: OutlineInputBorder(),
+                    ),
+                    initialValue: _draftApplicator.name,
+                    onSaved: (value) => _draftApplicator =
+                        _draftApplicator.copyWith(name: value),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a name';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'License Number',
+                      border: OutlineInputBorder(),
+                    ),
+                    initialValue: _draftApplicator.licenseNumber,
+                    onSaved: (value) => _draftApplicator =
+                        _draftApplicator.copyWith(licenseNumber: value),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a license number';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
-      ),
-    ),
-  );
+      );
 
   Future<void> _saveApplicator(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
@@ -95,8 +89,11 @@ class _EditApplicatorPageState extends State<EditApplicatorPage> {
     _formKey.currentState!.save();
 
     final applicatorDao = ApplicatorDao();
-    // TODO: insert if the applicator is new, otherwise do an update of the existing applicator
-    await applicatorDao.insert(_draftApplicator);
+    if (_draftApplicator.id == null) {
+      await applicatorDao.insert(_draftApplicator);
+    } else {
+      await applicatorDao.update(_draftApplicator);
+    }
 
     Navigator.pop(context);
   }

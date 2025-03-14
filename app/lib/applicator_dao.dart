@@ -23,4 +23,14 @@ class ApplicatorDao {
       );
     });
   }
+
+  Future<int> update(Applicator applicator) async {
+    Database db = await dbHelper.database;
+    return await db.update(
+      'applicator',
+      applicator.toMap(),
+      where: 'id = ?',
+      whereArgs: [applicator.id],
+    );
+  }
 }
