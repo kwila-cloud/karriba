@@ -5,11 +5,7 @@ class Applicator {
 
   Applicator({this.id, required this.name, required this.licenseNumber});
 
-  Applicator copyWith({
-    int? id,
-    String? name,
-    String? licenseNumber,
-  }) {
+  Applicator copyWith({int? id, String? name, String? licenseNumber}) {
     return Applicator(
       id: id ?? this.id,
       name: name ?? this.name,
