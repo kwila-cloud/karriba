@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
@@ -17,6 +19,7 @@ class EditCustomerPage extends StatefulWidget {
 class _EditCustomerPageState extends State<EditCustomerPage> {
   final _formKey = GlobalKey<FormState>();
   late Customer _draftCustomer;
+  late Customer _originalCustomer;
   late String _title;
 
   @override
@@ -24,13 +27,18 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
     _draftCustomer =
         widget.customer ??
         Customer(name: '', streetAddress: '', city: '', state: '', zipCode: '');
+    _originalCustomer = _draftCustomer.copyWith();
     _title = widget.customer == null ? 'New Customer' : 'Edit Customer';
     super.initState();
   }
 
+  bool get _hasChanges => _draftCustomer != _originalCustomer;
+
   @override
   Widget build(BuildContext context) => WillPopScope(
-    onWillPop: () async => await showUnsavedChangesDialog(context),
+    onWillPop:
+        () async =>
+            _hasChanges ? await showUnsavedChangesDialog(context) : true,
     child: Scaffold(
       appBar: AppBar(
         title: Text(_title),
@@ -54,7 +62,7 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
                   border: OutlineInputBorder(),
                 ),
                 initialValue: _draftCustomer.name,
-                onSaved:
+                onChanged:
                     (value) =>
                         _draftCustomer = _draftCustomer.copyWith(name: value),
                 validator: (value) {
@@ -70,7 +78,7 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
                   border: OutlineInputBorder(),
                 ),
                 initialValue: _draftCustomer.streetAddress,
-                onSaved:
+                onChanged:
                     (value) =>
                         _draftCustomer = _draftCustomer.copyWith(
                           streetAddress: value,
@@ -88,7 +96,7 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
                   border: OutlineInputBorder(),
                 ),
                 initialValue: _draftCustomer.city,
-                onSaved:
+                onChanged:
                     (value) =>
                         _draftCustomer = _draftCustomer.copyWith(city: value),
                 validator: (value) {
@@ -104,7 +112,7 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
                   border: OutlineInputBorder(),
                 ),
                 initialValue: _draftCustomer.state,
-                onSaved:
+                onChanged:
                     (value) =>
                         _draftCustomer = _draftCustomer.copyWith(state: value),
                 validator: (value) {
@@ -121,7 +129,7 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
                 ),
                 initialValue: _draftCustomer.zipCode,
                 keyboardType: TextInputType.number,
-                onSaved:
+                onChanged:
                     (value) =>
                         _draftCustomer = _draftCustomer.copyWith(
                           zipCode: value,
@@ -144,8 +152,6 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-
-    _formKey.currentState!.save();
 
     final customerDao = CustomerDao();
     await customerDao.save(_draftCustomer);

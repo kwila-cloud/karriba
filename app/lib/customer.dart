@@ -48,4 +48,25 @@ class Customer {
   String toString() {
     return 'Customer{id: $id, name: $name, streetAddress: $streetAddress, city: $city, state: $state, zipCode: $zipCode}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Customer &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          streetAddress == other.streetAddress &&
+          city == other.city &&
+          state == other.state &&
+          zipCode == other.zipCode;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      name.hashCode ^
+      streetAddress.hashCode ^
+      city.hashCode ^
+      state.hashCode ^
+      zipCode.hashCode;
 }

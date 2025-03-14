@@ -17,19 +17,25 @@ class EditApplicatorPage extends StatefulWidget {
 class _EditApplicatorPageState extends State<EditApplicatorPage> {
   final _formKey = GlobalKey<FormState>();
   late Applicator _draftApplicator;
+  late Applicator _originalApplicator;
   late String _title;
 
   @override
   void initState() {
     _draftApplicator =
         widget.applicator ?? Applicator(name: '', licenseNumber: '');
+    _originalApplicator = _draftApplicator.copyWith();
     _title = widget.applicator == null ? 'New Applicator' : 'Edit Applicator';
     super.initState();
   }
 
+  bool get _hasChanges => _draftApplicator != _originalApplicator;
+
   @override
   Widget build(BuildContext context) => WillPopScope(
-    onWillPop: () async => await showUnsavedChangesDialog(context),
+    onWillPop:
+        () async =>
+            _hasChanges ? await showUnsavedChangesDialog(context) : true,
     child: Scaffold(
       appBar: AppBar(
         title: Text(_title),
@@ -53,7 +59,7 @@ class _EditApplicatorPageState extends State<EditApplicatorPage> {
                   border: OutlineInputBorder(),
                 ),
                 initialValue: _draftApplicator.name,
-                onSaved:
+                onChanged:
                     (value) =>
                         _draftApplicator = _draftApplicator.copyWith(
                           name: value,
@@ -71,7 +77,7 @@ class _EditApplicatorPageState extends State<EditApplicatorPage> {
                   border: OutlineInputBorder(),
                 ),
                 initialValue: _draftApplicator.licenseNumber,
-                onSaved:
+                onChanged:
                     (value) =>
                         _draftApplicator = _draftApplicator.copyWith(
                           licenseNumber: value,
@@ -94,8 +100,6 @@ class _EditApplicatorPageState extends State<EditApplicatorPage> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-
-    _formKey.currentState!.save();
 
     final applicatorDao = ApplicatorDao();
     await applicatorDao.save(_draftApplicator);

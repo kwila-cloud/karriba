@@ -5,11 +5,7 @@ class Applicator {
 
   Applicator({this.id, required this.name, required this.licenseNumber});
 
-  Applicator copyWith({
-    int? id,
-    String? name,
-    String? licenseNumber,
-  }) {
+  Applicator copyWith({int? id, String? name, String? licenseNumber}) {
     return Applicator(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -25,4 +21,16 @@ class Applicator {
   String toString() {
     return 'Applicator{id: $id, name: $name, licenseNumber: $licenseNumber}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Applicator &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          licenseNumber == other.licenseNumber;
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode ^ licenseNumber.hashCode;
 }

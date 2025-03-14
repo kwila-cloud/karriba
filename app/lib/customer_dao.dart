@@ -10,8 +10,12 @@ class CustomerDao {
     if (customer.id == null) {
       return await db.insert('customer', customer.toMap());
     } else {
-      return await db.update('customer', customer.toMap(),
-          where: 'id = ?', whereArgs: [customer.id]);
+      return await db.update(
+        'customer',
+        customer.toMap(),
+        where: 'id = ?',
+        whereArgs: [customer.id],
+      );
     }
   }
 
