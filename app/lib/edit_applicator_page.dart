@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:karriba/applicator.dart';
 import 'package:karriba/applicator_dao.dart';
 import 'unsaved_changes_dialog.dart';
@@ -30,7 +32,7 @@ class _EditApplicatorPageState extends State<EditApplicatorPage> {
         title: const Text('Edit Applicator'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.save),
+            icon: Iconify(Mdi.content_save),
             onPressed: () => _saveApplicator(context),
           ),
         ],
