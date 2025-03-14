@@ -47,5 +47,16 @@ class DatabaseHelper {
         zip_code TEXT NOT NULL
       )
       ''');
+    await db.execute('''
+      CREATE TABLE record (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        timestamp INTEGER NOT NULL,
+        customer_id INTEGER NOT NULL,
+        applicator_id INTEGER NOT NULL,
+        customer_informed_of_rei INTEGER NOT NULL,
+        FOREIGN KEY (customer_id) REFERENCES customer (id),
+        FOREIGN KEY (applicator_id) REFERENCES applicator (id)
+      )
+      ''');
   }
 }
