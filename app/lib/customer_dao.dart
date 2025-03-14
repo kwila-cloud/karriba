@@ -5,9 +5,14 @@ import 'package:sqflite/sqflite.dart';
 class CustomerDao {
   final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
-  Future<int> insert(Customer customer) async {
+  Future<int> save(Customer customer) async {
     Database db = await dbHelper.database;
-    return await db.insert('customer', customer.toMap());
+    if (customer.id == null) {
+      return await db.insert('customer', customer.toMap());
+    } else {
+      return await db.update('customer', customer.toMap(),
+          where: 'id = ?', whereArgs: [customer.id]);
+    }
   }
 
   Future<List<Customer>> queryAllRows() async {

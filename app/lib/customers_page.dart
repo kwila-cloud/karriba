@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'top_level_page.dart';
 import 'package:karriba/customer.dart';
 import 'package:karriba/customer_dao.dart';
-import 'package:karriba/new_customer_page.dart';
-import 'top_level_page.dart';
+import 'edit_customer_page.dart';
 
 class CustomersPage extends StatefulWidget {
   const CustomersPage({super.key});
@@ -22,53 +22,69 @@ class _CustomersPageState extends State<CustomersPage> {
   }
 
   _refreshCustomers() {
-    _customersFuture = _customerDao.queryAllRows();
+    setState(() {
+      _customersFuture = _customerDao.queryAllRows();
+    });
   }
 
   @override
-  Widget build(BuildContext context) => TopLevelPage(
-    body: FutureBuilder<List<Customer>>(
-      future: _customersFuture,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final customers = snapshot.data!;
-          return ListView.builder(
-            itemCount: customers.length,
-            itemBuilder: (context, index) {
-              final customer = customers[index];
-              return CustomerTile(customer: customer);
-            },
-          );
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
-    ),
-    onAddPressed: () async {
-      await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const NewCustomerPage()),
-      );
-      // Refresh the list after adding a new customer
-      setState(() {
+  Widget build(BuildContext context) {
+    return TopLevelPage(
+      body: FutureBuilder<List<Customer>>(
+        future: _customersFuture,
+        builder: (context, snapshot) {
+          final customers = snapshot.data;
+          if (customers != null) {
+            return ListView.builder(
+              itemCount: customers.length,
+              itemBuilder:
+                  (context, index) => CustomerTile(
+                    customer: customers[index],
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) =>
+                                  EditCustomerPage(customer: customers[index]),
+                        ),
+                      );
+                      // Refresh the list after editing a customer
+                      _refreshCustomers();
+                    },
+                  ),
+            );
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
+      onAddPressed: () async {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const EditCustomerPage()),
+        );
+        // Refresh the list after adding a new customer
         _refreshCustomers();
-      });
-    },
-  );
+      },
+    );
+  }
 }
 
 class CustomerTile extends StatelessWidget {
-  const CustomerTile({super.key, required this.customer});
+  const CustomerTile({super.key, required this.customer, this.onTap});
 
   final Customer customer;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(customer.name),
       subtitle: Text('${customer.city}, ${customer.state}'),
+      onTap: onTap,
     );
   }
 }
