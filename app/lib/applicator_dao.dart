@@ -5,9 +5,14 @@ import 'package:sqflite/sqflite.dart';
 class ApplicatorDao {
   final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
-  Future<int> insert(Applicator applicator) async {
+  Future<int> save(Applicator applicator) async {
     Database db = await dbHelper.database;
-    return await db.insert('applicator', applicator.toMap());
+    if (applicator.id == null) {
+      return await db.insert('applicator', applicator.toMap());
+    } else {
+      return await db.update('applicator', applicator.toMap(),
+          where: 'id = ?', whereArgs: [applicator.id]);
+    }
   }
 
   Future<List<Applicator>> queryAllRows() async {
@@ -22,15 +27,5 @@ class ApplicatorDao {
         licenseNumber: maps[i]['license_number'] as String,
       );
     });
-  }
-
-  Future<int> update(Applicator applicator) async {
-    Database db = await dbHelper.database;
-    return await db.update(
-      'applicator',
-      applicator.toMap(),
-      where: 'id = ?',
-      whereArgs: [applicator.id],
-    );
   }
 }

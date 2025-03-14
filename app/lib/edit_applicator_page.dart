@@ -89,11 +89,7 @@ class _EditApplicatorPageState extends State<EditApplicatorPage> {
     _formKey.currentState!.save();
 
     final applicatorDao = ApplicatorDao();
-    if (_draftApplicator.id == null) {
-      await applicatorDao.insert(_draftApplicator);
-    } else {
-      await applicatorDao.update(_draftApplicator);
-    }
+    await applicatorDao.save(_draftApplicator);
 
     Navigator.pop(context);
   }
