@@ -13,7 +13,9 @@ class EditApplicatorPage extends StatefulWidget {
 
 class _EditApplicatorPageState extends State<EditApplicatorPage> {
   final _formKey = GlobalKey<FormState>();
-  Applicator _draftApplicator = Applicator(name: '', licenseNumber: '');
+  late Applicator _draftApplicator;
+  @override
+  void initState() { _draftApplicator = widget.applicator ?? Applicator(name: '', licenseNumber: ''); super.initState(); }
 
   @override
   Widget build(BuildContext context) => WillPopScope(
