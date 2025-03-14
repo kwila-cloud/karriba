@@ -47,6 +47,7 @@ class _EditApplicatorPageState extends State<EditApplicatorPage> {
                   labelText: 'Name',
                   border: OutlineInputBorder(),
                 ),
+                initialValue: _draftApplicator.name,
                 onSaved:
                     (value) =>
                         _draftApplicator = _draftApplicator.copyWith(
@@ -64,6 +65,7 @@ class _EditApplicatorPageState extends State<EditApplicatorPage> {
                   labelText: 'License Number',
                   border: OutlineInputBorder(),
                 ),
+                initialValue: _draftApplicator.licenseNumber,
                 onSaved:
                     (value) =>
                         _draftApplicator = _draftApplicator.copyWith(
