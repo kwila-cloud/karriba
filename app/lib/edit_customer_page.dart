@@ -148,8 +148,7 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
     _formKey.currentState!.save();
 
     final customerDao = CustomerDao();
-    // TODO: use CustomerDao.save
-    await customerDao.insert(_draftCustomer);
+    await customerDao.save(_draftCustomer);
 
     Navigator.pop(context);
   }
