@@ -6,7 +6,7 @@ import 'package:karriba/applicator_dao.dart';
 import 'unsaved_changes_dialog.dart';
 
 class EditApplicatorPage extends StatefulWidget {
-  const EditApplicatorPage({super.key, this.applicator});
+  const EditApplicatorPage({super.key, required this.applicator});
   final Applicator? applicator;
 
   @override
@@ -16,11 +16,13 @@ class EditApplicatorPage extends StatefulWidget {
 class _EditApplicatorPageState extends State<EditApplicatorPage> {
   final _formKey = GlobalKey<FormState>();
   late Applicator _draftApplicator;
+  late String _title;
 
   @override
   void initState() {
     _draftApplicator =
         widget.applicator ?? Applicator(name: '', licenseNumber: '');
+    _title = widget.applicator == null ? 'New Applicator' : 'Edit Applicator';
     super.initState();
   }
 
@@ -29,7 +31,7 @@ class _EditApplicatorPageState extends State<EditApplicatorPage> {
         onWillPop: () async => await showUnsavedChangesDialog(context),
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Edit Applicator'),
+            title: Text(_title),
             actions: [
               IconButton(
                 icon: Iconify(Mdi.content_save),
