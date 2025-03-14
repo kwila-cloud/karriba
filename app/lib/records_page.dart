@@ -13,6 +13,7 @@ class RecordsPage extends StatefulWidget {
 
 class _RecordsPageState extends State<RecordsPage> {
   late Future<List<Record>> _recordsFuture;
+
   final _recordsDao = RecordsDao();
 
   @override
@@ -37,7 +38,8 @@ class _RecordsPageState extends State<RecordsPage> {
           if (records != null) {
             return ListView.builder(
               itemCount: records.length,
-              itemBuilder: (context, index) => RecordTile(record: records[index]),
+              itemBuilder:
+                  (context, index) => RecordTile(record: records[index]),
             );
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
@@ -65,7 +67,9 @@ class RecordTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text('Record ID: ${record.id}'),
-      subtitle: Text('Customer ID: ${record.customerId}, Applicator ID: ${record.applicatorId}'),
+      subtitle: Text(
+        'Customer ID: ${record.customerId}, Applicator ID: ${record.applicatorId}',
+      ),
     );
   }
 }
