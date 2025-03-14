@@ -22,7 +22,9 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
   }
 
   _refreshApplicators() {
-    _applicatorsFuture = _applicatorDao.queryAllRows();
+    setState(() {
+      _applicatorsFuture = _applicatorDao.queryAllRows();
+    });
   }
 
   @override
@@ -48,9 +50,8 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
                               ),
                         ),
                       );
-                      setState(() {
-                        _refreshApplicators();
-                      });
+                      // Refresh the list after editing an applicator
+                      _refreshApplicators();
                     },
                   ),
             );
@@ -67,9 +68,7 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
           MaterialPageRoute(builder: (context) => const EditApplicatorPage()),
         );
         // Refresh the list after adding a new applicator
-        setState(() {
-          _refreshApplicators();
-        });
+        _refreshApplicators();
       },
     );
   }
