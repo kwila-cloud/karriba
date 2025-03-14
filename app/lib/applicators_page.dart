@@ -37,7 +37,14 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
               itemCount: applicators.length,
               itemBuilder: (context, index) {
                 final applicator = applicators[index];
-                return ApplicatorTile(applicator: applicator);
+                return GestureDetector(
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => EditApplicatorPage(applicator: applicator)),
+                    );
+                  },
+                  child: ApplicatorTile(applicator: applicator));
               },
             );
           } else if (snapshot.hasError) {
