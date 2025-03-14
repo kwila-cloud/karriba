@@ -16,14 +16,13 @@ class EditApplicatorPage extends StatefulWidget {
   State<EditApplicatorPage> createState() => _EditApplicatorPageState();
 }
 
-
 class _EditApplicatorPageState extends State<EditApplicatorPage> {
   final _formKey = GlobalKey<FormState>();
   late Applicator _draftApplicator;
-  late String _title;
   late Applicator _originalApplicator;
-  @override
+  late String _title;
 
+  @override
   void initState() {
     _draftApplicator =
         widget.applicator ?? Applicator(name: '', licenseNumber: '');
@@ -34,7 +33,9 @@ class _EditApplicatorPageState extends State<EditApplicatorPage> {
 
   @override
   Widget build(BuildContext context) => WillPopScope(
-    onWillPop: () async => _hasChanges() ? await showUnsavedChangesDialog(context, _hasChanges) : true,
+    onWillPop:
+        () async =>
+            _hasChanges() ? await showUnsavedChangesDialog(context) : true,
     child: Scaffold(
       appBar: AppBar(
         title: Text(_title),
@@ -108,6 +109,7 @@ class _EditApplicatorPageState extends State<EditApplicatorPage> {
     Navigator.pop(context);
   }
 }
+
 extension _EditApplicatorPageStateExtension on _EditApplicatorPageState {
   bool _hasChanges() => _draftApplicator != _originalApplicator;
 }
