@@ -35,9 +35,18 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
           if (applicators != null) {
             return ListView.builder(
               itemCount: applicators.length,
-              itemBuilder:
-                  (context, index) =>
-                      ApplicatorTile(applicator: applicators[index]),
+              itemBuilder: (context, index) => ApplicatorTile(
+                  applicator: applicators[index],
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            EditApplicatorPage(applicator: applicators[index]),
+                      ),
+                    );
+                    _refreshApplicators();
+                  }),
             );
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
@@ -61,23 +70,17 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
 }
 
 class ApplicatorTile extends StatelessWidget {
-  const ApplicatorTile({super.key, required this.applicator});
+  const ApplicatorTile({super.key, required this.applicator, this.onTap});
 
   final Applicator applicator;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(applicator.name),
       subtitle: Text(applicator.licenseNumber),
-      onTap: () async {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EditApplicatorPage(applicator: applicator),
-          ),
-        );
-      },
+      onTap: onTap,
     );
   }
 }
