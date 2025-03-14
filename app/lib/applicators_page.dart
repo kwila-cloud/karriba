@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'top_level_page.dart';
-import 'new_applicator_page.dart';
-import 'package:karriba/applicator.dart';
+import 'edit_applicator_page.dart';
+import 'applicator.dart';
 import 'applicator_dao.dart';
 
 class ApplicatorsPage extends StatefulWidget {
@@ -22,7 +22,9 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
   }
 
   _refreshApplicators() {
-    _applicatorsFuture = _applicatorDao.queryAllRows();
+    setState(() {
+      _applicatorsFuture = _applicatorDao.queryAllRows();
+    });
   }
 
   @override
@@ -31,14 +33,27 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
       body: FutureBuilder<List<Applicator>>(
         future: _applicatorsFuture,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final applicators = snapshot.data!;
+          final applicators = snapshot.data;
+          if (applicators != null) {
             return ListView.builder(
               itemCount: applicators.length,
-              itemBuilder: (context, index) {
-                final applicator = applicators[index];
-                return ApplicatorTile(applicator: applicator);
-              },
+              itemBuilder:
+                  (context, index) => ApplicatorTile(
+                    applicator: applicators[index],
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => EditApplicatorPage(
+                                applicator: applicators[index],
+                              ),
+                        ),
+                      );
+                      // Refresh the list after editing an applicator
+                      _refreshApplicators();
+                    },
+                  ),
             );
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
@@ -50,27 +65,27 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
       onAddPressed: () async {
         await Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const NewApplicatorPage()),
+          MaterialPageRoute(builder: (context) => const EditApplicatorPage()),
         );
         // Refresh the list after adding a new applicator
-        setState(() {
-          _refreshApplicators();
-        });
+        _refreshApplicators();
       },
     );
   }
 }
 
 class ApplicatorTile extends StatelessWidget {
-  const ApplicatorTile({super.key, required this.applicator});
+  const ApplicatorTile({super.key, required this.applicator, this.onTap});
 
   final Applicator applicator;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(applicator.name),
       subtitle: Text(applicator.licenseNumber),
+      onTap: onTap,
     );
   }
 }
