@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'top_level_page.dart';
-import 'new_applicator_page.dart';
-import 'package:karriba/applicator.dart';
+import 'edit_applicator_page.dart';
+import 'applicator.dart';
 import 'applicator_dao.dart';
 
 class ApplicatorsPage extends StatefulWidget {
@@ -50,7 +50,7 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
       onAddPressed: () async {
         await Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const NewApplicatorPage()),
+          MaterialPageRoute(builder: (context) => const EditApplicatorPage()),
         );
         // Refresh the list after adding a new applicator
         setState(() {
