@@ -38,8 +38,17 @@ class _RecordsPageState extends State<RecordsPage> {
           if (records != null) {
             return ListView.builder(
               itemCount: records.length,
-              itemBuilder:
-                  (context, index) => RecordTile(record: records[index]),
+              itemBuilder: (context, index) => RecordTile(
+                record: records[index],
+                onTap: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditRecordPage(record: records[index]),
+                    ),
+                  ).then((_) => _refreshRecords());
+                },
+              ),
             );
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
@@ -59,9 +68,10 @@ class _RecordsPageState extends State<RecordsPage> {
 }
 
 class RecordTile extends StatelessWidget {
-  const RecordTile({super.key, required this.record});
+  const RecordTile({super.key, required this.record, this.onTap});
 
   final Record record;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +80,7 @@ class RecordTile extends StatelessWidget {
       subtitle: Text(
         'Customer ID: ${record.customerId}, Applicator ID: ${record.applicatorId}',
       ),
+      onTap: onTap,
     );
   }
 }
