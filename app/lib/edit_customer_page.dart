@@ -156,8 +156,6 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
 
     Navigator.pop(context);
   }
-}
 
-extension _EditCustomerPageStateExtension on _EditCustomerPageState {
   bool _hasChanges() => _draftCustomer != _originalCustomer;
 }

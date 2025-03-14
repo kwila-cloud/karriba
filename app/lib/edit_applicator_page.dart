@@ -104,8 +104,6 @@ class _EditApplicatorPageState extends State<EditApplicatorPage> {
 
     Navigator.pop(context);
   }
-}
 
-extension _EditApplicatorPageStateExtension on _EditApplicatorPageState {
   bool _hasChanges() => _draftApplicator != _originalApplicator;
 }
