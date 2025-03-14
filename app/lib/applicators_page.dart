@@ -31,14 +31,13 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
       body: FutureBuilder<List<Applicator>>(
         future: _applicatorsFuture,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final applicators = snapshot.data!;
+          final applicators = snapshot.data;
+          if (applicators != null) {
             return ListView.builder(
               itemCount: applicators.length,
-              itemBuilder: (context, index) {
-                final applicator = applicators[index];
-                return ApplicatorTile(applicator: applicator);
-              },
+              itemBuilder:
+                  (context, index) =>
+                      ApplicatorTile(applicator: applicators[index]),
             );
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
@@ -74,7 +73,9 @@ class ApplicatorTile extends StatelessWidget {
       onTap: () async {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => EditApplicatorPage(applicator: applicator)),
+          MaterialPageRoute(
+            builder: (context) => EditApplicatorPage(applicator: applicator),
+          ),
         );
       },
     );
