@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
@@ -14,22 +16,25 @@ class EditApplicatorPage extends StatefulWidget {
   State<EditApplicatorPage> createState() => _EditApplicatorPageState();
 }
 
+
 class _EditApplicatorPageState extends State<EditApplicatorPage> {
   final _formKey = GlobalKey<FormState>();
   late Applicator _draftApplicator;
   late String _title;
-
+  late Applicator _originalApplicator;
   @override
+
   void initState() {
     _draftApplicator =
         widget.applicator ?? Applicator(name: '', licenseNumber: '');
+    _originalApplicator = _draftApplicator.copyWith();
     _title = widget.applicator == null ? 'New Applicator' : 'Edit Applicator';
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) => WillPopScope(
-    onWillPop: () async => await showUnsavedChangesDialog(context),
+    onWillPop: () async => _hasChanges() ? await showUnsavedChangesDialog(context, _hasChanges) : true,
     child: Scaffold(
       appBar: AppBar(
         title: Text(_title),
@@ -102,4 +107,7 @@ class _EditApplicatorPageState extends State<EditApplicatorPage> {
 
     Navigator.pop(context);
   }
+}
+extension _EditApplicatorPageStateExtension on _EditApplicatorPageState {
+  bool _hasChanges() => _draftApplicator != _originalApplicator;
 }

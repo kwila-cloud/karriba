@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
@@ -18,6 +20,7 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
   final _formKey = GlobalKey<FormState>();
   late Customer _draftCustomer;
   late String _title;
+  late Customer _originalCustomer;
 
   @override
   void initState() {
@@ -26,11 +29,12 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
         Customer(name: '', streetAddress: '', city: '', state: '', zipCode: '');
     _title = widget.customer == null ? 'New Customer' : 'Edit Customer';
     super.initState();
+    _originalCustomer = _draftCustomer.copyWith();
   }
 
   @override
   Widget build(BuildContext context) => WillPopScope(
-    onWillPop: () async => await showUnsavedChangesDialog(context),
+    onWillPop: () async => _hasChanges() ? await showUnsavedChangesDialog(context, _hasChanges) : true,
     child: Scaffold(
       appBar: AppBar(
         title: Text(_title),
@@ -152,4 +156,8 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
 
     Navigator.pop(context);
   }
+}
+extension _EditCustomerPageStateExtension on _EditCustomerPageState {
+
+  bool _hasChanges() => _draftCustomer != _originalCustomer;
 }

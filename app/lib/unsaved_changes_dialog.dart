@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-Future<bool> showUnsavedChangesDialog(BuildContext context) async {
+typedef HasChanges = bool Function();
+
+Future<bool> showUnsavedChangesDialog(BuildContext context, HasChanges hasChanges) async {
   return await showDialog(
         context: context,
         builder: (context) => AlertDialog(
