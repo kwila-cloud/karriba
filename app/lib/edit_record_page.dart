@@ -146,8 +146,10 @@ class _EditRecordPageState extends State<EditRecordPage> {
                     ),
                     CheckboxListTile(
                       title: const Text('Customer Informed of REI'),
+                      // AI!: this subtitle takes too much space. How can we shorten it?
                       subtitle: const Text(
-                          'Restricted-Entry Interval (REI) is the time immediately after a pesticide application during which entry into the treated area is restricted. Informing the customer of the REI is required by law.'),
+                        'Restricted-Entry Interval (REI) is the time immediately after a pesticide application during which entry into the treated area is restricted. Informing the customer of the REI is required by law.',
+                      ),
                       value: customerInformedOfRei,
                       onChanged: (value) {
                         if (value == null) {
