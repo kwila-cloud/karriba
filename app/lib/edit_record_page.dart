@@ -39,8 +39,8 @@ class _EditRecordPageState extends State<EditRecordPage> {
     _originalRecord = _draftRecord.copyWith();
     _title = widget.record == null ? 'New Record' : 'Edit Record';
     _loadDataDependenciesFuture = Future.wait([
-      CustomerDao().queryAllRows(),
       ApplicatorDao().queryAllRows(),
+      CustomerDao().queryAllRows(),
     ]);
     super.initState();
   }
@@ -68,17 +68,20 @@ class _EditRecordPageState extends State<EditRecordPage> {
           future: _loadDataDependenciesFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              final customers = snapshot.data![0] as List<Customer>;
-              final applicators = snapshot.data![1] as List<Applicator>;
-              int? selectedCustomerId = _draftRecord.customerId;
-              if (!customers.any((c) => c.id == selectedCustomerId)) {
-                selectedCustomerId = null;
-              }
+              final applicators = snapshot.data![0] as List<Applicator>;
               int? selectedApplicatorId = _draftRecord.applicatorId;
               if (!applicators.any((a) => a.id == selectedApplicatorId)) {
                 selectedApplicatorId = null;
               }
+
+              final customers = snapshot.data![1] as List<Customer>;
+              int? selectedCustomerId = _draftRecord.customerId;
+              if (!customers.any((c) => c.id == selectedCustomerId)) {
+                selectedCustomerId = null;
+              }
+
               bool customerInformedOfRei = _draftRecord.customerInformedOfRei;
+
               return Form(
                 key: _formKey,
                 child: Column(
