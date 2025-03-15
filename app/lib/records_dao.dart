@@ -28,7 +28,8 @@ class RecordsDao {
         record.customer_id,
         record.applicator_id,
         record.customer_informed_of_rei,
-        customer.name AS customer_name
+        customer.name AS customer_name,
+        record.field_name
       FROM record
       INNER JOIN customer ON record.customer_id = customer.id
     ''');
@@ -45,6 +46,7 @@ class RecordsDao {
         customerInformedOfRei:
             (maps[i]['customer_informed_of_rei'] as int) == 1,
         customerName: maps[i]['customer_name'] as String,
+        fieldName: maps[i]['field_name'] as String?,
       );
     });
   }

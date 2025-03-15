@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
   static const _databaseName = "karriba.db";
-  static const _databaseVersion = 2; // Increment the version
+  static const _databaseVersion = 3; // Increment the version
 
   // Make this a singleton class.
   DatabaseHelper._privateConstructor();
@@ -18,7 +20,7 @@ class DatabaseHelper {
     return _database!;
   }
 
-  // Open the database (and create it if it doesn't exist).
+  // Open the database.
   Future<Database> _initDatabase() async {
     final path = join(await getDatabasesPath(), _databaseName);
     return await openDatabase(
@@ -29,7 +31,6 @@ class DatabaseHelper {
     );
   }
 
-  // SQL code to create the database table.
   Future _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE applicator (
@@ -42,10 +43,10 @@ class DatabaseHelper {
       CREATE TABLE customer (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
-        street_address TEXT NOT NULL,
-        city TEXT NOT NULL,
-        state TEXT NOT NULL,
-        zip_code TEXT NOT NULL
+        street_address TEXT,
+        city TEXT,
+        state TEXT,
+        zip_code TEXT
       )
       ''');
     await db.execute('''
@@ -55,13 +56,11 @@ class DatabaseHelper {
         customer_id INTEGER NOT NULL,
         applicator_id INTEGER NOT NULL,
         customer_informed_of_rei INTEGER NOT NULL,
-        FOREIGN KEY (customer_id) REFERENCES customer (id),
-        FOREIGN KEY (applicator_id) REFERENCES applicator (id)
+        field_name TEXT
       )
       ''');
   }
 
-  // Method to handle database upgrades
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
       // Create the record table if it doesn't exist
@@ -71,11 +70,14 @@ class DatabaseHelper {
           timestamp INTEGER NOT NULL,
           customer_id INTEGER NOT NULL,
           applicator_id INTEGER NOT NULL,
-          customer_informed_of_rei INTEGER NOT NULL,
-          FOREIGN KEY (customer_id) REFERENCES customer (id),
-          FOREIGN KEY (applicator_id) REFERENCES applicator (id)
+          customer_informed_of_rei INTEGER NOT NULL
         )
         ''');
+    }
+    if (oldVersion < 3) {
+      await db.execute('''
+        ALTER TABLE record ADD COLUMN field_name TEXT;
+      ''');
     }
   }
 }
