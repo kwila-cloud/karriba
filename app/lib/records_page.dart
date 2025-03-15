@@ -45,7 +45,7 @@ class _RecordsPageState extends State<RecordsPage> {
               itemBuilder:
                   (context, index) => RecordTile(
                     record: records[index],
-                    onTap: () async {
+                    onEdit: () async {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -75,29 +75,43 @@ class _RecordsPageState extends State<RecordsPage> {
 }
 
 class RecordTile extends StatelessWidget {
-  const RecordTile({super.key, required this.record, this.onTap});
+  const RecordTile({super.key, required this.record, this.onEdit});
 
   final Record record;
-  final VoidCallback? onTap;
+  final VoidCallback? onEdit;
 
   @override
   Widget build(BuildContext context) {
-    String dateString = DateFormat.yMd().format(record.timestamp);
+    String customerName = record.customerName ?? "Unknown Customer";
+    String titleString = "$customerName - ${record.fieldName}";
+    String subtitleString = record.applicatorName ?? "Unknown Applicator";
+    String dateString = DateFormat.Md().format(record.timestamp);
     return ListTile(
-      title: Text("${record.customerName} - ${record.fieldName}"),
-      subtitle: Text(dateString),
-      onTap: onTap,
-      onLongPress: () {
+      title: Text(titleString),
+      subtitle: Text(subtitleString),
+      trailing: Text(dateString),
+      onTap: () {
         showModalBottomSheet(
           context: context,
           builder: (context) {
             return Wrap(
               children: <Widget>[
                 ListTile(
+                  title: Text(titleString),
+                  subtitle: Text(subtitleString),
+                  trailing: Text(dateString),
+                ),
+                ListTile(
+                  leading: Iconify(Mdi.edit),
+                  title: const Text('Edit'),
+                  onTap: onEdit,
+                ),
+                ListTile(
                   leading: Iconify(Mdi.file_pdf),
                   title: const Text('Generate PDF'),
                   onTap: () {
                     Navigator.pop(context);
+                    // TODO: generate PDF for the record
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
