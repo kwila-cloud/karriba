@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:karriba/database_helper.dart';
 
@@ -15,21 +12,18 @@ Future<void> importDatabase(BuildContext context) async {
       return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return AlertDialog(
-            title: const Text('Import Data?'),
+            title: const Text('Import Data'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Text(
-                  'This will overwrite all existing data. Type "import" to continue.',
+                  'This will overwrite all existing data. Type "overwrite" to continue.',
                 ),
                 TextFormField(
                   controller: importCodeController,
-                  decoration: const InputDecoration(
-                    hintText: 'Type "import" here',
-                  ),
                   onChanged: (text) {
                     setState(() {
-                      importButtonEnabled = text == 'import';
+                      importButtonEnabled = text == 'overwrite';
                     });
                   },
                 ),
@@ -59,17 +53,14 @@ Future<void> importDatabase(BuildContext context) async {
   );
 
   if (importConfirmed == true) {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['db'],
-    );
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
       String? pathToImport = result.files.single.path;
 
       if (pathToImport != null) {
         try {
-          await DatabaseHelper.instance.performDatabaseImport(pathToImport);
+          await DatabaseHelper.instance.importDbFile(pathToImport);
 
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Data imported successfully!')),

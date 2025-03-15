@@ -76,19 +76,18 @@ class DatabaseHelper {
     }
   }
 
-  Future<void> performDatabaseImport(String pathToImport) async {
-    final Database db = await instance.database;
+  /* WARNING: this will replace the whole DB. All data will be lost. */
+  Future<void> importDbFile(String pathToImport) async {
+    final Database db = await database;
     // Get the path to the application's database directory
     String appDbPath = await getPath();
 
-    // Delete the existing database
+    // Close and delete the existing database
     await db.close();
+    _database = null;
     await deleteDatabase(appDbPath);
 
     // Copy the selected database file to the application's database path
     await File(pathToImport).copy(appDbPath);
-
-    // Re-open the database
-    await instance.database;
   }
 }
