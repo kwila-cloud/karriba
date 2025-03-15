@@ -8,6 +8,7 @@ import 'package:karriba/customer_dao.dart';
 import 'package:karriba/applicator.dart';
 import 'package:karriba/applicator_dao.dart';
 import 'unsaved_changes_dialog.dart';
+import 'package:intl/intl.dart';
 
 class EditRecordPage extends StatefulWidget {
   const EditRecordPage({super.key, this.record});
