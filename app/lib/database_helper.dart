@@ -1,11 +1,9 @@
-import 'dart:io';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
   static const _databaseName = "karriba.db";
-  static const _databaseVersion = 2; // Combined version 2 and 3
+  static const _databaseVersion = 2;
 
   // Make this a singleton class.
   DatabaseHelper._privateConstructor();

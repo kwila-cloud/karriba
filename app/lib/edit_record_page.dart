@@ -92,7 +92,9 @@ class _EditRecordPageState extends State<EditRecordPage> {
                       initialValue: _draftRecord.fieldName,
                       onChanged: (value) {
                         setState(() {
-                          _draftRecord = _draftRecord.copyWith(fieldName: value);
+                          _draftRecord = _draftRecord.copyWith(
+                            fieldName: value,
+                          );
                         });
                       },
                     ),

@@ -31,7 +31,8 @@ class Record {
       timestamp: timestamp ?? this.timestamp,
       customerId: customerId ?? this.customerId,
       applicatorId: applicatorId ?? this.applicatorId,
-      customerInformedOfRei: customerInformedOfRei ?? this.customerInformedOfRei,
+      customerInformedOfRei:
+          customerInformedOfRei ?? this.customerInformedOfRei,
       customerName: customerName ?? this.customerName,
       fieldName: fieldName ?? this.fieldName,
     );
