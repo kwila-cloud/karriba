@@ -24,9 +24,6 @@ class _EditRecordPageState extends State<EditRecordPage> {
   late Record _originalRecord;
   late String _title;
   late Future<List<dynamic>> _loadDataDependenciesFuture;
-  int? _selectedCustomerId;
-  int? _selectedApplicatorId;
-  bool _customerInformedOfRei = false;
 
   @override
   void initState() {
@@ -44,9 +41,6 @@ class _EditRecordPageState extends State<EditRecordPage> {
       CustomerDao().queryAllRows(),
       ApplicatorDao().queryAllRows(),
     ]);
-    _selectedCustomerId = _draftRecord.customerId;
-    _selectedApplicatorId = _draftRecord.applicatorId;
-    _customerInformedOfRei = _draftRecord.customerInformedOfRei;
     super.initState();
   }
 
@@ -74,6 +68,7 @@ class _EditRecordPageState extends State<EditRecordPage> {
           child: Column(
             spacing: 16,
             children: [
+              // AI!: the FutureBuilder should surround the entire Form
               FutureBuilder<List<dynamic>>(
                 future: _loadDataDependenciesFuture,
                 builder: (context, snapshot) {
@@ -87,12 +82,13 @@ class _EditRecordPageState extends State<EditRecordPage> {
                             labelText: 'Customer',
                             border: OutlineInputBorder(),
                           ),
-                          items: customers.map((customer) {
-                            return DropdownMenuItem<int>(
-                              value: customer.id,
-                              child: Text(customer.name),
-                            );
-                          }).toList(),
+                          items:
+                              customers.map((customer) {
+                                return DropdownMenuItem<int>(
+                                  value: customer.id,
+                                  child: Text(customer.name),
+                                );
+                              }).toList(),
                           onChanged: (value) {
                             setState(() {
                               _selectedCustomerId = value;
@@ -113,12 +109,13 @@ class _EditRecordPageState extends State<EditRecordPage> {
                             labelText: 'Applicator',
                             border: OutlineInputBorder(),
                           ),
-                          items: applicators.map((applicator) {
-                            return DropdownMenuItem<int>(
-                              value: applicator.id,
-                              child: Text(applicator.name),
-                            );
-                          }).toList(),
+                          items:
+                              applicators.map((applicator) {
+                                return DropdownMenuItem<int>(
+                                  value: applicator.id,
+                                  child: Text(applicator.name),
+                                );
+                              }).toList(),
                           onChanged: (value) {
                             setState(() {
                               _selectedApplicatorId = value;
