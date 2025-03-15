@@ -7,18 +7,18 @@ import 'package:intl/intl.dart';
 
 Future<void> exportDatabase(BuildContext context) async {
   // 1. Check and request storage permission
-  var status = await Permission.storage.status;
-  if (!status.isGranted) {
-    status = await Permission.storage.request();
-    if (!status.isGranted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Storage permission required to export data.'),
-        ),
-      );
-      return;
-    }
-  }
+  // var status = await Permission.storage.status;
+  // if (!status.isGranted) {
+  //   status = await Permission.storage.request();
+  //   if (!status.isGranted) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text('Storage permission required to export data.'),
+  //       ),
+  //     );
+  //     return;
+  //   }
+  // }
 
   try {
     // 2. Get the database path
@@ -26,12 +26,8 @@ Future<void> exportDatabase(BuildContext context) async {
     String dbPath = '$databasesPath/karriba.db';
 
     // 3. Generate the export file path
-    Directory? downloadsDir;
-    if (Platform.isAndroid) {
-      downloadsDir = await getExternalStorageDirectory();
-    } else {
-      downloadsDir = await getApplicationDocumentsDirectory();
-    }
+    // AI!: use FlutterFileDialog
+    Directory? downloadsDir = await getDownloadsDirectory();
 
     if (downloadsDir == null) {
       throw Exception('Could not get downloads directory');
@@ -40,8 +36,7 @@ Future<void> exportDatabase(BuildContext context) async {
     String formattedDate = DateFormat(
       'yyyy-MM-dd_HH-mm-ss',
     ).format(DateTime.now());
-    String exportPath =
-        '${downloadsDir.path}/karriba_export_$formattedDate.db';
+    String exportPath = '${downloadsDir.path}/karriba_export_$formattedDate.db';
 
     // 4. Copy the database file
     File sourceFile = File(dbPath);
