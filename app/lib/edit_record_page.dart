@@ -84,20 +84,6 @@ class _EditRecordPageState extends State<EditRecordPage> {
                 child: Column(
                   spacing: 16,
                   children: [
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Field Name',
-                        border: OutlineInputBorder(),
-                      ),
-                      initialValue: _draftRecord.fieldName,
-                      onChanged: (value) {
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(
-                            fieldName: value,
-                          );
-                        });
-                      },
-                    ),
                     DropdownButtonFormField<int>(
                       decoration: const InputDecoration(
                         labelText: 'Applicator',
@@ -168,6 +154,20 @@ class _EditRecordPageState extends State<EditRecordPage> {
                         setState(() {
                           _draftRecord = _draftRecord.copyWith(
                             customerInformedOfRei: value,
+                          );
+                        });
+                      },
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Field Name',
+                        border: OutlineInputBorder(),
+                      ),
+                      initialValue: _draftRecord.fieldName,
+                      onChanged: (value) {
+                        setState(() {
+                          _draftRecord = _draftRecord.copyWith(
+                            fieldName: value,
                           );
                         });
                       },
