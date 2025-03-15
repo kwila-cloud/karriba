@@ -24,10 +24,6 @@ class _EditRecordPageState extends State<EditRecordPage> {
   late Record _originalRecord;
   late String _title;
   late Future<List<dynamic>> _loadDataDependenciesFuture;
-  // AI!: these should not be class variables. they should be local variables inside the FutureBuilder
-  int? _selectedCustomerId;
-  int? _selectedApplicatorId;
-  bool _customerInformedOfRei = false;
 
   @override
   void initState() {
@@ -45,9 +41,6 @@ class _EditRecordPageState extends State<EditRecordPage> {
       CustomerDao().queryAllRows(),
       ApplicatorDao().queryAllRows(),
     ]);
-    _selectedCustomerId = _draftRecord.customerId;
-    _selectedApplicatorId = _draftRecord.applicatorId;
-    _customerInformedOfRei = _draftRecord.customerInformedOfRei;
     super.initState();
   }
 
@@ -76,6 +69,9 @@ class _EditRecordPageState extends State<EditRecordPage> {
             if (snapshot.hasData) {
               final customers = snapshot.data![0] as List<Customer>;
               final applicators = snapshot.data![1] as List<Applicator>;
+              int? selectedCustomerId = _draftRecord.customerId;
+              int? selectedApplicatorId = _draftRecord.applicatorId;
+              bool customerInformedOfRei = _draftRecord.customerInformedOfRei;
               return Form(
                 key: _formKey,
                 child: Column(
@@ -93,10 +89,10 @@ class _EditRecordPageState extends State<EditRecordPage> {
                               child: Text(customer.name),
                             );
                           }).toList(),
-                      value: _selectedCustomerId,
+                      value: selectedCustomerId,
                       onChanged: (value) {
                         setState(() {
-                          _selectedCustomerId = value;
+                          selectedCustomerId = value;
                           _draftRecord = _draftRecord.copyWith(
                             customerId: value,
                           );
@@ -121,10 +117,10 @@ class _EditRecordPageState extends State<EditRecordPage> {
                               child: Text(applicator.name),
                             );
                           }).toList(),
-                      value: _selectedApplicatorId,
+                      value: selectedApplicatorId,
                       onChanged: (value) {
                         setState(() {
-                          _selectedApplicatorId = value;
+                          selectedApplicatorId = value;
                           _draftRecord = _draftRecord.copyWith(
                             applicatorId: value,
                           );
@@ -139,10 +135,10 @@ class _EditRecordPageState extends State<EditRecordPage> {
                     ),
                     CheckboxListTile(
                       title: const Text('Customer Informed of REI'),
-                      value: _customerInformedOfRei,
+                      value: customerInformedOfRei,
                       onChanged: (value) {
                         setState(() {
-                          _customerInformedOfRei = value!;
+                          customerInformedOfRei = value!;
                           _draftRecord = _draftRecord.copyWith(
                             customerInformedOfRei: value,
                           );
