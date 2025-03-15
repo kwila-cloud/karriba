@@ -34,6 +34,7 @@ class RecordsDao {
       FROM record
       INNER JOIN applicator ON record.applicator_id = applicator.id
       INNER JOIN customer ON record.customer_id = customer.id
+      ORDER BY record.timestamp DESC
     ''');
 
     // Convert the List<Map<String, dynamic> into a List<Record>.
