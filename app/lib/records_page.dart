@@ -6,6 +6,7 @@ import 'records_dao.dart';
 import 'package:intl/intl.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
+import 'coming_soon_dialog.dart';
 
 class RecordsPage extends StatefulWidget {
   const RecordsPage({super.key});
@@ -96,9 +97,13 @@ class RecordTile extends StatelessWidget {
                   leading: Iconify(Mdi.file_pdf),
                   title: const Text('Generate PDF'),
                   onTap: () {
-                    // AI!: show ComingSoonDialog
                     Navigator.pop(context);
-                    // TODO: Implement PDF generation
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const ComingSoonDialog();
+                      },
+                    );
                   },
                 ),
               ],
