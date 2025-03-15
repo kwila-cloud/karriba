@@ -91,6 +91,7 @@ class RecordTile extends StatelessWidget {
             return Wrap(
               children: <Widget>[
                 ListTile(
+                  // AI!: use Iconify and MDI
                   leading: const Icon(Icons.picture_as_pdf),
                   title: const Text('Generate PDF'),
                   onTap: () {
