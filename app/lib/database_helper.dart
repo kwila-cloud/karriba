@@ -22,7 +22,7 @@ class DatabaseHelper {
   // Open the database.
   Future<Database> _initDatabase() async {
     return await openDatabase(
-      path,
+      await path,
       version: _currentSchemaVersion,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade, // Handle migrations between DB versions
