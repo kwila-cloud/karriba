@@ -41,10 +41,10 @@ class DatabaseHelper {
       CREATE TABLE customer (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
-        street_address TEXT,
-        city TEXT,
-        state TEXT,
-        zip_code TEXT
+        street_address TEXT NOT NULL,
+        city TEXT NOT NULL,
+        state TEXT NOT NULL,
+        zip_code TEXT NOT NULL
       )
       ''');
     await db.execute('''
@@ -54,7 +54,7 @@ class DatabaseHelper {
         applicator_id INTEGER NOT NULL,
         customer_id INTEGER NOT NULL,
         customer_informed_of_rei INTEGER NOT NULL,
-        field_name TEXT
+        field_name TEXT NOT NULL
       )
       ''');
   }
@@ -69,7 +69,7 @@ class DatabaseHelper {
           applicator_id INTEGER NOT NULL,
           customer_id INTEGER NOT NULL,
           customer_informed_of_rei INTEGER NOT NULL,
-          field_name TEXT
+          field_name TEXT NOT NULL
         )
         ''');
     }
