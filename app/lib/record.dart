@@ -4,6 +4,7 @@ class Record {
   final int customerId;
   final int applicatorId;
   final bool customerInformedOfRei;
+  final String? customerName;
 
   Record({
     this.id,
@@ -11,6 +12,7 @@ class Record {
     required this.customerId,
     required this.applicatorId,
     required this.customerInformedOfRei,
+    this.customerName,
   });
 
   Record copyWith({
@@ -19,6 +21,7 @@ class Record {
     int? customerId,
     int? applicatorId,
     bool? customerInformedOfRei,
+    String? customerName,
   }) {
     return Record(
       id: id ?? this.id,
@@ -26,6 +29,7 @@ class Record {
       customerId: customerId ?? this.customerId,
       applicatorId: applicatorId ?? this.applicatorId,
       customerInformedOfRei: customerInformedOfRei ?? this.customerInformedOfRei,
+      customerName: customerName ?? this.customerName,
     );
   }
 
@@ -36,12 +40,13 @@ class Record {
       'customer_id': customerId,
       'applicator_id': applicatorId,
       'customer_informed_of_rei': customerInformedOfRei ? 1 : 0,
+      'customer_name': customerName,
     };
   }
 
   @override
   String toString() {
-    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei}';
+    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, customerName: $customerName}';
   }
 
   @override
@@ -53,7 +58,8 @@ class Record {
           timestamp == other.timestamp &&
           customerId == other.customerId &&
           applicatorId == other.applicatorId &&
-          customerInformedOfRei == other.customerInformedOfRei;
+          customerInformedOfRei == other.customerInformedOfRei &&
+          customerName == other.customerName;
 
   @override
   int get hashCode =>
@@ -61,5 +67,6 @@ class Record {
       timestamp.hashCode ^
       customerId.hashCode ^
       applicatorId.hashCode ^
-      customerInformedOfRei.hashCode;
+      customerInformedOfRei.hashCode ^
+      customerName.hashCode;
 }

@@ -19,10 +19,19 @@ class RecordsDao {
     }
   }
 
-  // AI!: include the customerName in the results
   Future<List<Record>> queryAllRows() async {
     Database db = await dbHelper.database;
-    final List<Map<String, dynamic>> maps = await db.query('record');
+    final List<Map<String, dynamic>> maps = await db.rawQuery('''
+      SELECT 
+        record.id,
+        record.timestamp,
+        record.customer_id,
+        record.applicator_id,
+        record.customer_informed_of_rei,
+        customer.name AS customer_name
+      FROM record
+      INNER JOIN customer ON record.customer_id = customer.id
+    ''');
 
     // Convert the List<Map<String, dynamic> into a List<Record>.
     return List.generate(maps.length, (i) {
@@ -35,6 +44,7 @@ class RecordsDao {
         applicatorId: maps[i]['applicator_id'] as int,
         customerInformedOfRei:
             (maps[i]['customer_informed_of_rei'] as int) == 1,
+        customerName: maps[i]['customer_name'] as String,
       );
     });
   }
