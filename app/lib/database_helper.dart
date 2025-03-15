@@ -1,5 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'dart:io';
 
 class DatabaseHelper {
   static const _currentSchemaVersion = 2;
@@ -73,5 +74,20 @@ class DatabaseHelper {
         )
         ''');
     }
+  }
+
+  /* WARNING: this will replace the whole DB. All data will be lost. */
+  Future<void> importDbFile(String pathToImport) async {
+    final Database db = await database;
+    // Get the path to the application's database directory
+    String appDbPath = await getPath();
+
+    // Close and delete the existing database
+    await db.close();
+    _database = null;
+    await deleteDatabase(appDbPath);
+
+    // Copy the selected database file to the application's database path
+    await File(pathToImport).copy(appDbPath);
   }
 }
