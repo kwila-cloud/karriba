@@ -39,14 +39,20 @@ class _RecordsPageState extends State<RecordsPage> {
           if (records != null) {
             return ListView.builder(
               itemCount: records.length,
-              itemBuilder: (context, index) =>
-                  RecordTile(record: records[index], onTap: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => EditRecordPage(record: records[index])),
-                ).then((_) => _refreshRecords());
-              }),
+              itemBuilder:
+                  (context, index) => RecordTile(
+                    record: records[index],
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) =>
+                                  EditRecordPage(record: records[index]),
+                        ),
+                      ).then((_) => _refreshRecords());
+                    },
+                  ),
             );
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
@@ -75,6 +81,7 @@ class RecordTile extends StatelessWidget {
   Widget build(BuildContext context) {
     String dateString = DateFormat.yMd().format(record.timestamp);
     return GestureDetector(
+      // AI!: move this to the onLongPress option of ListTile
       onLongPress: () {
         showModalBottomSheet(
           context: context,
