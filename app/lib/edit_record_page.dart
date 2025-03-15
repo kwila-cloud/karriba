@@ -146,7 +146,8 @@ class _EditRecordPageState extends State<EditRecordPage> {
                     ),
                     CheckboxListTile(
                       title: const Text('Customer Informed of REI'),
-                      // AI!: add subtitle explaining REI
+                      subtitle: const Text(
+                          'Restricted-Entry Interval (REI) is the time immediately after a pesticide application during which entry into the treated area is restricted. Informing the customer of the REI is required by law.'),
                       value: customerInformedOfRei,
                       onChanged: (value) {
                         if (value == null) {
