@@ -24,6 +24,9 @@ class _EditRecordPageState extends State<EditRecordPage> {
   late Record _originalRecord;
   late String _title;
   late Future<List<dynamic>> _loadDataDependenciesFuture;
+  int? _selectedCustomerId;
+  int? _selectedApplicatorId;
+  bool _customerInformedOfRei = false;
 
   @override
   void initState() {
@@ -41,6 +44,9 @@ class _EditRecordPageState extends State<EditRecordPage> {
       CustomerDao().queryAllRows(),
       ApplicatorDao().queryAllRows(),
     ]);
+    _selectedCustomerId = _draftRecord.customerId;
+    _selectedApplicatorId = _draftRecord.applicatorId;
+    _customerInformedOfRei = _draftRecord.customerInformedOfRei;
     super.initState();
   }
 
@@ -63,97 +69,92 @@ class _EditRecordPageState extends State<EditRecordPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            spacing: 16,
-            children: [
-              // AI!: the FutureBuilder should surround the entire Form
-              FutureBuilder<List<dynamic>>(
-                future: _loadDataDependenciesFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final customers = snapshot.data![0] as List<Customer>;
-                    final applicators = snapshot.data![1] as List<Applicator>;
-                    return Column(
-                      children: [
-                        DropdownButtonFormField<int>(
-                          decoration: const InputDecoration(
-                            labelText: 'Customer',
-                            border: OutlineInputBorder(),
-                          ),
-                          items:
-                              customers.map((customer) {
-                                return DropdownMenuItem<int>(
-                                  value: customer.id,
-                                  child: Text(customer.name),
-                                );
-                              }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedCustomerId = value;
-                              _draftRecord = _draftRecord.copyWith(
-                                customerId: value,
-                              );
-                            });
-                          },
-                          validator: (value) {
-                            if (value == null) {
-                              return 'Please select a customer';
-                            }
-                            return null;
-                          },
-                        ),
-                        DropdownButtonFormField<int>(
-                          decoration: const InputDecoration(
-                            labelText: 'Applicator',
-                            border: OutlineInputBorder(),
-                          ),
-                          items:
-                              applicators.map((applicator) {
-                                return DropdownMenuItem<int>(
-                                  value: applicator.id,
-                                  child: Text(applicator.name),
-                                );
-                              }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedApplicatorId = value;
-                              _draftRecord = _draftRecord.copyWith(
-                                applicatorId: value,
-                              );
-                            });
-                          },
-                          validator: (value) {
-                            if (value == null) {
-                              return 'Please select an applicator';
-                            }
-                            return null;
-                          },
-                        ),
-                      ],
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                },
-              ),
-              CheckboxListTile(
-                title: const Text('Customer Informed of REI'),
-                value: _customerInformedOfRei,
-                onChanged: (value) {
-                  setState(() {
-                    _customerInformedOfRei = value!;
-                    _draftRecord = _draftRecord.copyWith(
-                      customerInformedOfRei: value,
-                    );
-                  });
-                },
-              ),
-            ],
-          ),
+        child: FutureBuilder<List<dynamic>>(
+          future: _loadDataDependenciesFuture,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final customers = snapshot.data![0] as List<Customer>;
+              final applicators = snapshot.data![1] as List<Applicator>;
+              return Form(
+                key: _formKey,
+                child: Column(
+                  spacing: 16,
+                  children: [
+                    DropdownButtonFormField<int>(
+                      decoration: const InputDecoration(
+                        labelText: 'Customer',
+                        border: OutlineInputBorder(),
+                      ),
+                      items: customers.map((customer) {
+                        return DropdownMenuItem<int>(
+                          value: customer.id,
+                          child: Text(customer.name),
+                        );
+                      }).toList(),
+                      value: _selectedCustomerId,
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedCustomerId = value;
+                          _draftRecord = _draftRecord.copyWith(
+                            customerId: value,
+                          );
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select a customer';
+                        }
+                        return null;
+                      },
+                    ),
+                    DropdownButtonFormField<int>(
+                      decoration: const InputDecoration(
+                        labelText: 'Applicator',
+                        border: OutlineInputBorder(),
+                      ),
+                      items: applicators.map((applicator) {
+                        return DropdownMenuItem<int>(
+                          value: applicator.id,
+                          child: Text(applicator.name),
+                        );
+                      }).toList(),
+                      value: _selectedApplicatorId,
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedApplicatorId = value;
+                          _draftRecord = _draftRecord.copyWith(
+                            applicatorId: value,
+                          );
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select an applicator';
+                        }
+                        return null;
+                      },
+                    ),
+                    CheckboxListTile(
+                      title: const Text('Customer Informed of REI'),
+                      value: _customerInformedOfRei,
+                      onChanged: (value) {
+                        setState(() {
+                          _customerInformedOfRei = value!;
+                          _draftRecord = _draftRecord.copyWith(
+                            customerInformedOfRei: value,
+                          );
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
         ),
       ),
     ),
