@@ -2,8 +2,9 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
-  static const _databaseName = "karriba.db";
-  static const _databaseVersion = 2;
+  static const _currentSchemaVersion = 2;
+
+  static getPath() async => join(await getDatabasesPath(), "karriba.db");
 
   // Make this a singleton class.
   DatabaseHelper._privateConstructor();
@@ -20,10 +21,9 @@ class DatabaseHelper {
 
   // Open the database.
   Future<Database> _initDatabase() async {
-    final path = join(await getDatabasesPath(), _databaseName);
     return await openDatabase(
-      path,
-      version: _databaseVersion,
+      await getPath(),
+      version: _currentSchemaVersion,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade, // Handle migrations between DB versions
     );
