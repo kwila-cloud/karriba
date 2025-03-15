@@ -6,7 +6,7 @@ class Record {
   final int customerId;
   final String? customerName;
   final bool customerInformedOfRei;
-  final String? fieldName;
+  final String fieldName;
 
   Record({
     this.id,
@@ -16,7 +16,7 @@ class Record {
     required this.customerId,
     this.customerName,
     required this.customerInformedOfRei,
-    this.fieldName,
+    required this.fieldName,
   });
 
   Record copyWith({

@@ -44,12 +44,12 @@ class RecordsDao {
           maps[i]['timestamp'] as int,
         ),
         applicatorId: maps[i]['applicator_id'] as int,
-        applicatorName: maps[i]['applicator_name'] as String,
+        applicatorName: maps[i]['applicator_name'] as String?,
         customerId: maps[i]['customer_id'] as int,
-        customerName: maps[i]['customer_name'] as String,
+        customerName: maps[i]['customer_name'] as String?,
         customerInformedOfRei:
             (maps[i]['customer_informed_of_rei'] as int) == 1,
-        fieldName: maps[i]['field_name'] as String?,
+        fieldName: maps[i]['field_name'] as String,
       );
     });
   }

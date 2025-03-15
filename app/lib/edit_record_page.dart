@@ -147,7 +147,7 @@ class _EditRecordPageState extends State<EditRecordPage> {
                     CheckboxListTile(
                       title: const Text('Customer Informed of REI'),
                       subtitle: const Text(
-                        'REI is the time after pesticide application when entry is restricted.',
+                        'The customer must be notified of the Restricted-Entry Interval.',
                       ),
                       value: customerInformedOfRei,
                       onChanged: (value) {
