@@ -1,13 +1,11 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:intl/intl.dart';
+import 'package:karriba/database_helper.dart';
 
 Future<void> exportDatabase(BuildContext context) async {
   try {
-    String databasesPath = await getDatabasesPath();
-    String dbPath = '$databasesPath/karriba.db';
-
     Directory? downloadsDir;
     if (Platform.isAndroid) {
       downloadsDir = Directory("/storage/emulated/0/Download");
@@ -23,7 +21,7 @@ Future<void> exportDatabase(BuildContext context) async {
     ).format(DateTime.now());
     String exportPath = '${downloadsDir.path}/karriba_export_$formattedDate.db';
 
-    File sourceFile = File(dbPath);
+    File sourceFile = File(DatabaseHelper.path);
     await sourceFile.copy(exportPath);
 
     ScaffoldMessenger.of(
