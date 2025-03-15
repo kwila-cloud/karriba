@@ -69,7 +69,7 @@ Future<void> importDatabase(BuildContext context) async {
 
       if (pathToImport != null) {
         try {
-          await _performDatabaseImport(pathToImport);
+          await DatabaseHelper.instance.performDatabaseImport(pathToImport);
 
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Data imported successfully!')),
@@ -91,21 +91,4 @@ Future<void> importDatabase(BuildContext context) async {
       ).showSnackBar(const SnackBar(content: Text('Import cancelled.')));
     }
   }
-}
-
-// AI!: this logic should be DatabaseHelper
-Future<void> _performDatabaseImport(String pathToImport) async {
-  final Database db = await DatabaseHelper.instance.database;
-  // Get the path to the application's database directory
-  String appDbPath = await DatabaseHelper.getPath();
-
-  // Delete the existing database
-  await db.close();
-  await deleteDatabase(appDbPath);
-
-  // Copy the selected database file to the application's database path
-  await File(pathToImport).copy(appDbPath);
-
-  // Re-open the database
-  await DatabaseHelper.instance.database;
 }
