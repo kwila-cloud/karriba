@@ -39,20 +39,14 @@ class _RecordsPageState extends State<RecordsPage> {
           if (records != null) {
             return ListView.builder(
               itemCount: records.length,
-              itemBuilder:
-                  (context, index) => RecordTile(
-                    record: records[index],
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (context) =>
-                                  EditRecordPage(record: records[index]),
-                        ),
-                      ).then((_) => _refreshRecords());
-                    },
-                  ),
+              itemBuilder: (context, index) =>
+                  RecordTile(record: records[index], onTap: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EditRecordPage(record: records[index])),
+                ).then((_) => _refreshRecords());
+              }),
             );
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
@@ -79,13 +73,32 @@ class RecordTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String customerName = record.customerName ?? 'Unknown Customer';
     String dateString = DateFormat.yMd().format(record.timestamp);
-    // AI!: the ListTile should open a context menu when long tapped. The context menu should have a "Generate PDF" option.
-    return ListTile(
-      title: Text("$customerName - ${record.fieldName}"),
-      subtitle: Text(dateString),
-      onTap: onTap,
+    return GestureDetector(
+      onLongPress: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Wrap(
+              children: <Widget>[
+                ListTile(
+                  leading: const Icon(Icons.picture_as_pdf),
+                  title: const Text('Generate PDF'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    // TODO: Implement PDF generation
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+      child: ListTile(
+        title: Text("${record.customerName} - ${record.fieldName}"),
+        subtitle: Text(dateString),
+        onTap: onTap,
+      ),
     );
   }
 }
