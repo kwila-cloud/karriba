@@ -25,7 +25,7 @@ class DatabaseHelper {
       path,
       version: _databaseVersion,
       onCreate: _onCreate,
-      onUpgrade: _onUpgrade, // Add onUpgrade
+      onUpgrade: _onUpgrade, // Handle migrations between DB versions
     );
   }
 

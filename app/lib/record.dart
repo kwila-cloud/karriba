@@ -65,8 +65,8 @@ class Record {
           runtimeType == other.runtimeType &&
           id == other.id &&
           timestamp == other.timestamp &&
-          customerId == other.customerId &&
           applicatorId == other.applicatorId &&
+          customerId == other.customerId &&
           customerInformedOfRei == other.customerInformedOfRei &&
           fieldName == other.fieldName;
 
@@ -74,8 +74,8 @@ class Record {
   int get hashCode =>
       id.hashCode ^
       timestamp.hashCode ^
-      customerId.hashCode ^
       applicatorId.hashCode ^
+      customerId.hashCode ^
       customerInformedOfRei.hashCode ^
       fieldName.hashCode;
 }
