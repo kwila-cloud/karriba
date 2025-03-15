@@ -8,7 +8,6 @@ import 'package:karriba/customer_dao.dart';
 import 'package:karriba/applicator.dart';
 import 'package:karriba/applicator_dao.dart';
 import 'unsaved_changes_dialog.dart';
-import 'package:intl/intl.dart';
 
 class EditRecordPage extends StatefulWidget {
   const EditRecordPage({super.key, this.record});
@@ -35,6 +34,7 @@ class _EditRecordPageState extends State<EditRecordPage> {
           customerId: 0,
           applicatorId: 0,
           customerInformedOfRei: false,
+          fieldName: '',
         );
     _originalRecord = _draftRecord.copyWith();
     _title = widget.record == null ? 'New Record' : 'Edit Record';
@@ -146,6 +146,7 @@ class _EditRecordPageState extends State<EditRecordPage> {
                     ),
                     CheckboxListTile(
                       title: const Text('Customer Informed of REI'),
+                      // TODO: add subtitle explaining REI
                       value: customerInformedOfRei,
                       onChanged: (value) {
                         if (value == null) {
@@ -158,6 +159,7 @@ class _EditRecordPageState extends State<EditRecordPage> {
                         });
                       },
                     ),
+                    // AI!: add a validator
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'Field Name',
