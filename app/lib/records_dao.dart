@@ -19,6 +19,7 @@ class RecordsDao {
     }
   }
 
+  // AI!: include the customerName in the results
   Future<List<Record>> queryAllRows() async {
     Database db = await dbHelper.database;
     final List<Map<String, dynamic>> maps = await db.query('record');
@@ -27,10 +28,13 @@ class RecordsDao {
     return List.generate(maps.length, (i) {
       return Record(
         id: maps[i]['id'] as int?,
-        timestamp: DateTime.fromMillisecondsSinceEpoch(maps[i]['timestamp'] as int),
+        timestamp: DateTime.fromMillisecondsSinceEpoch(
+          maps[i]['timestamp'] as int,
+        ),
         customerId: maps[i]['customer_id'] as int,
         applicatorId: maps[i]['applicator_id'] as int,
-        customerInformedOfRei: (maps[i]['customer_informed_of_rei'] as int) == 1,
+        customerInformedOfRei:
+            (maps[i]['customer_informed_of_rei'] as int) == 1,
       );
     });
   }
