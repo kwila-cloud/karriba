@@ -75,10 +75,10 @@ class _RecordsPageState extends State<RecordsPage> {
 }
 
 class RecordTile extends StatelessWidget {
-  const RecordTile({super.key, required this.record, this.onEdit});
+  const RecordTile({super.key, required this.record, required this.onEdit});
 
   final Record record;
-  final VoidCallback? onEdit;
+  final VoidCallback onEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +104,10 @@ class RecordTile extends StatelessWidget {
                 ListTile(
                   leading: Iconify(Mdi.edit),
                   title: const Text('Edit'),
-                  onTap: onEdit,
+                  onTap: () {
+                    Navigator.pop(context);
+                    onEdit();
+                  },
                 ),
                 ListTile(
                   leading: Iconify(Mdi.file_pdf),
