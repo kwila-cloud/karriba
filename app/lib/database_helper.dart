@@ -4,14 +4,14 @@ import 'package:sqflite/sqflite.dart';
 class DatabaseHelper {
   static const _currentSchemaVersion = 2;
 
+  static getPath() async => join(await getDatabasesPath(), "karriba.db");
+
   // Make this a singleton class.
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
 
   // Only have a single app-wide reference to the database.
   static Database? _database;
-  static get path async => join(await getDatabasesPath(), "karriba.db");
-
   Future<Database> get database async {
     if (_database != null) return _database!;
     // Lazily instantiate the db the first time it is accessed.
@@ -22,7 +22,7 @@ class DatabaseHelper {
   // Open the database.
   Future<Database> _initDatabase() async {
     return await openDatabase(
-      await path,
+      await getPath(),
       version: _currentSchemaVersion,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade, // Handle migrations between DB versions

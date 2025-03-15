@@ -21,7 +21,7 @@ Future<void> exportDatabase(BuildContext context) async {
     ).format(DateTime.now());
     String exportPath = '${downloadsDir.path}/karriba_export_$formattedDate.db';
 
-    File sourceFile = File(DatabaseHelper.path);
+    File sourceFile = File(await DatabaseHelper.getPath());
     await sourceFile.copy(exportPath);
 
     ScaffoldMessenger.of(
