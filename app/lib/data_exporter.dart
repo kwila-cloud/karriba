@@ -5,6 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:intl/intl.dart';
 
+// AI!: remove the class. Just use a bare function
 class DataExporter {
   Future<void> exportDatabase(BuildContext context) async {
     // 1. Check and request storage permission
@@ -24,7 +25,7 @@ class DataExporter {
     try {
       // 2. Get the database path
       String databasesPath = await getDatabasesPath();
-      String dbPath = databasesPath + '/karriba.db';
+      String dbPath = '$databasesPath/karriba.db';
 
       // 3. Generate the export file path
       Directory? downloadsDir;
@@ -38,27 +39,25 @@ class DataExporter {
         throw Exception('Could not get downloads directory');
       }
 
-      String formattedDate = DateFormat('yyyy-MM-dd_HH-mm-ss').format(DateTime.now());
-      String exportPath = '${downloadsDir.path}/karriba_export_$formattedDate.db';
+      String formattedDate = DateFormat(
+        'yyyy-MM-dd_HH-mm-ss',
+      ).format(DateTime.now());
+      String exportPath =
+          '${downloadsDir.path}/karriba_export_$formattedDate.db';
 
       // 4. Copy the database file
       File sourceFile = File(dbPath);
-      File destFile = File(exportPath);
       await sourceFile.copy(exportPath);
 
       // 5. Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Data exported to $exportPath'),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Data exported to $exportPath')));
     } catch (e) {
       // 6. Show error message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error exporting data: $e'),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error exporting data: $e')));
     }
   }
 }
