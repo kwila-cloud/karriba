@@ -23,9 +23,7 @@ class _EditRecordPageState extends State<EditRecordPage> {
   late Record _draftRecord;
   late Record _originalRecord;
   late String _title;
-  // AI!: combine these into one _loadDataDependenciesFuture
-  late Future<List<Customer>> _customersFuture;
-  late Future<List<Applicator>> _applicatorsFuture;
+  late Future<List<dynamic>> _loadDataDependenciesFuture;
   int? _selectedCustomerId;
   int? _selectedApplicatorId;
   bool _customerInformedOfRei = false;
@@ -42,8 +40,10 @@ class _EditRecordPageState extends State<EditRecordPage> {
         );
     _originalRecord = _draftRecord.copyWith();
     _title = widget.record == null ? 'New Record' : 'Edit Record';
-    _customersFuture = CustomerDao().queryAllRows();
-    _applicatorsFuture = ApplicatorDao().queryAllRows();
+    _loadDataDependenciesFuture = Future.wait([
+      CustomerDao().queryAllRows(),
+      ApplicatorDao().queryAllRows(),
+    ]);
     _selectedCustomerId = _draftRecord.customerId;
     _selectedApplicatorId = _draftRecord.applicatorId;
     _customerInformedOfRei = _draftRecord.customerInformedOfRei;
@@ -74,76 +74,67 @@ class _EditRecordPageState extends State<EditRecordPage> {
           child: Column(
             spacing: 16,
             children: [
-              FutureBuilder<List<Customer>>(
-                future: _customersFuture,
+              FutureBuilder<List<dynamic>>(
+                future: _loadDataDependenciesFuture,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    final customers = snapshot.data!;
-                    return DropdownButtonFormField<int>(
-                      decoration: const InputDecoration(
-                        labelText: 'Customer',
-                        border: OutlineInputBorder(),
-                      ),
-                      items:
-                          customers.map((customer) {
+                    final customers = snapshot.data![0] as List<Customer>;
+                    final applicators = snapshot.data![1] as List<Applicator>;
+                    return Column(
+                      children: [
+                        DropdownButtonFormField<int>(
+                          decoration: const InputDecoration(
+                            labelText: 'Customer',
+                            border: OutlineInputBorder(),
+                          ),
+                          items: customers.map((customer) {
                             return DropdownMenuItem<int>(
                               value: customer.id,
                               child: Text(customer.name),
                             );
                           }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedCustomerId = value;
-                          _draftRecord = _draftRecord.copyWith(
-                            customerId: value,
-                          );
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please select a customer';
-                        }
-                        return null;
-                      },
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                },
-              ),
-              FutureBuilder<List<Applicator>>(
-                future: _applicatorsFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final applicators = snapshot.data!;
-                    return DropdownButtonFormField<int>(
-                      decoration: const InputDecoration(
-                        labelText: 'Applicator',
-                        border: OutlineInputBorder(),
-                      ),
-                      items:
-                          applicators.map((applicator) {
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedCustomerId = value;
+                              _draftRecord = _draftRecord.copyWith(
+                                customerId: value,
+                              );
+                            });
+                          },
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Please select a customer';
+                            }
+                            return null;
+                          },
+                        ),
+                        DropdownButtonFormField<int>(
+                          decoration: const InputDecoration(
+                            labelText: 'Applicator',
+                            border: OutlineInputBorder(),
+                          ),
+                          items: applicators.map((applicator) {
                             return DropdownMenuItem<int>(
                               value: applicator.id,
                               child: Text(applicator.name),
                             );
                           }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedApplicatorId = value;
-                          _draftRecord = _draftRecord.copyWith(
-                            applicatorId: value,
-                          );
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please select an applicator';
-                        }
-                        return null;
-                      },
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedApplicatorId = value;
+                              _draftRecord = _draftRecord.copyWith(
+                                applicatorId: value,
+                              );
+                            });
+                          },
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Please select an applicator';
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
                     );
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
