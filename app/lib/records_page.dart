@@ -79,11 +79,12 @@ class RecordTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: use customer name
+    String customerName = '${record.customerId}';
+    String dateString = DateFormat.yMd().format(record.timestamp);
     return ListTile(
-      title: Text(DateFormat('yyyy-MM-dd – kk:mm').format(record.timestamp)),
-      subtitle: Text(
-        'Customer ID: ${record.customerId}, Applicator ID: ${record.applicatorId}',
-      ),
+      title: Text(customerName),
+      subtitle: Text(dateString),
       onTap: onTap,
     );
   }
