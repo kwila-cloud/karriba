@@ -159,13 +159,18 @@ class _EditRecordPageState extends State<EditRecordPage> {
                         });
                       },
                     ),
-                    // AI!: add a validator
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'Field Name',
                         border: OutlineInputBorder(),
                       ),
                       initialValue: _draftRecord.fieldName,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a field name';
+                        }
+                        return null;
+                      },
                       onChanged: (value) {
                         setState(() {
                           _draftRecord = _draftRecord.copyWith(
