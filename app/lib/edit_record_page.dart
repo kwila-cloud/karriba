@@ -85,36 +85,6 @@ class _EditRecordPageState extends State<EditRecordPage> {
                   children: [
                     DropdownButtonFormField<int>(
                       decoration: const InputDecoration(
-                        labelText: 'Customer',
-                        border: OutlineInputBorder(),
-                      ),
-                      items:
-                          customers.map((customer) {
-                            return DropdownMenuItem<int>(
-                              value: customer.id,
-                              child: Text(customer.name),
-                            );
-                          }).toList(),
-                      value: selectedCustomerId,
-                      onChanged: (value) {
-                        if (value == null) {
-                          return;
-                        }
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(
-                            customerId: value,
-                          );
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please select a customer';
-                        }
-                        return null;
-                      },
-                    ),
-                    DropdownButtonFormField<int>(
-                      decoration: const InputDecoration(
                         labelText: 'Applicator',
                         border: OutlineInputBorder(),
                       ),
@@ -139,6 +109,36 @@ class _EditRecordPageState extends State<EditRecordPage> {
                       validator: (value) {
                         if (value == null) {
                           return 'Please select an applicator';
+                        }
+                        return null;
+                      },
+                    ),
+                    DropdownButtonFormField<int>(
+                      decoration: const InputDecoration(
+                        labelText: 'Customer',
+                        border: OutlineInputBorder(),
+                      ),
+                      items:
+                          customers.map((customer) {
+                            return DropdownMenuItem<int>(
+                              value: customer.id,
+                              child: Text(customer.name),
+                            );
+                          }).toList(),
+                      value: selectedCustomerId,
+                      onChanged: (value) {
+                        if (value == null) {
+                          return;
+                        }
+                        setState(() {
+                          _draftRecord = _draftRecord.copyWith(
+                            customerId: value,
+                          );
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select a customer';
                         }
                         return null;
                       },
