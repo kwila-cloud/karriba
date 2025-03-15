@@ -80,8 +80,10 @@ class RecordTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String dateString = DateFormat.yMd().format(record.timestamp);
-    return GestureDetector(
-      // AI!: move this to the onLongPress option of ListTile
+    return ListTile(
+      title: Text("${record.customerName} - ${record.fieldName}"),
+      subtitle: Text(dateString),
+      onTap: onTap,
       onLongPress: () {
         showModalBottomSheet(
           context: context,
@@ -101,11 +103,6 @@ class RecordTile extends StatelessWidget {
           },
         );
       },
-      child: ListTile(
-        title: Text("${record.customerName} - ${record.fieldName}"),
-        subtitle: Text(dateString),
-        onTap: onTap,
-      ),
     );
   }
 }
