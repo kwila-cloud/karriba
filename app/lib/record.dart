@@ -1,39 +1,43 @@
 class Record {
   final int? id;
   final DateTime timestamp;
-  final int customerId;
   final int applicatorId;
-  final bool customerInformedOfRei;
+  final String? applicatorName;
+  final int customerId;
   final String? customerName;
+  final bool customerInformedOfRei;
   final String? fieldName;
 
   Record({
     this.id,
     required this.timestamp,
-    required this.customerId,
     required this.applicatorId,
-    required this.customerInformedOfRei,
+    this.applicatorName,
+    required this.customerId,
     this.customerName,
+    required this.customerInformedOfRei,
     this.fieldName,
   });
 
   Record copyWith({
     int? id,
     DateTime? timestamp,
-    int? customerId,
     int? applicatorId,
-    bool? customerInformedOfRei,
+    String? applicatorName,
+    int? customerId,
     String? customerName,
+    bool? customerInformedOfRei,
     String? fieldName,
   }) {
     return Record(
       id: id ?? this.id,
       timestamp: timestamp ?? this.timestamp,
-      customerId: customerId ?? this.customerId,
       applicatorId: applicatorId ?? this.applicatorId,
+      applicatorName: applicatorName ?? this.applicatorName,
+      customerId: customerId ?? this.customerId,
+      customerName: customerName ?? this.customerName,
       customerInformedOfRei:
           customerInformedOfRei ?? this.customerInformedOfRei,
-      customerName: customerName ?? this.customerName,
       fieldName: fieldName ?? this.fieldName,
     );
   }
@@ -45,14 +49,13 @@ class Record {
       'customer_id': customerId,
       'applicator_id': applicatorId,
       'customer_informed_of_rei': customerInformedOfRei ? 1 : 0,
-      'customer_name': customerName,
       'field_name': fieldName,
     };
   }
 
   @override
   String toString() {
-    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, customerName: $customerName, fieldName: $fieldName}';
+    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName}';
   }
 
   @override
@@ -65,7 +68,6 @@ class Record {
           customerId == other.customerId &&
           applicatorId == other.applicatorId &&
           customerInformedOfRei == other.customerInformedOfRei &&
-          customerName == other.customerName &&
           fieldName == other.fieldName;
 
   @override
@@ -75,6 +77,5 @@ class Record {
       customerId.hashCode ^
       applicatorId.hashCode ^
       customerInformedOfRei.hashCode ^
-      customerName.hashCode ^
       fieldName.hashCode;
 }

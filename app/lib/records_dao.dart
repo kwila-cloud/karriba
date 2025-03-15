@@ -25,12 +25,14 @@ class RecordsDao {
       SELECT 
         record.id,
         record.timestamp,
-        record.customer_id,
         record.applicator_id,
-        record.customer_informed_of_rei,
+        applicator.name as applicator_name,
+        record.customer_id,
         customer.name AS customer_name,
+        record.customer_informed_of_rei,
         record.field_name
       FROM record
+      INNER JOIN applicator ON record.applicator_id = applicator.id
       INNER JOIN customer ON record.customer_id = customer.id
     ''');
 
@@ -41,11 +43,12 @@ class RecordsDao {
         timestamp: DateTime.fromMillisecondsSinceEpoch(
           maps[i]['timestamp'] as int,
         ),
-        customerId: maps[i]['customer_id'] as int,
         applicatorId: maps[i]['applicator_id'] as int,
+        applicatorName: maps[i]['applicator_name'] as String,
+        customerId: maps[i]['customer_id'] as int,
+        customerName: maps[i]['customer_name'] as String,
         customerInformedOfRei:
             (maps[i]['customer_informed_of_rei'] as int) == 1,
-        customerName: maps[i]['customer_name'] as String,
         fieldName: maps[i]['field_name'] as String?,
       );
     });

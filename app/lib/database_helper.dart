@@ -51,8 +51,8 @@ class DatabaseHelper {
       CREATE TABLE record (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         timestamp INTEGER NOT NULL,
-        customer_id INTEGER NOT NULL,
         applicator_id INTEGER NOT NULL,
+        customer_id INTEGER NOT NULL,
         customer_informed_of_rei INTEGER NOT NULL,
         field_name TEXT
       )
@@ -66,8 +66,8 @@ class DatabaseHelper {
         CREATE TABLE IF NOT EXISTS record (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           timestamp INTEGER NOT NULL,
-          customer_id INTEGER NOT NULL,
           applicator_id INTEGER NOT NULL,
+          customer_id INTEGER NOT NULL,
           customer_informed_of_rei INTEGER NOT NULL,
           field_name TEXT
         )
