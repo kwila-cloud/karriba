@@ -38,17 +38,20 @@ class _RecordsPageState extends State<RecordsPage> {
           if (records != null) {
             return ListView.builder(
               itemCount: records.length,
-              itemBuilder: (context, index) => RecordTile(
-                record: records[index],
-                onTap: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditRecordPage(record: records[index]),
-                    ),
-                  ).then((_) => _refreshRecords());
-                },
-              ),
+              itemBuilder:
+                  (context, index) => RecordTile(
+                    record: records[index],
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) =>
+                                  EditRecordPage(record: records[index]),
+                        ),
+                      ).then((_) => _refreshRecords());
+                    },
+                  ),
             );
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
@@ -76,6 +79,7 @@ class RecordTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      // AI!: show the record timestamp for the title
       title: Text('Record ID: ${record.id}'),
       subtitle: Text(
         'Customer ID: ${record.customerId}, Applicator ID: ${record.applicatorId}',
