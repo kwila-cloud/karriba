@@ -79,10 +79,12 @@ class RecordTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: in the future we will record field names
+    String fieldName = "Unknown Field";
     String customerName = record.customerName ?? 'Unknown Customer';
     String dateString = DateFormat.yMd().format(record.timestamp);
     return ListTile(
-      title: Text(customerName),
+      title: Text("$customerName - $fieldName"),
       subtitle: Text(dateString),
       onTap: onTap,
     );
