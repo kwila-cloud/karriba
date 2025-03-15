@@ -70,7 +70,13 @@ class _EditRecordPageState extends State<EditRecordPage> {
               final customers = snapshot.data![0] as List<Customer>;
               final applicators = snapshot.data![1] as List<Applicator>;
               int? selectedCustomerId = _draftRecord.customerId;
+              if (!customers.any((c) => c.id == selectedCustomerId)) {
+                selectedCustomerId = null;
+              }
               int? selectedApplicatorId = _draftRecord.applicatorId;
+              if (!applicators.any((a) => a.id == selectedApplicatorId)) {
+                selectedApplicatorId = null;
+              }
               bool customerInformedOfRei = _draftRecord.customerInformedOfRei;
               return Form(
                 key: _formKey,
@@ -91,8 +97,10 @@ class _EditRecordPageState extends State<EditRecordPage> {
                           }).toList(),
                       value: selectedCustomerId,
                       onChanged: (value) {
+                        if (value == null) {
+                          return;
+                        }
                         setState(() {
-                          selectedCustomerId = value;
                           _draftRecord = _draftRecord.copyWith(
                             customerId: value,
                           );
@@ -119,8 +127,10 @@ class _EditRecordPageState extends State<EditRecordPage> {
                           }).toList(),
                       value: selectedApplicatorId,
                       onChanged: (value) {
+                        if (value == null) {
+                          return;
+                        }
                         setState(() {
-                          selectedApplicatorId = value;
                           _draftRecord = _draftRecord.copyWith(
                             applicatorId: value,
                           );
@@ -137,8 +147,10 @@ class _EditRecordPageState extends State<EditRecordPage> {
                       title: const Text('Customer Informed of REI'),
                       value: customerInformedOfRei,
                       onChanged: (value) {
+                        if (value == null) {
+                          return;
+                        }
                         setState(() {
-                          customerInformedOfRei = value!;
                           _draftRecord = _draftRecord.copyWith(
                             customerInformedOfRei: value,
                           );

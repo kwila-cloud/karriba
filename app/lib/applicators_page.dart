@@ -13,6 +13,7 @@ class ApplicatorsPage extends StatefulWidget {
 
 class _ApplicatorsPageState extends State<ApplicatorsPage> {
   late Future<List<Applicator>> _applicatorsFuture;
+
   final _applicatorDao = ApplicatorDao();
 
   @override
