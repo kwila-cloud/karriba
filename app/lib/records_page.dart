@@ -4,6 +4,8 @@ import 'edit_record_page.dart';
 import 'record.dart';
 import 'records_dao.dart';
 import 'package:intl/intl.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/mdi.dart';
 
 class RecordsPage extends StatefulWidget {
   const RecordsPage({super.key});
@@ -91,8 +93,7 @@ class RecordTile extends StatelessWidget {
             return Wrap(
               children: <Widget>[
                 ListTile(
-                  // AI!: use Iconify and MDI
-                  leading: const Icon(Icons.picture_as_pdf),
+                  leading: Iconify(Mdi.picture_as_pdf),
                   title: const Text('Generate PDF'),
                   onTap: () {
                     Navigator.pop(context);
