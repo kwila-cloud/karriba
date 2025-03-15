@@ -3,6 +3,7 @@ import 'top_level_page.dart';
 import 'edit_record_page.dart';
 import 'record.dart';
 import 'records_dao.dart';
+import 'package:intl/intl.dart';
 
 class RecordsPage extends StatefulWidget {
   const RecordsPage({super.key});
@@ -79,8 +80,7 @@ class RecordTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      // AI!: show the record timestamp for the title
-      title: Text('Record ID: ${record.id}'),
+      title: Text(DateFormat('yyyy-MM-dd – kk:mm').format(record.timestamp)),
       subtitle: Text(
         'Customer ID: ${record.customerId}, Applicator ID: ${record.applicatorId}',
       ),
