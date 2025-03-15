@@ -23,6 +23,7 @@ class _EditRecordPageState extends State<EditRecordPage> {
   late Record _draftRecord;
   late Record _originalRecord;
   late String _title;
+  // AI!: combine these into one _loadDataDependenciesFuture
   late Future<List<Customer>> _customersFuture;
   late Future<List<Applicator>> _applicatorsFuture;
   int? _selectedCustomerId;
@@ -31,7 +32,8 @@ class _EditRecordPageState extends State<EditRecordPage> {
 
   @override
   void initState() {
-    _draftRecord = widget.record ??
+    _draftRecord =
+        widget.record ??
         Record(
           timestamp: DateTime.now(),
           customerId: 0,
@@ -52,115 +54,122 @@ class _EditRecordPageState extends State<EditRecordPage> {
 
   @override
   Widget build(BuildContext context) => WillPopScope(
-        onWillPop: () async =>
+    onWillPop:
+        () async =>
             _hasChanges ? await showUnsavedChangesDialog(context) : true,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(_title),
-            actions: [
-              IconButton(
-                icon: Iconify(Mdi.content_save),
-                onPressed: () => _saveRecord(context),
-              ),
-            ],
+    child: Scaffold(
+      appBar: AppBar(
+        title: Text(_title),
+        actions: [
+          IconButton(
+            icon: Iconify(Mdi.content_save),
+            onPressed: () => _saveRecord(context),
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                spacing: 16,
-                children: [
-                  FutureBuilder<List<Customer>>(
-                    future: _customersFuture,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        final customers = snapshot.data!;
-                        return DropdownButtonFormField<int>(
-                          decoration: const InputDecoration(
-                            labelText: 'Customer',
-                            border: OutlineInputBorder(),
-                          ),
-                          value: _selectedCustomerId,
-                          items: customers.map((customer) {
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            spacing: 16,
+            children: [
+              FutureBuilder<List<Customer>>(
+                future: _customersFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final customers = snapshot.data!;
+                    return DropdownButtonFormField<int>(
+                      decoration: const InputDecoration(
+                        labelText: 'Customer',
+                        border: OutlineInputBorder(),
+                      ),
+                      items:
+                          customers.map((customer) {
                             return DropdownMenuItem<int>(
                               value: customer.id,
                               child: Text(customer.name),
                             );
                           }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedCustomerId = value;
-                              _draftRecord = _draftRecord.copyWith(customerId: value);
-                            });
-                          },
-                          validator: (value) {
-                            if (value == null) {
-                              return 'Please select a customer';
-                            }
-                            return null;
-                          },
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else {
-                        return const CircularProgressIndicator();
-                      }
-                    },
-                  ),
-                  FutureBuilder<List<Applicator>>(
-                    future: _applicatorsFuture,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        final applicators = snapshot.data!;
-                        return DropdownButtonFormField<int>(
-                          decoration: const InputDecoration(
-                            labelText: 'Applicator',
-                            border: OutlineInputBorder(),
-                          ),
-                          value: _selectedApplicatorId,
-                          items: applicators.map((applicator) {
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedCustomerId = value;
+                          _draftRecord = _draftRecord.copyWith(
+                            customerId: value,
+                          );
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select a customer';
+                        }
+                        return null;
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                },
+              ),
+              FutureBuilder<List<Applicator>>(
+                future: _applicatorsFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final applicators = snapshot.data!;
+                    return DropdownButtonFormField<int>(
+                      decoration: const InputDecoration(
+                        labelText: 'Applicator',
+                        border: OutlineInputBorder(),
+                      ),
+                      items:
+                          applicators.map((applicator) {
                             return DropdownMenuItem<int>(
                               value: applicator.id,
                               child: Text(applicator.name),
                             );
                           }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedApplicatorId = value;
-                              _draftRecord = _draftRecord.copyWith(applicatorId: value);
-                            });
-                          },
-                          validator: (value) {
-                            if (value == null) {
-                              return 'Please select an applicator';
-                            }
-                            return null;
-                          },
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else {
-                        return const CircularProgressIndicator();
-                      }
-                    },
-                  ),
-                  CheckboxListTile(
-                    title: const Text('Customer Informed of REI'),
-                    value: _customerInformedOfRei,
-                    onChanged: (value) {
-                      setState(() {
-                        _customerInformedOfRei = value!;
-                        _draftRecord = _draftRecord.copyWith(customerInformedOfRei: value);
-                      });
-                    },
-                  ),
-                ],
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedApplicatorId = value;
+                          _draftRecord = _draftRecord.copyWith(
+                            applicatorId: value,
+                          );
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select an applicator';
+                        }
+                        return null;
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                },
               ),
-            ),
+              CheckboxListTile(
+                title: const Text('Customer Informed of REI'),
+                value: _customerInformedOfRei,
+                onChanged: (value) {
+                  setState(() {
+                    _customerInformedOfRei = value!;
+                    _draftRecord = _draftRecord.copyWith(
+                      customerInformedOfRei: value,
+                    );
+                  });
+                },
+              ),
+            ],
           ),
         ),
-      );
+      ),
+    ),
+  );
 
   Future<void> _saveRecord(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
