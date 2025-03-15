@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
   static const _databaseName = "karriba.db";
-  static const _databaseVersion = 3; // Increment the version
+  static const _databaseVersion = 2; // Combined version 2 and 3
 
   // Make this a singleton class.
   DatabaseHelper._privateConstructor();
@@ -70,14 +70,10 @@ class DatabaseHelper {
           timestamp INTEGER NOT NULL,
           customer_id INTEGER NOT NULL,
           applicator_id INTEGER NOT NULL,
-          customer_informed_of_rei INTEGER NOT NULL
+          customer_informed_of_rei INTEGER NOT NULL,
+          field_name TEXT
         )
         ''');
-    }
-    if (oldVersion < 3) {
-      await db.execute('''
-        ALTER TABLE record ADD COLUMN field_name TEXT;
-      ''');
     }
   }
 }
