@@ -80,10 +80,10 @@ class RecordTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String customerName = record.customerName ?? 'Unknown Customer';
-    String fieldName = record.fieldName ?? 'Unknown Field';
     String dateString = DateFormat.yMd().format(record.timestamp);
+    // AI!: the ListTile should open a context menu when long tapped. The context menu should have a "Generate PDF" option.
     return ListTile(
-      title: Text("$customerName - $fieldName"),
+      title: Text("$customerName - ${record.fieldName}"),
       subtitle: Text(dateString),
       onTap: onTap,
     );
