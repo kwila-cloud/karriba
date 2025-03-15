@@ -2,7 +2,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
-  static const currentSchemaVersion = 2;
+  static const _currentSchemaVersion = 2;
 
   // Make this a singleton class.
   DatabaseHelper._privateConstructor();
@@ -23,7 +23,7 @@ class DatabaseHelper {
   Future<Database> _initDatabase() async {
     return await openDatabase(
       path,
-      version: currentSchemaVersion,
+      version: _currentSchemaVersion,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade, // Handle migrations between DB versions
     );
