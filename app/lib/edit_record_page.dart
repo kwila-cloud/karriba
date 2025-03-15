@@ -24,6 +24,7 @@ class _EditRecordPageState extends State<EditRecordPage> {
   late Record _originalRecord;
   late String _title;
   late Future<List<dynamic>> _loadDataDependenciesFuture;
+  // AI!: these should not be class variables. they should be local variables inside the FutureBuilder
   int? _selectedCustomerId;
   int? _selectedApplicatorId;
   bool _customerInformedOfRei = false;
@@ -85,12 +86,13 @@ class _EditRecordPageState extends State<EditRecordPage> {
                         labelText: 'Customer',
                         border: OutlineInputBorder(),
                       ),
-                      items: customers.map((customer) {
-                        return DropdownMenuItem<int>(
-                          value: customer.id,
-                          child: Text(customer.name),
-                        );
-                      }).toList(),
+                      items:
+                          customers.map((customer) {
+                            return DropdownMenuItem<int>(
+                              value: customer.id,
+                              child: Text(customer.name),
+                            );
+                          }).toList(),
                       value: _selectedCustomerId,
                       onChanged: (value) {
                         setState(() {
@@ -112,12 +114,13 @@ class _EditRecordPageState extends State<EditRecordPage> {
                         labelText: 'Applicator',
                         border: OutlineInputBorder(),
                       ),
-                      items: applicators.map((applicator) {
-                        return DropdownMenuItem<int>(
-                          value: applicator.id,
-                          child: Text(applicator.name),
-                        );
-                      }).toList(),
+                      items:
+                          applicators.map((applicator) {
+                            return DropdownMenuItem<int>(
+                              value: applicator.id,
+                              child: Text(applicator.name),
+                            );
+                          }).toList(),
                       value: _selectedApplicatorId,
                       onChanged: (value) {
                         setState(() {
