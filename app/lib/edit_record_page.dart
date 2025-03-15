@@ -146,7 +146,7 @@ class _EditRecordPageState extends State<EditRecordPage> {
                     ),
                     CheckboxListTile(
                       title: const Text('Customer Informed of REI'),
-                      // TODO: add subtitle explaining REI
+                      // AI!: add subtitle explaining REI
                       value: customerInformedOfRei,
                       onChanged: (value) {
                         if (value == null) {
