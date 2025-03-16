@@ -32,4 +32,23 @@ class ApplicatorDao {
       );
     });
   }
+
+  Future<Applicator?> get(int id) async {
+    Database db = await dbHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'applicator',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    if (maps.isNotEmpty) {
+      return Applicator(
+        id: maps[0]['id'] as int?,
+        name: maps[0]['name'] as String,
+        licenseNumber: maps[0]['license_number'] as String,
+      );
+    } else {
+      return null;
+    }
+  }
 }
