@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'top_level_page.dart';
-import 'edit_record_page.dart';
-import 'record.dart';
-import 'records_dao.dart';
-import 'package:intl/intl.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
-import 'coming_soon_dialog.dart';
+import 'package:intl/intl.dart';
+
+import 'edit_record_page.dart';
+import 'pdf_generator.dart';
+import 'record.dart';
+import 'records_dao.dart';
+import 'top_level_page.dart';
 
 class RecordsPage extends StatefulWidget {
   const RecordsPage({super.key});
@@ -112,15 +113,11 @@ class RecordTile extends StatelessWidget {
                 ListTile(
                   leading: Iconify(Mdi.file_pdf),
                   title: const Text('Generate PDF'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    // TODO: generate PDF for the record
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const ComingSoonDialog();
-                      },
-                    );
+                  onTap: () async {
+                    await PDFGenerator().generateAndSavePDF(record);
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text("PDF Generated!")));
                   },
                 ),
               ],

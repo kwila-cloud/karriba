@@ -14,6 +14,8 @@ dependencies:
   path: ^1.9.1
   intl: ^0.20.2
   file_picker: ^9.1.0
+  pdf: ^3.11.3
+  open_file: ^3.5.10
 
 dev_dependencies:
   flutter_test:
