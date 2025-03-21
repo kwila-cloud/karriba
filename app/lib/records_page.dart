@@ -110,6 +110,7 @@ class RecordTile extends StatelessWidget {
                     onEdit();
                   },
                 ),
+                // AI!: add a ListTile that allows the user to edit the environmental conditions
                 ListTile(
                   leading: Iconify(Mdi.file_pdf),
                   title: const Text('Generate PDF'),
