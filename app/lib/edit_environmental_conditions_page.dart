@@ -186,15 +186,11 @@ class _EditEnvironmentalConditionsPageState
   }
 
   double _convertFahrenheitToCelsius(double fahrenheit) {
-    //AI!: inline this
-    const double fahrenheitToCelsius = (5 / 9);
-    return (fahrenheit - 32) * fahrenheitToCelsius;
+    return (fahrenheit - 32) / 1.8;
   }
 
   double _convertCelsiusToFahrenheit(double celsius) {
-    //AI!: inline this
-    const double celsiusToFahrenheit = (9 / 5);
-    return (celsius * celsiusToFahrenheit) + 32;
+    return (celsius * 1.8) + 32;
   }
 
   Future<void> _saveRecord(BuildContext context) async {
