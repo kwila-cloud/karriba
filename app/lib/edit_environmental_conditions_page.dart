@@ -59,7 +59,7 @@ class _EditEnvironmentalConditionsPageState
             _hasChanges ? await showUnsavedChangesDialog(context) : true,
     child: Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Environmental Conditions'),
+        title: const Text('Environmental Conditions'),
         actions: [
           IconButton(
             icon: const Iconify(Mdi.content_save),
@@ -72,6 +72,7 @@ class _EditEnvironmentalConditionsPageState
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
+            spacing: 16,
             children: [
               TextFormField(
                 decoration: const InputDecoration(
@@ -96,7 +97,6 @@ class _EditEnvironmentalConditionsPageState
                   );
                 },
               ),
-              const SizedBox(height: 16),
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Wind Speed After Application (mph)',
@@ -120,7 +120,6 @@ class _EditEnvironmentalConditionsPageState
                   );
                 },
               ),
-              const SizedBox(height: 16),
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Wind Direction',
@@ -131,7 +130,6 @@ class _EditEnvironmentalConditionsPageState
                   _draftRecord = _draftRecord.copyWith(windDirection: value);
                 },
               ),
-              const SizedBox(height: 16),
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Temperature (°F)',
