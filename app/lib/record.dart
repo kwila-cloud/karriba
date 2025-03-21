@@ -8,6 +8,12 @@ class Record {
   final bool customerInformedOfRei;
   final String fieldName;
 
+  // Environmental conditions
+  final double? windSpeedBefore;
+  final double? windSpeedAfter;
+  final String? windDirection;
+  final double? temperature;
+
   Record({
     this.id,
     required this.timestamp,
@@ -17,6 +23,10 @@ class Record {
     this.customerName,
     required this.customerInformedOfRei,
     required this.fieldName,
+    this.windSpeedBefore,
+    this.windSpeedAfter,
+    this.windDirection,
+    this.temperature,
   });
 
   Record copyWith({
@@ -28,6 +38,10 @@ class Record {
     String? customerName,
     bool? customerInformedOfRei,
     String? fieldName,
+    double? windSpeedBefore,
+    double? windSpeedAfter,
+    String? windDirection,
+    double? temperature,
   }) {
     return Record(
       id: id ?? this.id,
@@ -39,6 +53,10 @@ class Record {
       customerInformedOfRei:
           customerInformedOfRei ?? this.customerInformedOfRei,
       fieldName: fieldName ?? this.fieldName,
+      windSpeedBefore: windSpeedBefore ?? this.windSpeedBefore,
+      windSpeedAfter: windSpeedAfter ?? this.windSpeedAfter,
+      windDirection: windDirection ?? this.windDirection,
+      temperature: temperature ?? this.temperature,
     );
   }
 
@@ -50,12 +68,16 @@ class Record {
       'applicator_id': applicatorId,
       'customer_informed_of_rei': customerInformedOfRei ? 1 : 0,
       'field_name': fieldName,
+      'wind_speed_before': windSpeedBefore,
+      'wind_speed_after': windSpeedAfter,
+      'wind_direction': windDirection,
+      'temperature': temperature,
     };
   }
 
   @override
   String toString() {
-    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName}';
+    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature}';
   }
 
   @override
@@ -68,7 +90,11 @@ class Record {
           applicatorId == other.applicatorId &&
           customerId == other.customerId &&
           customerInformedOfRei == other.customerInformedOfRei &&
-          fieldName == other.fieldName;
+          fieldName == other.fieldName &&
+          windSpeedBefore == other.windSpeedBefore &&
+          windSpeedAfter == other.windSpeedAfter &&
+          windDirection == other.windDirection &&
+          temperature == other.temperature;
 
   @override
   int get hashCode =>
@@ -77,5 +103,9 @@ class Record {
       applicatorId.hashCode ^
       customerId.hashCode ^
       customerInformedOfRei.hashCode ^
-      fieldName.hashCode;
+      fieldName.hashCode ^
+      windSpeedBefore.hashCode ^
+      windSpeedAfter.hashCode ^
+      windDirection.hashCode ^
+      temperature.hashCode;
 }
