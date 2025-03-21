@@ -80,7 +80,10 @@ class _EditEnvironmentalConditionsPageState
                 initialValue: _formatWindSpeed(
                   _draftRecord.windSpeedBefore == null
                       ? null
-                      : _convertKphToMph(_draftRecord.windSpeedBefore!),
+                      : (double kph) {
+                          const double kphToMph = 0.621371;
+                          return kph * kphToMph;
+                        }(_draftRecord.windSpeedBefore!),
                 ),
                 onChanged: (value) {
                   setState(() {
@@ -88,7 +91,10 @@ class _EditEnvironmentalConditionsPageState
                       windSpeedBefore:
                           value.isEmpty
                               ? null
-                              : _convertMphToKph(double.tryParse(value) ?? 0.0),
+                              : (double mph) {
+                                  const double mphToKph = 1.60934;
+                                  return mph * mphToKph;
+                                }(double.tryParse(value) ?? 0.0),
                     );
                   });
                 },
@@ -105,7 +111,10 @@ class _EditEnvironmentalConditionsPageState
                 initialValue: _formatWindSpeed(
                   _draftRecord.windSpeedAfter == null
                       ? null
-                      : _convertKphToMph(_draftRecord.windSpeedAfter!),
+                      : (double kph) {
+                          const double kphToMph = 0.621371;
+                          return kph * kphToMph;
+                        }(_draftRecord.windSpeedAfter!),
                 ),
                 onChanged: (value) {
                   setState(() {
@@ -113,7 +122,10 @@ class _EditEnvironmentalConditionsPageState
                       windSpeedAfter:
                           value.isEmpty
                               ? null
-                              : _convertMphToKph(double.tryParse(value) ?? 0.0),
+                              : (double mph) {
+                                  const double mphToKph = 1.60934;
+                                  return mph * mphToKph;
+                                }(double.tryParse(value) ?? 0.0),
                     );
                   });
                 },
@@ -151,7 +163,10 @@ class _EditEnvironmentalConditionsPageState
                 initialValue: _formatTemperature(
                   _draftRecord.temperature == null
                       ? null
-                      : _convertCelsiusToFahrenheit(_draftRecord.temperature!),
+                      : (double celsius) {
+                          const double celsiusToFahrenheit = (celsius * 1.8) + 32;
+                          return celsiusToFahrenheit;
+                        }(_draftRecord.temperature!),
                 ),
                 onChanged: (value) {
                   setState(() {
@@ -159,9 +174,10 @@ class _EditEnvironmentalConditionsPageState
                       temperature:
                           value.isEmpty
                               ? null
-                              : _convertFahrenheitToCelsius(
-                                double.tryParse(value) ?? 0.0,
-                              ),
+                              : (double fahrenheit) {
+                                  const double fahrenheitToCelsius = (fahrenheit - 32) / 1.8;
+                                  return fahrenheitToCelsius;
+                                }(double.tryParse(value) ?? 0.0),
                     );
                   });
                 },
@@ -172,26 +188,6 @@ class _EditEnvironmentalConditionsPageState
       ),
     ),
   );
-
-  double _convertMphToKph(double mph) {
-    //AI!: inline this
-    const double mphToKph = 1.60934;
-    return mph * mphToKph;
-  }
-
-  double _convertKphToMph(double kph) {
-    //AI!: inline this
-    const double kphToMph = 0.621371;
-    return kph * kphToMph;
-  }
-
-  double _convertFahrenheitToCelsius(double fahrenheit) {
-    return (fahrenheit - 32) / 1.8;
-  }
-
-  double _convertCelsiusToFahrenheit(double celsius) {
-    return (celsius * 1.8) + 32;
-  }
 
   Future<void> _saveRecord(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
