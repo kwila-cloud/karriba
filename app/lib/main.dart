@@ -48,11 +48,6 @@ class _KarribaHomePageState extends State<KarribaHomePage> {
       icon: Mdi.account_multiple,
       widget: CustomersPage(),
     ),
-    PageData(
-      title: 'Applicators',
-      icon: Mdi.account_cowboy_hat,
-      widget: ApplicatorsPage(),
-    ),
     PageData(title: 'Settings', icon: Mdi.cog, widget: SettingsPage()),
   ];
 
