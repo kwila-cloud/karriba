@@ -120,12 +120,22 @@ class _EditEnvironmentalConditionsPageState
                   );
                 },
               ),
-              TextFormField(
+              DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Wind Direction',
                   border: OutlineInputBorder(),
                 ),
-                initialValue: _draftRecord.windDirection,
+                value: _draftRecord.windDirection,
+                items: const [
+                  DropdownMenuItem(value: 'N', child: Text('N')),
+                  DropdownMenuItem(value: 'NE', child: Text('NE')),
+                  DropdownMenuItem(value: 'E', child: Text('E')),
+                  DropdownMenuItem(value: 'SE', child: Text('SE')),
+                  DropdownMenuItem(value: 'S', child: Text('S')),
+                  DropdownMenuItem(value: 'SW', child: Text('SW')),
+                  DropdownMenuItem(value: 'W', child: Text('W')),
+                  DropdownMenuItem(value: 'NW', child: Text('NW')),
+                ],
                 onChanged: (value) {
                   _draftRecord = _draftRecord.copyWith(windDirection: value);
                 },
