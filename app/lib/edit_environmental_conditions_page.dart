@@ -23,7 +23,7 @@ class _EditEnvironmentalConditionsPageState
   late Record _draftRecord;
   late Record _originalRecord;
 
-  // Conversion factors
+  // AI!: move these ratios to the conversion functions
   static const double mphToKph = 1.60934;
   static const double kphToMph = 0.621371;
   static const double fahrenheitToCelsius = (5 / 9);
