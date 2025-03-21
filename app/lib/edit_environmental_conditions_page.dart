@@ -174,21 +174,25 @@ class _EditEnvironmentalConditionsPageState
   );
 
   double _convertMphToKph(double mph) {
+    //AI!: inline this
     const double mphToKph = 1.60934;
     return mph * mphToKph;
   }
 
   double _convertKphToMph(double kph) {
+    //AI!: inline this
     const double kphToMph = 0.621371;
     return kph * kphToMph;
   }
 
   double _convertFahrenheitToCelsius(double fahrenheit) {
+    //AI!: inline this
     const double fahrenheitToCelsius = (5 / 9);
     return (fahrenheit - 32) * fahrenheitToCelsius;
   }
 
   double _convertCelsiusToFahrenheit(double celsius) {
+    //AI!: inline this
     const double celsiusToFahrenheit = (9 / 5);
     return (celsius * celsiusToFahrenheit) + 32;
   }
