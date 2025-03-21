@@ -31,6 +31,7 @@ class _ApplicatorsPageState extends State<ApplicatorsPage> {
   @override
   Widget build(BuildContext context) {
     return TopLevelPage(
+      appBar: AppBar(title: Text("Applicators")),
       body: FutureBuilder<List<Applicator>>(
         future: _applicatorsFuture,
         builder: (context, snapshot) {
