@@ -116,12 +116,12 @@ class RecordTile extends StatelessWidget {
                   title: const Text('Environmental Conditions'),
                   onTap: () {
                     Navigator.pop(context);
-                    await Navigator.push(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => EditEnvironmentalConditionsPage(record: record),
                       ),
-                    );
+                    ).then((_) => _refreshRecords()); // Add this line
                   },
                 ),
                 ListTile(
