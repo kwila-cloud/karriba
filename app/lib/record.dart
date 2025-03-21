@@ -7,8 +7,6 @@ class Record {
   final String? customerName;
   final bool customerInformedOfRei;
   final String fieldName;
-
-  // Environmental conditions
   final double? windSpeedBefore;
   final double? windSpeedAfter;
   final String? windDirection;

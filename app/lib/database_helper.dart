@@ -79,6 +79,7 @@ class DatabaseHelper {
         ''');
     }
     if (oldVersion < 3) {
+      // Add the environmental condition fields
       await db.execute('''
         ALTER TABLE record ADD COLUMN wind_speed_before REAL;
       ''');
