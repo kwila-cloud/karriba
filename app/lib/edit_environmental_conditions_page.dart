@@ -126,6 +126,7 @@ class _EditEnvironmentalConditionsPageState
                   border: OutlineInputBorder(),
                 ),
                 value: _draftRecord.windDirection,
+                //AI!: use the map function to reduce duplicate code
                 items: const [
                   DropdownMenuItem(value: 'N', child: Text('N')),
                   DropdownMenuItem(value: 'NE', child: Text('NE')),
