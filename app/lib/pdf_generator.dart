@@ -79,10 +79,10 @@ class PDFGenerator {
       ),
     );
 
-    final directoryPath = '/storage/emulated/0/Documents';
-    final formattedDate = DateFormat(
-      'yyyy-MM-dd_HH-mm',
-    ).format(recordData.timestamp).toString();
+    // TODO: use a different path on non-Android platforms
+    final directoryPath = '/storage/emulated/0/Download';
+    final formattedDate =
+        DateFormat('yyyy-MM-dd_HH-mm').format(recordData.timestamp).toString();
     final fileName =
         '${applicator?.name ?? 'Unknown Applicator'} ${recordData.fieldName} $formattedDate.pdf'
             .replaceAll(' ', '_');
