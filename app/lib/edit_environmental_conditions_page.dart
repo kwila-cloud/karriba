@@ -126,12 +126,15 @@ class _EditEnvironmentalConditionsPageState
                   border: OutlineInputBorder(),
                 ),
                 value: _draftRecord.windDirection,
-                items: const ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
-                    .map((direction) => DropdownMenuItem(
-                          value: direction,
-                          child: Text(direction),
-                        ))
-                    .toList(),
+                items:
+                    const ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
+                        .map(
+                          (direction) => DropdownMenuItem(
+                            value: direction,
+                            child: Text(direction),
+                          ),
+                        )
+                        .toList(),
                 onChanged: (value) {
                   _draftRecord = _draftRecord.copyWith(windDirection: value);
                 },
