@@ -116,7 +116,7 @@ class RecordTile extends StatelessWidget {
                   title: const Text('Environmental Conditions'),
                   onTap: () {
                     Navigator.pop(context);
-                    Navigator.push(
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => EditEnvironmentalConditionsPage(record: record),
