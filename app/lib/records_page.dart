@@ -3,6 +3,7 @@ import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:intl/intl.dart';
 
+import 'edit_environmental_conditions_page.dart';
 import 'edit_record_page.dart';
 import 'pdf_generator.dart';
 import 'record.dart';
@@ -110,7 +111,19 @@ class RecordTile extends StatelessWidget {
                     onEdit();
                   },
                 ),
-                // AI!: add a ListTile that allows the user to edit the environmental conditions
+                ListTile(
+                  leading: Iconify(Mdi.weather_windy),
+                  title: const Text('Environmental Conditions'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditEnvironmentalConditionsPage(record: record),
+                      ),
+                    );
+                  },
+                ),
                 ListTile(
                   leading: Iconify(Mdi.file_pdf),
                   title: const Text('Generate PDF'),
