@@ -47,16 +47,7 @@ class _RecordsPageState extends State<RecordsPage> {
               itemBuilder:
                   (context, index) => RecordTile(
                     record: records[index],
-                    onEdit: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (context) =>
-                                  EditRecordPage(record: records[index]),
-                        ),
-                      ).then((_) => _refreshRecords());
-                    },
+                    refresh: () => _refreshRecords(),
                   ),
             );
           } else if (snapshot.hasError) {
@@ -77,10 +68,10 @@ class _RecordsPageState extends State<RecordsPage> {
 }
 
 class RecordTile extends StatelessWidget {
-  const RecordTile({super.key, required this.record, required this.onEdit});
+  const RecordTile({super.key, required this.record, required this.refresh});
 
   final Record record;
-  final VoidCallback onEdit;
+  final VoidCallback refresh;
 
   @override
   Widget build(BuildContext context) {
@@ -106,22 +97,31 @@ class RecordTile extends StatelessWidget {
                 ListTile(
                   leading: Iconify(Mdi.edit),
                   title: const Text('Edit'),
-                  onTap: () {
+                  onTap: () async {
                     Navigator.pop(context);
-                    onEdit();
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditRecordPage(record: record),
+                      ),
+                    );
+                    refresh();
                   },
                 ),
                 ListTile(
                   leading: Iconify(Mdi.weather_windy),
                   title: const Text('Environmental Conditions'),
-                  onTap: () {
+                  onTap: () async {
                     Navigator.pop(context);
-                    Navigator.push(
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => EditEnvironmentalConditionsPage(record: record),
+                        builder:
+                            (context) =>
+                                EditEnvironmentalConditionsPage(record: record),
                       ),
-                    ).then((_) => _refreshRecords()); // Add this line
+                    );
+                    refresh();
                   },
                 ),
                 ListTile(
