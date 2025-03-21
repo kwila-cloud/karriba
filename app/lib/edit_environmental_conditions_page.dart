@@ -89,12 +89,14 @@ class _EditEnvironmentalConditionsPageState
                       : _convertKphToMph(_draftRecord.windSpeedBefore!),
                 ),
                 onChanged: (value) {
-                  _draftRecord = _draftRecord.copyWith(
-                    windSpeedBefore:
-                        value.isEmpty
-                            ? null
-                            : _convertMphToKph(double.tryParse(value) ?? 0.0),
-                  );
+                  setState(() {
+                    _draftRecord = _draftRecord.copyWith(
+                      windSpeedBefore:
+                          value.isEmpty
+                              ? null
+                              : _convertMphToKph(double.tryParse(value) ?? 0.0),
+                    );
+                  });
                 },
               ),
               TextFormField(
@@ -112,12 +114,14 @@ class _EditEnvironmentalConditionsPageState
                       : _convertKphToMph(_draftRecord.windSpeedAfter!),
                 ),
                 onChanged: (value) {
-                  _draftRecord = _draftRecord.copyWith(
-                    windSpeedAfter:
-                        value.isEmpty
-                            ? null
-                            : _convertMphToKph(double.tryParse(value) ?? 0.0),
-                  );
+                  setState(() {
+                    _draftRecord = _draftRecord.copyWith(
+                      windSpeedAfter:
+                          value.isEmpty
+                              ? null
+                              : _convertMphToKph(double.tryParse(value) ?? 0.0),
+                    );
+                  });
                 },
               ),
               DropdownButtonFormField<String>(
@@ -136,7 +140,9 @@ class _EditEnvironmentalConditionsPageState
                         )
                         .toList(),
                 onChanged: (value) {
-                  _draftRecord = _draftRecord.copyWith(windDirection: value);
+                  setState(() {
+                    _draftRecord = _draftRecord.copyWith(windDirection: value);
+                  });
                 },
               ),
               TextFormField(
@@ -154,14 +160,16 @@ class _EditEnvironmentalConditionsPageState
                       : _convertCelsiusToFahrenheit(_draftRecord.temperature!),
                 ),
                 onChanged: (value) {
-                  _draftRecord = _draftRecord.copyWith(
-                    temperature:
-                        value.isEmpty
-                            ? null
-                            : _convertFahrenheitToCelsius(
-                              double.tryParse(value) ?? 0.0,
-                            ),
-                  );
+                  setState(() {
+                    _draftRecord = _draftRecord.copyWith(
+                      temperature:
+                          value.isEmpty
+                              ? null
+                              : _convertFahrenheitToCelsius(
+                                double.tryParse(value) ?? 0.0,
+                              ),
+                    );
+                  });
                 },
               ),
             ],
