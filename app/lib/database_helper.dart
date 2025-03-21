@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:io';
 
 class DatabaseHelper {
-  static const _currentSchemaVersion = 2;
+  static const _currentSchemaVersion = 3;
 
   static getPath() async => join(await getDatabasesPath(), "karriba.db");
 
@@ -55,7 +55,11 @@ class DatabaseHelper {
         applicator_id INTEGER NOT NULL,
         customer_id INTEGER NOT NULL,
         customer_informed_of_rei INTEGER NOT NULL,
-        field_name TEXT NOT NULL
+        field_name TEXT NOT NULL,
+        wind_speed_before REAL,
+        wind_speed_after REAL,
+        wind_direction TEXT,
+        temperature REAL
       )
       ''');
   }
@@ -73,6 +77,20 @@ class DatabaseHelper {
           field_name TEXT NOT NULL
         )
         ''');
+    }
+    if (oldVersion < 3) {
+      await db.execute('''
+        ALTER TABLE record ADD COLUMN wind_speed_before REAL;
+      ''');
+      await db.execute('''
+        ALTER TABLE record ADD COLUMN wind_speed_after REAL;
+      ''');
+      await db.execute('''
+        ALTER TABLE record ADD COLUMN wind_direction TEXT;
+      ''');
+      await db.execute('''
+        ALTER TABLE record ADD COLUMN temperature REAL;
+      ''');
     }
   }
 
