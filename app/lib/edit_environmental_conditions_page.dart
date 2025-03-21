@@ -80,10 +80,7 @@ class _EditEnvironmentalConditionsPageState
                 initialValue: _formatWindSpeed(
                   _draftRecord.windSpeedBefore == null
                       ? null
-                      : (double kph) {
-                          const double kphToMph = 0.621371;
-                          return kph * kphToMph;
-                        }(_draftRecord.windSpeedBefore!),
+                      : _convertKphToMph(_draftRecord.windSpeedBefore!),
                 ),
                 onChanged: (value) {
                   setState(() {
@@ -91,10 +88,7 @@ class _EditEnvironmentalConditionsPageState
                       windSpeedBefore:
                           value.isEmpty
                               ? null
-                              : (double mph) {
-                                  const double mphToKph = 1.60934;
-                                  return mph * mphToKph;
-                                }(double.tryParse(value) ?? 0.0),
+                              : _convertMphToKph(double.tryParse(value) ?? 0.0),
                     );
                   });
                 },
@@ -111,10 +105,7 @@ class _EditEnvironmentalConditionsPageState
                 initialValue: _formatWindSpeed(
                   _draftRecord.windSpeedAfter == null
                       ? null
-                      : (double kph) {
-                          const double kphToMph = 0.621371;
-                          return kph * kphToMph;
-                        }(_draftRecord.windSpeedAfter!),
+                      : _convertKphToMph(_draftRecord.windSpeedAfter!),
                 ),
                 onChanged: (value) {
                   setState(() {
@@ -122,10 +113,7 @@ class _EditEnvironmentalConditionsPageState
                       windSpeedAfter:
                           value.isEmpty
                               ? null
-                              : (double mph) {
-                                  const double mphToKph = 1.60934;
-                                  return mph * mphToKph;
-                                }(double.tryParse(value) ?? 0.0),
+                              : _convertMphToKph(double.tryParse(value) ?? 0.0),
                     );
                   });
                 },
@@ -163,10 +151,7 @@ class _EditEnvironmentalConditionsPageState
                 initialValue: _formatTemperature(
                   _draftRecord.temperature == null
                       ? null
-                      : (double celsius) {
-                          const double celsiusToFahrenheit = (celsius * 1.8) + 32;
-                          return celsiusToFahrenheit;
-                        }(_draftRecord.temperature!),
+                      : _convertCelsiusToFahrenheit(_draftRecord.temperature!),
                 ),
                 onChanged: (value) {
                   setState(() {
@@ -174,10 +159,9 @@ class _EditEnvironmentalConditionsPageState
                       temperature:
                           value.isEmpty
                               ? null
-                              : (double fahrenheit) {
-                                  const double fahrenheitToCelsius = (fahrenheit - 32) / 1.8;
-                                  return fahrenheitToCelsius;
-                                }(double.tryParse(value) ?? 0.0),
+                              : _convertFahrenheitToCelsius(
+                                double.tryParse(value) ?? 0.0,
+                              ),
                     );
                   });
                 },
@@ -188,6 +172,15 @@ class _EditEnvironmentalConditionsPageState
       ),
     ),
   );
+
+  double _convertMphToKph(double mph) => mph * 1.60934;
+
+  double _convertKphToMph(double kph) => kph * 0.621371;
+
+  double _convertFahrenheitToCelsius(double fahrenheit) =>
+      (fahrenheit - 32) / 1.8;
+
+  double _convertCelsiusToFahrenheit(double celsius) => (celsius * 1.8) + 32;
 
   Future<void> _saveRecord(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
