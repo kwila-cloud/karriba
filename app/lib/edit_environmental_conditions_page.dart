@@ -54,108 +54,115 @@ class _EditEnvironmentalConditionsPageState
 
   @override
   Widget build(BuildContext context) => WillPopScope(
-        onWillPop: () async =>
+    onWillPop:
+        () async =>
             _hasChanges ? await showUnsavedChangesDialog(context) : true,
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Edit Environmental Conditions'),
-            actions: [
-              IconButton(
-                icon: const Iconify(Mdi.content_save),
-                onPressed: () => _saveRecord(context),
+    child: Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Environmental Conditions'),
+        actions: [
+          IconButton(
+            icon: const Iconify(Mdi.content_save),
+            onPressed: () => _saveRecord(context),
+          ),
+        ],
+      ),
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Wind Speed Before Application (mph)',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                ],
+                initialValue: _formatWindSpeed(
+                  _draftRecord.windSpeedBefore == null
+                      ? null
+                      : _convertKphToMph(_draftRecord.windSpeedBefore!),
+                ),
+                onChanged: (value) {
+                  _draftRecord = _draftRecord.copyWith(
+                    windSpeedBefore:
+                        value.isEmpty
+                            ? null
+                            : _convertMphToKph(double.tryParse(value) ?? 0.0),
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Wind Speed After Application (mph)',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                ],
+                initialValue: _formatWindSpeed(
+                  _draftRecord.windSpeedAfter == null
+                      ? null
+                      : _convertKphToMph(_draftRecord.windSpeedAfter!),
+                ),
+                onChanged: (value) {
+                  _draftRecord = _draftRecord.copyWith(
+                    windSpeedAfter:
+                        value.isEmpty
+                            ? null
+                            : _convertMphToKph(double.tryParse(value) ?? 0.0),
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Wind Direction',
+                  border: OutlineInputBorder(),
+                ),
+                initialValue: _draftRecord.windDirection,
+                onChanged: (value) {
+                  _draftRecord = _draftRecord.copyWith(windDirection: value);
+                },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Temperature (°F)',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                ],
+                initialValue: _formatTemperature(
+                  _draftRecord.temperature == null
+                      ? null
+                      : _convertCelsiusToFahrenheit(_draftRecord.temperature!),
+                ),
+                onChanged: (value) {
+                  _draftRecord = _draftRecord.copyWith(
+                    temperature:
+                        value.isEmpty
+                            ? null
+                            : _convertFahrenheitToCelsius(
+                              double.tryParse(value) ?? 0.0,
+                            ),
+                  );
+                },
               ),
             ],
           ),
-          body: Form(
-            key: _formKey,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Wind Speed Before Application (mph)',
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d*\.?\d*$')),
-                    ],
-                    initialValue: _formatWindSpeed(_draftRecord.windSpeedBefore == null
-                        ? null
-                        : _convertKphToMph(_draftRecord.windSpeedBefore!)),
-                    onChanged: (value) {
-                      _draftRecord = _draftRecord.copyWith(
-                        windSpeedBefore: value.isEmpty
-                            ? null
-                            : _convertMphToKph(double.tryParse(value) ?? 0.0),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Wind Speed After Application (mph)',
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d*\.?\d*$')),
-                    ],
-                    initialValue: _formatWindSpeed(_draftRecord.windSpeedAfter == null
-                        ? null
-                        : _convertKphToMph(_draftRecord.windSpeedAfter!)),
-                    onChanged: (value) {
-                      _draftRecord = _draftRecord.copyWith(
-                        windSpeedAfter: value.isEmpty
-                            ? null
-                            : _convertMphToKph(double.tryParse(value) ?? 0.0),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Wind Direction',
-                      border: OutlineInputBorder(),
-                    ),
-                    initialValue: _draftRecord.windDirection,
-                    onChanged: (value) {
-                      _draftRecord = _draftRecord.copyWith(
-                        windDirection: value,
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Temperature (°F)',
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d*\.?\d*$')),
-                    ],
-                    initialValue: _formatTemperature(_draftRecord.temperature == null
-                        ? null
-                        : _convertCelsiusToFahrenheit(_draftRecord.temperature!)),
-                    onChanged: (value) {
-                      _draftRecord = _draftRecord.copyWith(
-                        temperature: value.isEmpty
-                            ? null
-                            : _convertFahrenheitToCelsius(double.tryParse(value) ?? 0.0),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
         ),
-      );
+      ),
+    ),
+  );
 
   double _convertMphToKph(double mph) => mph * mphToKph;
 
