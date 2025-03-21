@@ -126,17 +126,12 @@ class _EditEnvironmentalConditionsPageState
                   border: OutlineInputBorder(),
                 ),
                 value: _draftRecord.windDirection,
-                //AI!: use the map function to reduce duplicate code
-                items: const [
-                  DropdownMenuItem(value: 'N', child: Text('N')),
-                  DropdownMenuItem(value: 'NE', child: Text('NE')),
-                  DropdownMenuItem(value: 'E', child: Text('E')),
-                  DropdownMenuItem(value: 'SE', child: Text('SE')),
-                  DropdownMenuItem(value: 'S', child: Text('S')),
-                  DropdownMenuItem(value: 'SW', child: Text('SW')),
-                  DropdownMenuItem(value: 'W', child: Text('W')),
-                  DropdownMenuItem(value: 'NW', child: Text('NW')),
-                ],
+                items: const ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
+                    .map((direction) => DropdownMenuItem(
+                          value: direction,
+                          child: Text(direction),
+                        ))
+                    .toList(),
                 onChanged: (value) {
                   _draftRecord = _draftRecord.copyWith(windDirection: value);
                 },
