@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:intl/intl.dart';
+import 'package:karriba/coming_soon_dialog.dart';
 
 import 'edit_environmental_conditions_page.dart';
 import 'edit_record_page.dart';
@@ -122,6 +123,16 @@ class RecordTile extends StatelessWidget {
                       ),
                     );
                     refresh();
+                  },
+                ),
+                ListTile(
+                  leading: Iconify(Mdi.bottle_tonic),
+                  title: const Text('Pesticides'),
+                  onTap: () async {
+                    await showDialog(
+                      context: context,
+                      builder: (context) => ComingSoonDialog(),
+                    );
                   },
                 ),
                 ListTile(
