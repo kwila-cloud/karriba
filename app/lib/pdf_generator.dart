@@ -27,12 +27,24 @@ class PDFGenerator {
           return pdf.Column(
             crossAxisAlignment: pdf.CrossAxisAlignment.start,
             children: [
-              pdf.Text(
-                "Pesticide Record Form",
-                style: pdf.TextStyle(
-                  fontSize: 26,
-                  fontWeight: pdf.FontWeight.bold,
-                ),
+              pdf.Row(
+                mainAxisAlignment: pdf.MainAxisAlignment.spaceBetween,
+                children: [
+                  pdf.Text(
+                    "Pesticide Record Form",
+                    style: pdf.TextStyle(
+                      fontSize: 26,
+                      fontWeight: pdf.FontWeight.bold,
+                    ),
+                  ),
+                  pdf.Text(
+                    formattedDate, // Form date
+                    style: pdf.TextStyle(
+                      fontSize: 16,
+                      fontWeight: pdf.FontWeight.normal,
+                    ),
+                  ),
+                ],
               ),
               pdf.SizedBox(height: 10),
 
@@ -56,7 +68,7 @@ class PDFGenerator {
               _buildInlineRow("Total Treated Area", ""),
               _buildInlineRow("GPA", ""),
               _buildInlineRow(
-                "Wind velocity Before",
+                "Wind Velocity Before",
                 ConversionHelper.convert(
                   'kphToMph',
                   recordData.windSpeedBefore ?? 0.0,
@@ -64,7 +76,7 @@ class PDFGenerator {
                 suffix: "mph",
               ),
               _buildInlineRow(
-                "Wind velocity After",
+                "Wind Velocity After",
                 ConversionHelper.convert(
                   'kphToMph',
                   recordData.windSpeedAfter ?? 0.0,
