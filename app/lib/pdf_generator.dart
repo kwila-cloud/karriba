@@ -64,27 +64,18 @@ class PDFGenerator {
               ),
               _buildInlineRow("Crop Treated", ""),
               _buildInlineRow("Field", recordData.fieldName),
-              _buildRowWithBottomBox("Pesticides", "", height: 80),
+              _buildRowWithBottomBox("Pesticides", "", height: 100),
               _buildInlineRow("Total Treated Area", ""),
               _buildInlineRow("GPA", ""),
               _buildInlineRow(
-                "Wind Velocity Before",
-                ConversionHelper.convert(
-                  'kphToMph',
-                  recordData.windSpeedBefore ?? 0.0,
-                ).toStringAsFixed(1),
-                suffix: "mph",
+                "Wind Velocity",
+                'Before: '
+                '${ConversionHelper.convert('kphToMph', recordData.windSpeedBefore ?? 0.0).toStringAsFixed(1)} mph '
+                'After: '
+                '${ConversionHelper.convert('kphToMph', recordData.windSpeedAfter ?? 0.0).toStringAsFixed(1)} mph',
               ),
               _buildInlineRow(
-                "Wind Velocity After",
-                ConversionHelper.convert(
-                  'kphToMph',
-                  recordData.windSpeedAfter ?? 0.0,
-                ).toStringAsFixed(1),
-                suffix: "mph",
-              ),
-              _buildInlineRow(
-                "Wind direction",
+                "Wind Direction",
                 recordData.windDirection.toString(),
               ),
               _buildInlineRow(
