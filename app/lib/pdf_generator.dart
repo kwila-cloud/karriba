@@ -46,8 +46,7 @@ class PDFGenerator {
                   ),
                 ],
               ),
-              pdf.SizedBox(height: 10),
-
+              pdf.SizedBox(height: 12),
               _buildInlineRow(
                 "Applicator",
                 "${applicator?.name} - ${applicator?.licenseNumber}",
@@ -70,9 +69,9 @@ class PDFGenerator {
               _buildInlineRow(
                 "Wind Velocity",
                 'Before: '
-                '${ConversionHelper.convert('kphToMph', recordData.windSpeedBefore ?? 0.0).toStringAsFixed(1)} mph '
-                'After: '
-                '${ConversionHelper.convert('kphToMph', recordData.windSpeedAfter ?? 0.0).toStringAsFixed(1)} mph',
+                    '${ConversionHelper.convert('kphToMph', recordData.windSpeedBefore ?? 0.0).toStringAsFixed(1)} mph '
+                    'After: '
+                    '${ConversionHelper.convert('kphToMph', recordData.windSpeedAfter ?? 0.0).toStringAsFixed(1)} mph',
               ),
               _buildInlineRow(
                 "Wind Direction",
@@ -86,8 +85,7 @@ class PDFGenerator {
                 ).toStringAsFixed(1),
                 suffix: "°F",
               ),
-
-              pdf.SizedBox(height: 10),
+              pdf.SizedBox(height: 12),
               _buildRowWithBottomBox("Notes", "", height: 100),
               _buildBox("", height: 100),
             ],
@@ -117,19 +115,19 @@ class PDFGenerator {
   pdf.Widget _buildRowWithBottomBox(
     String label,
     String value, {
-    double height = 25,
+    double height = 24,
     String suffix = '',
   }) {
     return pdf.Padding(
-      padding: pdf.EdgeInsets.symmetric(vertical: 5),
+      padding: pdf.EdgeInsets.symmetric(vertical: 4),
       child: pdf.Column(
         crossAxisAlignment: pdf.CrossAxisAlignment.start,
         children: [
           pdf.Text(
-            "$label:",
+            label,
             style: pdf.TextStyle(fontSize: 16, fontWeight: pdf.FontWeight.bold),
           ),
-          pdf.SizedBox(height: 5),
+          pdf.SizedBox(height: 4),
           _buildBox(value, height: height, suffix: suffix),
         ],
       ),
@@ -138,26 +136,26 @@ class PDFGenerator {
 
   pdf.Widget _buildInlineRow(String label, String value, {String suffix = ''}) {
     return pdf.Padding(
-      padding: pdf.EdgeInsets.symmetric(vertical: 5),
+      padding: pdf.EdgeInsets.symmetric(vertical: 4),
       child: pdf.Row(
-        crossAxisAlignment: pdf.CrossAxisAlignment.start,
+        crossAxisAlignment: pdf.CrossAxisAlignment.center,
         children: [
           pdf.Text(
-            "$label:",
+            label,
             style: pdf.TextStyle(fontSize: 16, fontWeight: pdf.FontWeight.bold),
           ),
-          pdf.SizedBox(width: 5),
+          pdf.SizedBox(width: 8),
           pdf.Expanded(child: _buildBox(value, suffix: suffix)),
         ],
       ),
     );
   }
 
-  pdf.Widget _buildBox(String value, {double height = 25, String suffix = ''}) {
+  pdf.Widget _buildBox(String value, {double height = 24, String suffix = ''}) {
     return pdf.Container(
       width: double.infinity,
       // Extend box to document edges
-      padding: pdf.EdgeInsets.all(5),
+      padding: pdf.EdgeInsets.all(4),
       decoration: pdf.BoxDecoration(
         border: pdf.Border.all(color: PdfColors.black),
       ),
