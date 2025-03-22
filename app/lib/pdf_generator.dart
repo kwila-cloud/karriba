@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:intl/intl.dart';
 import 'package:karriba/applicator_dao.dart';
-import 'package:karriba/conversion_helper.dart';
 import 'package:karriba/customer_dao.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as path;
@@ -26,19 +25,14 @@ class PDFGenerator {
         (beforeSpeed == null
             ? ''
             : 'Before: '
-                '${ConversionHelper.convert('kphToMph', beforeSpeed).toStringAsFixed(1)} mph ') +
+                '${beforeSpeed.toStringAsFixed(1)} mph ') +
         (afterSpeed == null
             ? ''
             : 'After: '
-                '${ConversionHelper.convert('kphToMph', afterSpeed).toStringAsFixed(1)} mph');
+                '${afterSpeed.toStringAsFixed(1)} mph');
     final temperature = recordData.temperature;
     final temperatureValue =
-        temperature == null
-            ? ''
-            : ConversionHelper.convert(
-              'celsiusToFahrenheit',
-              temperature,
-            ).toStringAsFixed(1);
+        temperature == null ? '' : temperature.toStringAsFixed(1);
 
     document.addPage(
       pdf.Page(
