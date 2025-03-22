@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
-import 'package:karriba/conversion_helper.dart';
 
 import 'record.dart';
 import 'records_dao.dart';
@@ -78,24 +77,11 @@ class _EditEnvironmentalConditionsPageState
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
                 ],
-                initialValue: _formatWindSpeed(
-                  _draftRecord.windSpeedBefore == null
-                      ? null
-                      : ConversionHelper.convert(
-                        'kphToMph',
-                        _draftRecord.windSpeedBefore!,
-                      ),
-                ),
+                initialValue: _formatWindSpeed(_draftRecord.windSpeedBefore),
                 onChanged: (value) {
                   setState(() {
                     _draftRecord = _draftRecord.copyWith(
-                      windSpeedBefore:
-                          value.isEmpty
-                              ? null
-                              : ConversionHelper.convert(
-                                'mphToKph',
-                                double.tryParse(value) ?? 0.0,
-                              ),
+                      windSpeedBefore: double.tryParse(value),
                     );
                   });
                 },
@@ -109,24 +95,11 @@ class _EditEnvironmentalConditionsPageState
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
                 ],
-                initialValue: _formatWindSpeed(
-                  _draftRecord.windSpeedAfter == null
-                      ? null
-                      : ConversionHelper.convert(
-                        'kphToMph',
-                        _draftRecord.windSpeedAfter!,
-                      ),
-                ),
+                initialValue: _formatWindSpeed(_draftRecord.windSpeedAfter),
                 onChanged: (value) {
                   setState(() {
                     _draftRecord = _draftRecord.copyWith(
-                      windSpeedAfter:
-                          value.isEmpty
-                              ? null
-                              : ConversionHelper.convert(
-                                'mphToKph',
-                                double.tryParse(value) ?? 0.0,
-                              ),
+                      windSpeedAfter: double.tryParse(value),
                     );
                   });
                 },
@@ -161,24 +134,11 @@ class _EditEnvironmentalConditionsPageState
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
                 ],
-                initialValue: _formatTemperature(
-                  _draftRecord.temperature == null
-                      ? null
-                      : ConversionHelper.convert(
-                        'celsiusToFahrenheit',
-                        _draftRecord.temperature!,
-                      ),
-                ),
+                initialValue: _formatTemperature(_draftRecord.temperature),
                 onChanged: (value) {
                   setState(() {
                     _draftRecord = _draftRecord.copyWith(
-                      temperature:
-                          value.isEmpty
-                              ? null
-                              : ConversionHelper.convert(
-                                'fahrenheitToCelsius',
-                                double.tryParse(value) ?? 0.0,
-                              ),
+                      temperature: double.tryParse(value),
                     );
                   });
                 },
