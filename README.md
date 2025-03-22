@@ -1,6 +1,6 @@
 # Karriba 🚁 📈 
 
-![Karriba Logo](app/assets/icon/icon.png)
+<img src="app/assets/icon/icon.png" width="300" />
 
 🚀 **An intuitive commercial drone record-keeping system that keeps getting better**
 
