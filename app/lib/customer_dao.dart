@@ -35,4 +35,26 @@ class CustomerDao {
       );
     });
   }
+
+  Future<Customer?> get(int id) async {
+    Database db = await dbHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'customer',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    if (maps.isNotEmpty) {
+      return Customer(
+        id: maps[0]['id'] as int?,
+        name: maps[0]['name'] as String,
+        streetAddress: maps[0]['street_address'] as String,
+        city: maps[0]['city'] as String,
+        state: maps[0]['state'] as String,
+        zipCode: maps[0]['zip_code'] as String,
+      );
+    } else {
+      return null;
+    }
+  }
 }
