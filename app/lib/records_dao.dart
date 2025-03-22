@@ -39,18 +39,22 @@ class RecordsDao {
       FROM record
       INNER JOIN applicator ON applicator.id = record.applicator_id
       INNER JOIN customer ON customer.id = record.customer_id
+      ORDER BY timestamp DESC
     ''');
 
     // Convert the List<Map<String, dynamic> into a List<Record>.
     return List.generate(maps.length, (i) {
       return Record(
         id: maps[i]['id'] as int?,
-        timestamp: DateTime.fromMillisecondsSinceEpoch(maps[i]['timestamp'] as int),
+        timestamp: DateTime.fromMillisecondsSinceEpoch(
+          maps[i]['timestamp'] as int,
+        ),
         applicatorId: maps[i]['applicator_id'] as int,
         applicatorName: maps[i]['applicator_name'] as String,
         customerId: maps[i]['customer_id'] as int,
         customerName: maps[i]['customer_name'] as String,
-        customerInformedOfRei: (maps[i]['customer_informed_of_rei'] as int) == 1,
+        customerInformedOfRei:
+            (maps[i]['customer_informed_of_rei'] as int) == 1,
         fieldName: maps[i]['field_name'] as String,
         windSpeedBefore: maps[i]['wind_speed_before'] as double?,
         windSpeedAfter: maps[i]['wind_speed_after'] as double?,
