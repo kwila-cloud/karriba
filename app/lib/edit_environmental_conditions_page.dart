@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
+import 'package:karriba/conversion_helper.dart';
 
 import 'record.dart';
 import 'records_dao.dart';
@@ -80,7 +81,10 @@ class _EditEnvironmentalConditionsPageState
                 initialValue: _formatWindSpeed(
                   _draftRecord.windSpeedBefore == null
                       ? null
-                      : _convertKphToMph(_draftRecord.windSpeedBefore!),
+                      : ConversionHelper.convert(
+                        'kphToMph',
+                        _draftRecord.windSpeedBefore!,
+                      ),
                 ),
                 onChanged: (value) {
                   setState(() {
@@ -88,7 +92,10 @@ class _EditEnvironmentalConditionsPageState
                       windSpeedBefore:
                           value.isEmpty
                               ? null
-                              : _convertMphToKph(double.tryParse(value) ?? 0.0),
+                              : ConversionHelper.convert(
+                                'mphToKph',
+                                double.tryParse(value) ?? 0.0,
+                              ),
                     );
                   });
                 },
@@ -105,7 +112,10 @@ class _EditEnvironmentalConditionsPageState
                 initialValue: _formatWindSpeed(
                   _draftRecord.windSpeedAfter == null
                       ? null
-                      : _convertKphToMph(_draftRecord.windSpeedAfter!),
+                      : ConversionHelper.convert(
+                        'kphToMph',
+                        _draftRecord.windSpeedAfter!,
+                      ),
                 ),
                 onChanged: (value) {
                   setState(() {
@@ -113,7 +123,10 @@ class _EditEnvironmentalConditionsPageState
                       windSpeedAfter:
                           value.isEmpty
                               ? null
-                              : _convertMphToKph(double.tryParse(value) ?? 0.0),
+                              : ConversionHelper.convert(
+                                'mphToKph',
+                                double.tryParse(value) ?? 0.0,
+                              ),
                     );
                   });
                 },
@@ -151,7 +164,10 @@ class _EditEnvironmentalConditionsPageState
                 initialValue: _formatTemperature(
                   _draftRecord.temperature == null
                       ? null
-                      : _convertCelsiusToFahrenheit(_draftRecord.temperature!),
+                      : ConversionHelper.convert(
+                        'celsiusToFahrenheit',
+                        _draftRecord.temperature!,
+                      ),
                 ),
                 onChanged: (value) {
                   setState(() {
@@ -159,7 +175,8 @@ class _EditEnvironmentalConditionsPageState
                       temperature:
                           value.isEmpty
                               ? null
-                              : _convertFahrenheitToCelsius(
+                              : ConversionHelper.convert(
+                                'fahrenheitToCelsius',
                                 double.tryParse(value) ?? 0.0,
                               ),
                     );
@@ -172,15 +189,6 @@ class _EditEnvironmentalConditionsPageState
       ),
     ),
   );
-
-  double _convertMphToKph(double mph) => mph * 1.60934;
-
-  double _convertKphToMph(double kph) => kph * 0.621371;
-
-  double _convertFahrenheitToCelsius(double fahrenheit) =>
-      (fahrenheit - 32) / 1.8;
-
-  double _convertCelsiusToFahrenheit(double celsius) => (celsius * 1.8) + 32;
 
   Future<void> _saveRecord(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {

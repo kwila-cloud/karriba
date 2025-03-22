@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:intl/intl.dart';
 import 'package:karriba/applicator_dao.dart';
+import 'package:karriba/conversion_helper.dart';
 import 'package:karriba/customer_dao.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as path;
@@ -15,8 +16,10 @@ class PDFGenerator {
     final document = pdf.Document();
     final applicator = await ApplicatorDao().get(recordData.applicatorId);
     final customer = await CustomerDao().get(recordData.applicatorId);
-    final formattedDate = DateFormat('yyyy-MM-dd').format(recordData.timestamp).toString();
-    final formattedTime = DateFormat('HH_mm').format(recordData.timestamp).toString();
+    final formattedDate =
+        DateFormat('yyyy-MM-dd').format(recordData.timestamp).toString();
+    final formattedTime =
+        DateFormat('HH_mm').format(recordData.timestamp).toString();
 
     document.addPage(
       pdf.Page(
@@ -26,24 +29,60 @@ class PDFGenerator {
             children: [
               pdf.Text(
                 "Pesticide Record Form",
-                style: pdf.TextStyle(fontSize: 26, fontWeight: pdf.FontWeight.bold),
+                style: pdf.TextStyle(
+                  fontSize: 26,
+                  fontWeight: pdf.FontWeight.bold,
+                ),
               ),
               pdf.SizedBox(height: 10),
 
-              _buildRowWithBottomBox("Applicator Name and License Number", "${applicator?.name} - ${applicator?.licenseNumber}"),
-              _buildRowWithBottomBox("Name and Address of Owner/Advisor",
-                  "${customer?.name}, ${customer?.streetAddress}, ${customer?.city}, ${customer?.state}, ${customer?.zipCode}"),
+              _buildInlineRow(
+                "Applicator",
+                "${applicator?.name} - ${applicator?.licenseNumber}",
+              ),
 
-              _buildInlineRow("Owner Contacted", recordData.customerInformedOfRei ? 'Yes' : 'No'),
+              _buildRowWithBottomBox(
+                "Owner",
+                "${customer?.name}, ${customer?.streetAddress}, ${customer?.city}, ${customer?.state}, ${customer?.zipCode}",
+              ),
+
+              _buildInlineRow(
+                "Owner Informed of REI",
+                recordData.customerInformedOfRei ? 'Yes' : 'No',
+              ),
               _buildInlineRow("Crop Treated", ""),
-              _buildInlineRow("Name and Coordinates of Field", recordData.fieldName),
-              _buildRowWithBottomBox("Pesticide Name and Registration Number/Rate", "", height: 50),
+              _buildInlineRow("Field", recordData.fieldName),
+              _buildRowWithBottomBox("Pesticides", "", height: 80),
               _buildInlineRow("Total Treated Area", ""),
               _buildInlineRow("GPA", ""),
-              _buildInlineRow("Wind velocity Before", recordData.windSpeedBefore.toString()),
-              _buildInlineRow("Wind velocity After", recordData.windSpeedAfter.toString()),
-              _buildInlineRow("Wind direction", recordData.windDirection.toString()),
-              _buildInlineRow("Temperature", recordData.temperature.toString()),
+              _buildInlineRow(
+                "Wind velocity Before",
+                ConversionHelper.convert(
+                  'kphToMph',
+                  recordData.windSpeedBefore ?? 0.0,
+                ).toStringAsFixed(1),
+                suffix: "mph",
+              ),
+              _buildInlineRow(
+                "Wind velocity After",
+                ConversionHelper.convert(
+                  'kphToMph',
+                  recordData.windSpeedAfter ?? 0.0,
+                ).toStringAsFixed(1),
+                suffix: "mph",
+              ),
+              _buildInlineRow(
+                "Wind direction",
+                recordData.windDirection.toString(),
+              ),
+              _buildInlineRow(
+                "Temperature",
+                ConversionHelper.convert(
+                  'celsiusToFahrenheit',
+                  recordData.temperature ?? 0.0,
+                ).toStringAsFixed(1),
+                suffix: "°F",
+              ),
 
               pdf.SizedBox(height: 10),
               _buildRowWithBottomBox("Notes", "", height: 100),
@@ -63,47 +102,67 @@ class PDFGenerator {
     final outputFilePath = path.join(directoryPath, fileName);
     final outputFile = File(outputFilePath);
 
+    // Ensure the old file is deleted before writing the new one
+    if (await outputFile.exists()) {
+      await outputFile.delete();
+    }
+
     await outputFile.writeAsBytes(await document.save());
     OpenFile.open(outputFile.path);
   }
 
-  pdf.Widget _buildRowWithBottomBox(String label, String value, {double height = 25}) {
+  pdf.Widget _buildRowWithBottomBox(
+    String label,
+    String value, {
+    double height = 25,
+    String suffix = '',
+  }) {
     return pdf.Padding(
       padding: pdf.EdgeInsets.symmetric(vertical: 5),
       child: pdf.Column(
         crossAxisAlignment: pdf.CrossAxisAlignment.start,
         children: [
-          pdf.Text("$label:", style: pdf.TextStyle(fontSize: 16, fontWeight: pdf.FontWeight.bold)),
+          pdf.Text(
+            "$label:",
+            style: pdf.TextStyle(fontSize: 16, fontWeight: pdf.FontWeight.bold),
+          ),
           pdf.SizedBox(height: 5),
-          _buildBox(value, height: height),
+          _buildBox(value, height: height, suffix: suffix),
         ],
       ),
     );
   }
 
-  pdf.Widget _buildInlineRow(String label, String value) {
+  pdf.Widget _buildInlineRow(String label, String value, {String suffix = ''}) {
     return pdf.Padding(
       padding: pdf.EdgeInsets.symmetric(vertical: 5),
       child: pdf.Row(
         crossAxisAlignment: pdf.CrossAxisAlignment.start,
         children: [
-          pdf.Text("$label:", style: pdf.TextStyle(fontSize: 16, fontWeight: pdf.FontWeight.bold)),
+          pdf.Text(
+            "$label:",
+            style: pdf.TextStyle(fontSize: 16, fontWeight: pdf.FontWeight.bold),
+          ),
           pdf.SizedBox(width: 5),
-          pdf.Expanded(child: _buildBox(value)),
+          pdf.Expanded(child: _buildBox(value, suffix: suffix)),
         ],
       ),
     );
   }
 
-  pdf.Widget _buildBox(String value, {double height = 25}) {
+  pdf.Widget _buildBox(String value, {double height = 25, String suffix = ''}) {
     return pdf.Container(
-      width: double.infinity, // Extend box to document edges
+      width: double.infinity,
+      // Extend box to document edges
       padding: pdf.EdgeInsets.all(5),
       decoration: pdf.BoxDecoration(
         border: pdf.Border.all(color: PdfColors.black),
       ),
       constraints: pdf.BoxConstraints(minHeight: height),
-      child: pdf.Text(value, style: pdf.TextStyle(fontSize: 14, fontWeight: pdf.FontWeight.bold)),
+      child: pdf.Text(
+        '$value $suffix',
+        style: pdf.TextStyle(fontSize: 14, fontWeight: pdf.FontWeight.bold),
+      ),
     );
   }
 }
