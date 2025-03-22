@@ -20,6 +20,25 @@ class PDFGenerator {
         DateFormat('yyyy-MM-dd').format(recordData.timestamp).toString();
     final formattedTime =
         DateFormat('HH_mm').format(recordData.timestamp).toString();
+    final beforeSpeed = recordData.windSpeedBefore;
+    final afterSpeed = recordData.windSpeedAfter;
+    final windVelocityValue =
+        (beforeSpeed == null
+            ? ''
+            : 'Before: '
+                '${ConversionHelper.convert('kphToMph', beforeSpeed).toStringAsFixed(1)} mph ') +
+        (afterSpeed == null
+            ? ''
+            : 'After: '
+                '${ConversionHelper.convert('kphToMph', afterSpeed).toStringAsFixed(1)} mph');
+    final temperature = recordData.temperature;
+    final temperatureValue =
+        temperature == null
+            ? ''
+            : ConversionHelper.convert(
+              'celsiusToFahrenheit',
+              temperature,
+            ).toStringAsFixed(1);
 
     document.addPage(
       pdf.Page(
@@ -61,30 +80,19 @@ class PDFGenerator {
                 "Owner Informed of REI",
                 recordData.customerInformedOfRei ? 'Yes' : 'No',
               ),
-              _buildInlineRow("Crop Treated", ""),
               _buildInlineRow("Field", recordData.fieldName),
+              _buildInlineRow("Crop Treated", ""),
               _buildRowWithBottomBox("Pesticides", "", height: 100),
               _buildInlineRow("Total Treated Area", ""),
               _buildInlineRow("GPA", ""),
-              _buildInlineRow(
-                "Wind Velocity",
-                'Before: '
-                    '${ConversionHelper.convert('kphToMph', recordData.windSpeedBefore ?? 0.0).toStringAsFixed(1)} mph '
-                    'After: '
-                    '${ConversionHelper.convert('kphToMph', recordData.windSpeedAfter ?? 0.0).toStringAsFixed(1)} mph',
-              ),
+              _buildInlineRow("Wind Velocity", windVelocityValue),
               _buildInlineRow(
                 "Wind Direction",
-                recordData.windDirection.toString(),
+                recordData.windDirection == null
+                    ? ""
+                    : recordData.windDirection.toString(),
               ),
-              _buildInlineRow(
-                "Temperature",
-                ConversionHelper.convert(
-                  'celsiusToFahrenheit',
-                  recordData.temperature ?? 0.0,
-                ).toStringAsFixed(1),
-                suffix: "°F",
-              ),
+              _buildInlineRow("Temperature", temperatureValue, suffix: "°F"),
               pdf.SizedBox(height: 12),
               _buildRowWithBottomBox("Notes", "", height: 100),
               _buildBox("", height: 100),
@@ -161,7 +169,7 @@ class PDFGenerator {
       ),
       constraints: pdf.BoxConstraints(minHeight: height),
       child: pdf.Text(
-        '$value $suffix',
+        value == '' ? '' : '$value $suffix',
         style: pdf.TextStyle(fontSize: 14, fontWeight: pdf.FontWeight.bold),
       ),
     );
