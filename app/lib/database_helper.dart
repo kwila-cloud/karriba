@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:io';
 
 class DatabaseHelper {
-  static const _currentSchemaVersion = 3;
+  static const _currentSchemaVersion = 4;
 
   static getPath() async => join(await getDatabasesPath(), "karriba.db");
 
@@ -62,6 +62,24 @@ class DatabaseHelper {
         temperature REAL
       )
       ''');
+    await db.execute('''
+      CREATE TABLE pesticide (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        registration_number TEXT NOT NULL
+      )
+      ''');
+    await db.execute('''
+      CREATE TABLE record_pesticide (
+        record_id INTEGER NOT NULL,
+        pesticide_id INTEGER NOT NULL,
+        rate REAL NOT NULL,
+        rate_unit TEXT NOT NULL,
+        PRIMARY KEY (record_id, pesticide_id),
+        FOREIGN KEY (record_id) REFERENCES record(id) ON DELETE CASCADE,
+        FOREIGN KEY (pesticide_id) REFERENCES pesticide(id) ON DELETE CASCADE
+      )
+      ''');
   }
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
@@ -92,6 +110,30 @@ class DatabaseHelper {
       await db.execute('''
         ALTER TABLE record ADD COLUMN temperature REAL;
       ''');
+    }
+    if (oldVersion < 4) {
+      // Create the pesticides related tables if they don't exist
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS record (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          timestamp INTEGER NOT NULL,
+          applicator_id INTEGER NOT NULL,
+          customer_id INTEGER NOT NULL,
+          customer_informed_of_rei INTEGER NOT NULL,
+          field_name TEXT NOT NULL
+        )
+        ''');
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS record_pesticide (
+          record_id INTEGER NOT NULL,
+          pesticide_id INTEGER NOT NULL,
+          rate REAL NOT NULL,
+          rate_unit TEXT NOT NULL,
+          PRIMARY KEY (record_id, pesticide_id),
+          FOREIGN KEY (record_id) REFERENCES record(id) ON DELETE CASCADE,
+          FOREIGN KEY (pesticide_id) REFERENCES pesticide(id) ON DELETE CASCADE
+        )
+        ''');
     }
   }
 

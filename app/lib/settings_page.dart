@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:karriba/applicators_page.dart';
+import 'package:karriba/pesticide/pesticides_page.dart';
+
 import 'data_exporter.dart';
 import 'data_importer.dart';
 
@@ -19,6 +21,16 @@ class SettingsPage extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => ApplicatorsPage()),
+            );
+          },
+        ),
+        ListTile(
+          leading: const Iconify(Mdi.bug),
+          title: const Text('Pesticides'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PesticidesPage()),
             );
           },
         ),
