@@ -114,13 +114,10 @@ class DatabaseHelper {
     if (oldVersion < 4) {
       // Create the pesticides related tables if they don't exist
       await db.execute('''
-        CREATE TABLE IF NOT EXISTS record (
+        CREATE TABLE IF NOT EXISTS pesticide (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
-          timestamp INTEGER NOT NULL,
-          applicator_id INTEGER NOT NULL,
-          customer_id INTEGER NOT NULL,
-          customer_informed_of_rei INTEGER NOT NULL,
-          field_name TEXT NOT NULL
+          name TEXT NOT NULL,
+          registration_number TEXT NOT NULL
         )
         ''');
       await db.execute('''
