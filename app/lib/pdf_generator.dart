@@ -14,7 +14,7 @@ class PDFGenerator {
   Future<void> generateAndSavePDF(Record recordData) async {
     final document = pdf.Document();
     final applicator = await ApplicatorDao().get(recordData.applicatorId);
-    final customer = await CustomerDao().get(recordData.applicatorId);
+    final customer = await CustomerDao().get(recordData.customerId);
     final formattedDate =
         DateFormat('yyyy-MM-dd').format(recordData.timestamp).toString();
     final formattedTime =
@@ -100,15 +100,13 @@ class PDFGenerator {
     final directoryPath = '/storage/emulated/0/Download';
     final fileName =
         '${applicator?.name ?? 'Unknown Applicator'} ${recordData.fieldName} ${formattedDate}_$formattedTime.pdf'
-            .replaceAll(' ', '_');
+            .replaceAll(' ', '_')
+            // Remove all dangerous characters
+            .replaceAll(RegExp(r'[^\w\-_]'), '');
+
 
     final outputFilePath = path.join(directoryPath, fileName);
     final outputFile = File(outputFilePath);
-
-    // Ensure the old file is deleted before writing the new one
-    if (await outputFile.exists()) {
-      await outputFile.delete();
-    }
 
     await outputFile.writeAsBytes(await document.save());
     OpenFile.open(outputFile.path);
