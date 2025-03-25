@@ -102,7 +102,8 @@ class PDFGenerator {
         '${applicator?.name ?? 'Unknown Applicator'} ${recordData.fieldName} ${formattedDate}_$formattedTime.pdf'
             .replaceAll(' ', '_')
             // Remove all dangerous characters
-            .replaceAll(RegExp(r'[^\w-_]'), '');
+            .replaceAll(RegExp(r'[^\w\-_]'), '');
+
 
     final outputFilePath = path.join(directoryPath, fileName);
     final outputFile = File(outputFilePath);
