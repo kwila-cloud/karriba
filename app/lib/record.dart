@@ -82,9 +82,8 @@ class Record {
     return {
       'id': id,
       'timestamp': timestamp.millisecondsSinceEpoch,
-      //AI!: applicator ID should always be above customer ID
-      'customer_id': customerId,
       'applicator_id': applicatorId,
+      'customer_id': customerId,
       'customer_informed_of_rei': customerInformedOfRei ? 1 : 0,
       'field_name': fieldName,
       'crop': crop,
