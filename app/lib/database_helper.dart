@@ -56,14 +56,14 @@ class DatabaseHelper {
         customer_id INTEGER NOT NULL,
         customer_informed_of_rei INTEGER NOT NULL,
         field_name TEXT NOT NULL,
-        wind_speed_before REAL,
-        wind_speed_after REAL,
-        wind_direction TEXT,
-        temperature REAL,
         crop TEXT NOT NULL,
         total_area REAL NOT NULL,
         price_per_acre REAL NOT NULL,
         spray_volume REAL NOT NULL,
+        wind_speed_before REAL,
+        wind_speed_after REAL,
+        wind_direction TEXT,
+        temperature REAL,
         notes TEXT NOT NULL
       )
       ''');
