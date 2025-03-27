@@ -184,6 +184,26 @@ class _EditRecordPageState extends State<EditRecordPage> {
                         });
                       },
                     ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Crop',
+                        border: OutlineInputBorder(),
+                      ),
+                      initialValue: _draftRecord.crop,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a crop';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _draftRecord = _draftRecord.copyWith(
+                            crop: value,
+                          );
+                        });
+                      },
+                    ),
                   ],
                 ),
               );
