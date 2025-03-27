@@ -76,9 +76,17 @@ class PDFGenerator {
               ),
               _buildInlineRow("Field", recordData.fieldName),
               _buildInlineRow("Crop Treated", recordData.crop),
+              _buildInlineRow(
+                "Total Treated Area",
+                recordData.totalArea.toString(),
+                suffix: "Acres",
+              ),
+              _buildInlineRow(
+                "Spray Volume",
+                recordData.sprayVolume.toString(),
+                suffix: "GPA",
+              ),
               _buildRowWithBottomBox("Pesticides", "", height: 100),
-              _buildInlineRow("Total Treated Area", recordData.totalArea.toString(), suffix: " Acres"),
-              _buildInlineRow("GPA", recordData.sprayVolume.toString()),
               _buildInlineRow("Wind Velocity", windVelocityValue),
               _buildInlineRow(
                 "Wind Direction",
@@ -103,7 +111,6 @@ class PDFGenerator {
             .replaceAll(' ', '_')
             // Remove all dangerous characters
             .replaceAll(RegExp(r'[^\w\-_]'), '');
-
 
     final outputFilePath = path.join(directoryPath, fileName);
     final outputFile = File(outputFilePath);
