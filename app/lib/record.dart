@@ -14,6 +14,7 @@ class Record {
   final String crop;
   final double totalArea;
   final double pricePerAcre;
+  final double sprayVolume;
 
   Record({
     this.id,
@@ -31,6 +32,7 @@ class Record {
     this.crop = '',
     this.totalArea = 0,
     this.pricePerAcre = 0,
+    this.sprayVolume = 0,
   });
 
   Record copyWith({
@@ -49,6 +51,7 @@ class Record {
     String? crop,
     double? totalArea,
     double? pricePerAcre,
+    double? sprayVolume,
   }) {
     return Record(
       id: id ?? this.id,
@@ -67,6 +70,7 @@ class Record {
       crop: crop ?? this.crop,
       totalArea: totalArea ?? this.totalArea,
       pricePerAcre: pricePerAcre ?? this.pricePerAcre,
+      sprayVolume: sprayVolume ?? this.sprayVolume,
     );
   }
 
@@ -85,12 +89,13 @@ class Record {
       'crop': crop,
       'total_area': totalArea,
       'price_per_acre': pricePerAcre,
+      'spray_volume': sprayVolume,
     };
   }
 
   @override
   String toString() {
-    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature, crop: $crop, totalArea: $totalArea, pricePerAcre: $pricePerAcre}';
+    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature, crop: $crop, totalArea: $totalArea, pricePerAcre: $pricePerAcre, sprayVolume: $sprayVolume}';
   }
 
   @override
@@ -110,7 +115,8 @@ class Record {
           temperature == other.temperature &&
           crop == other.crop &&
           totalArea == other.totalArea &&
-          pricePerAcre == other.pricePerAcre;
+          pricePerAcre == other.pricePerAcre &&
+          sprayVolume == other.sprayVolume;
 
   @override
   int get hashCode =>
@@ -126,5 +132,6 @@ class Record {
       temperature.hashCode ^
       crop.hashCode ^
       totalArea.hashCode ^
-      pricePerAcre.hashCode;
+      pricePerAcre.hashCode ^
+      sprayVolume.hashCode;
 }
