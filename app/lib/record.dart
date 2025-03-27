@@ -100,48 +100,45 @@ class Record {
 
   @override
   String toString() {
-    // AI!: reorder the fields to match the order in toMap
-    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature, crop: $crop, totalArea: $totalArea, pricePerAcre: $pricePerAcre, sprayVolume: $sprayVolume, notes: $notes}';
+    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, crop: $crop, totalArea: $totalArea, pricePerAcre: $pricePerAcre, sprayVolume: $sprayVolume, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature, notes: $notes}';
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Record &&
-          // AI!: reorder the fields to match the order in toMap
           runtimeType == other.runtimeType &&
           id == other.id &&
           timestamp == other.timestamp &&
-          applicatorId == other.applicatorId &&
           customerId == other.customerId &&
+          applicatorId == other.applicatorId &&
           customerInformedOfRei == other.customerInformedOfRei &&
           fieldName == other.fieldName &&
-          windSpeedBefore == other.windSpeedBefore &&
-          windSpeedAfter == other.windSpeedAfter &&
-          windDirection == other.windDirection &&
-          temperature == other.temperature &&
           crop == other.crop &&
           totalArea == other.totalArea &&
           pricePerAcre == other.pricePerAcre &&
           sprayVolume == other.sprayVolume &&
+          windSpeedBefore == other.windSpeedBefore &&
+          windSpeedAfter == other.windSpeedAfter &&
+          windDirection == other.windDirection &&
+          temperature == other.temperature &&
           notes == other.notes;
 
   @override
   int get hashCode =>
-      // AI!: reorder the fields to match the order in toMap
       id.hashCode ^
       timestamp.hashCode ^
-      applicatorId.hashCode ^
       customerId.hashCode ^
+      applicatorId.hashCode ^
       customerInformedOfRei.hashCode ^
       fieldName.hashCode ^
-      windSpeedBefore.hashCode ^
-      windSpeedAfter.hashCode ^
-      windDirection.hashCode ^
-      temperature.hashCode ^
       crop.hashCode ^
       totalArea.hashCode ^
       pricePerAcre.hashCode ^
       sprayVolume.hashCode ^
+      windSpeedBefore.hashCode ^
+      windSpeedAfter.hashCode ^
+      windDirection.hashCode ^
+      temperature.hashCode ^
       notes.hashCode;
 }
