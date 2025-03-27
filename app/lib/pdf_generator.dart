@@ -77,7 +77,7 @@ class PDFGenerator {
               _buildInlineRow("Field", recordData.fieldName),
               _buildInlineRow("Crop Treated", recordData.crop),
               _buildRowWithBottomBox("Pesticides", "", height: 100),
-              _buildInlineRow("Total Treated Area", recordData.totalArea.toString()),
+              _buildInlineRow("Total Treated Area", recordData.totalArea.toString(), suffix: " Acres"),
               _buildInlineRow("GPA", recordData.sprayVolume.toString()),
               _buildInlineRow("Wind Velocity", windVelocityValue),
               _buildInlineRow(
