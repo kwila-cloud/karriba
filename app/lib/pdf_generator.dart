@@ -75,10 +75,10 @@ class PDFGenerator {
                 recordData.customerInformedOfRei ? 'Yes' : 'No',
               ),
               _buildInlineRow("Field", recordData.fieldName),
-              _buildInlineRow("Crop Treated", ""),
+              _buildInlineRow("Crop Treated", recordData.crop),
               _buildRowWithBottomBox("Pesticides", "", height: 100),
-              _buildInlineRow("Total Treated Area", ""),
-              _buildInlineRow("GPA", ""),
+              _buildInlineRow("Total Treated Area", recordData.totalArea.toString()),
+              _buildInlineRow("GPA", recordData.sprayVolume.toString()),
               _buildInlineRow("Wind Velocity", windVelocityValue),
               _buildInlineRow(
                 "Wind Direction",
@@ -88,7 +88,7 @@ class PDFGenerator {
               ),
               _buildInlineRow("Temperature", temperatureValue, suffix: "°F"),
               pdf.SizedBox(height: 12),
-              _buildRowWithBottomBox("Notes", "", height: 100),
+              _buildRowWithBottomBox("Notes", recordData.notes, height: 100),
               _buildBox("", height: 100),
             ],
           );
