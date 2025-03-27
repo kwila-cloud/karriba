@@ -35,6 +35,11 @@ class _EditRecordPageState extends State<EditRecordPage> {
           applicatorId: 0,
           customerInformedOfRei: false,
           fieldName: '',
+          crop: '',
+          totalArea: 0,
+          pricePerAcre: 0,
+          sprayVolume: 0,
+          notes: ''
         );
     _originalRecord = _draftRecord.copyWith();
     _title = widget.record == null ? 'New Record' : 'Edit Record';
