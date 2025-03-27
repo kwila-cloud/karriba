@@ -100,7 +100,7 @@ class Record {
 
   @override
   String toString() {
-    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, crop: $crop, totalArea: $totalArea, pricePerAcre: $pricePerAcre, sprayVolume: $sprayVolume, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature, notes: $notes}';
+    return 'Record{id: $id, timestamp: $timestamp, applicatorId: $applicatorId, customerId: $customerId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, crop: $crop, totalArea: $totalArea, pricePerAcre: $pricePerAcre, sprayVolume: $sprayVolume, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature, notes: $notes}';
   }
 
   @override
@@ -110,8 +110,8 @@ class Record {
           runtimeType == other.runtimeType &&
           id == other.id &&
           timestamp == other.timestamp &&
-          customerId == other.customerId &&
           applicatorId == other.applicatorId &&
+          customerId == other.customerId &&
           customerInformedOfRei == other.customerInformedOfRei &&
           fieldName == other.fieldName &&
           crop == other.crop &&
@@ -128,8 +128,8 @@ class Record {
   int get hashCode =>
       id.hashCode ^
       timestamp.hashCode ^
-      customerId.hashCode ^
       applicatorId.hashCode ^
+      customerId.hashCode ^
       customerInformedOfRei.hashCode ^
       fieldName.hashCode ^
       crop.hashCode ^
