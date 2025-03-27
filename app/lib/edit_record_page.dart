@@ -204,6 +204,34 @@ class _EditRecordPageState extends State<EditRecordPage> {
                         });
                       },
                     ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Total Area',
+                        border: OutlineInputBorder(),
+                      ),
+                      initialValue: _draftRecord.totalArea.toString(),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the total area';
+                        }
+                        final number = num.tryParse(value);
+                        if (number == null) {
+                          return 'Please enter a valid number';
+                        }
+                        if (number.isNegative) {
+                          return 'Please enter a non-negative number';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _draftRecord = _draftRecord.copyWith(
+                            totalArea: double.tryParse(value) ?? 0,
+                          );
+                        });
+                      },
+                    ),
                   ],
                 ),
               );

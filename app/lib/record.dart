@@ -12,6 +12,7 @@ class Record {
   final String? windDirection;
   final double? temperature;
   final String crop;
+  final double totalArea;
 
   Record({
     this.id,
@@ -27,6 +28,7 @@ class Record {
     this.windDirection,
     this.temperature,
     this.crop = '',
+    this.totalArea = 0,
   });
 
   Record copyWith({
@@ -43,6 +45,7 @@ class Record {
     String? windDirection,
     double? temperature,
     String? crop,
+    double? totalArea,
   }) {
     return Record(
       id: id ?? this.id,
@@ -59,6 +62,7 @@ class Record {
       windDirection: windDirection ?? this.windDirection,
       temperature: temperature ?? this.temperature,
       crop: crop ?? this.crop,
+      totalArea: totalArea ?? this.totalArea,
     );
   }
 
@@ -75,12 +79,13 @@ class Record {
       'wind_direction': windDirection,
       'temperature': temperature,
       'crop': crop,
+      'total_area': totalArea,
     };
   }
 
   @override
   String toString() {
-    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature, crop: $crop}';
+    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature, crop: $crop, totalArea: $totalArea}';
   }
 
   @override
@@ -98,7 +103,8 @@ class Record {
           windSpeedAfter == other.windSpeedAfter &&
           windDirection == other.windDirection &&
           temperature == other.temperature &&
-          crop == other.crop;
+          crop == other.crop &&
+          totalArea == other.totalArea;
 
   @override
   int get hashCode =>
@@ -112,5 +118,6 @@ class Record {
       windSpeedAfter.hashCode ^
       windDirection.hashCode ^
       temperature.hashCode ^
-      crop.hashCode;
+      crop.hashCode ^
+      totalArea.hashCode;
 }
