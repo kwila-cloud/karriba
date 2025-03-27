@@ -11,6 +11,7 @@ class Record {
   final double? windSpeedAfter;
   final String? windDirection;
   final double? temperature;
+  final String crop;
 
   Record({
     this.id,
@@ -25,6 +26,7 @@ class Record {
     this.windSpeedAfter,
     this.windDirection,
     this.temperature,
+    this.crop = '',
   });
 
   Record copyWith({
@@ -40,6 +42,7 @@ class Record {
     double? windSpeedAfter,
     String? windDirection,
     double? temperature,
+    String? crop,
   }) {
     return Record(
       id: id ?? this.id,
@@ -55,6 +58,7 @@ class Record {
       windSpeedAfter: windSpeedAfter ?? this.windSpeedAfter,
       windDirection: windDirection ?? this.windDirection,
       temperature: temperature ?? this.temperature,
+      crop: crop ?? this.crop,
     );
   }
 
@@ -70,12 +74,13 @@ class Record {
       'wind_speed_after': windSpeedAfter,
       'wind_direction': windDirection,
       'temperature': temperature,
+      'crop': crop,
     };
   }
 
   @override
   String toString() {
-    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature}';
+    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature, crop: $crop}';
   }
 
   @override
@@ -92,7 +97,8 @@ class Record {
           windSpeedBefore == other.windSpeedBefore &&
           windSpeedAfter == other.windSpeedAfter &&
           windDirection == other.windDirection &&
-          temperature == other.temperature;
+          temperature == other.temperature &&
+          crop == other.crop;
 
   @override
   int get hashCode =>
@@ -105,5 +111,6 @@ class Record {
       windSpeedBefore.hashCode ^
       windSpeedAfter.hashCode ^
       windDirection.hashCode ^
-      temperature.hashCode;
+      temperature.hashCode ^
+      crop.hashCode;
 }
