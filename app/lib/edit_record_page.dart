@@ -232,6 +232,34 @@ class _EditRecordPageState extends State<EditRecordPage> {
                         });
                       },
                     ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Price per Acre',
+                        border: OutlineInputBorder(),
+                      ),
+                      initialValue: _draftRecord.pricePerAcre.toString(),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the price per acre';
+                        }
+                        final number = num.tryParse(value);
+                        if (number == null) {
+                          return 'Please enter a valid number';
+                        }
+                        if (number.isNegative) {
+                          return 'Please enter a non-negative number';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _draftRecord = _draftRecord.copyWith(
+                            pricePerAcre: double.tryParse(value) ?? 0,
+                          );
+                        });
+                      },
+                    ),
                   ],
                 ),
               );

@@ -13,6 +13,7 @@ class Record {
   final double? temperature;
   final String crop;
   final double totalArea;
+  final double pricePerAcre;
 
   Record({
     this.id,
@@ -29,6 +30,7 @@ class Record {
     this.temperature,
     this.crop = '',
     this.totalArea = 0,
+    this.pricePerAcre = 0,
   });
 
   Record copyWith({
@@ -46,6 +48,7 @@ class Record {
     double? temperature,
     String? crop,
     double? totalArea,
+    double? pricePerAcre,
   }) {
     return Record(
       id: id ?? this.id,
@@ -63,6 +66,7 @@ class Record {
       temperature: temperature ?? this.temperature,
       crop: crop ?? this.crop,
       totalArea: totalArea ?? this.totalArea,
+      pricePerAcre: pricePerAcre ?? this.pricePerAcre,
     );
   }
 
@@ -80,12 +84,13 @@ class Record {
       'temperature': temperature,
       'crop': crop,
       'total_area': totalArea,
+      'price_per_acre': pricePerAcre,
     };
   }
 
   @override
   String toString() {
-    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature, crop: $crop, totalArea: $totalArea}';
+    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature, crop: $crop, totalArea: $totalArea, pricePerAcre: $pricePerAcre}';
   }
 
   @override
@@ -104,7 +109,8 @@ class Record {
           windDirection == other.windDirection &&
           temperature == other.temperature &&
           crop == other.crop &&
-          totalArea == other.totalArea;
+          totalArea == other.totalArea &&
+          pricePerAcre == other.pricePerAcre;
 
   @override
   int get hashCode =>
@@ -119,5 +125,6 @@ class Record {
       windDirection.hashCode ^
       temperature.hashCode ^
       crop.hashCode ^
-      totalArea.hashCode;
+      totalArea.hashCode ^
+      pricePerAcre.hashCode;
 }
