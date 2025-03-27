@@ -288,6 +288,22 @@ class _EditRecordPageState extends State<EditRecordPage> {
                         });
                       },
                     ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Notes',
+                        border: OutlineInputBorder(),
+                        alignLabelWithHint: true,
+                      ),
+                      initialValue: _draftRecord.notes,
+                      maxLines: 5,
+                      onChanged: (value) {
+                        setState(() {
+                          _draftRecord = _draftRecord.copyWith(
+                            notes: value,
+                          );
+                        });
+                      },
+                    ),
                   ],
                 ),
               );

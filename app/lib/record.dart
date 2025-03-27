@@ -15,6 +15,7 @@ class Record {
   final double totalArea;
   final double pricePerAcre;
   final double sprayVolume;
+  final String notes;
 
   Record({
     this.id,
@@ -33,6 +34,7 @@ class Record {
     this.totalArea = 0,
     this.pricePerAcre = 0,
     this.sprayVolume = 0,
+    this.notes = '',
   });
 
   Record copyWith({
@@ -52,6 +54,7 @@ class Record {
     double? totalArea,
     double? pricePerAcre,
     double? sprayVolume,
+    String? notes,
   }) {
     return Record(
       id: id ?? this.id,
@@ -71,6 +74,7 @@ class Record {
       totalArea: totalArea ?? this.totalArea,
       pricePerAcre: pricePerAcre ?? this.pricePerAcre,
       sprayVolume: sprayVolume ?? this.sprayVolume,
+      notes: notes ?? this.notes,
     );
   }
 
@@ -90,12 +94,13 @@ class Record {
       'total_area': totalArea,
       'price_per_acre': pricePerAcre,
       'spray_volume': sprayVolume,
+      'notes': notes,
     };
   }
 
   @override
   String toString() {
-    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature, crop: $crop, totalArea: $totalArea, pricePerAcre: $pricePerAcre, sprayVolume: $sprayVolume}';
+    return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature, crop: $crop, totalArea: $totalArea, pricePerAcre: $pricePerAcre, sprayVolume: $sprayVolume, notes: $notes}';
   }
 
   @override
@@ -116,7 +121,8 @@ class Record {
           crop == other.crop &&
           totalArea == other.totalArea &&
           pricePerAcre == other.pricePerAcre &&
-          sprayVolume == other.sprayVolume;
+          sprayVolume == other.sprayVolume &&
+          notes == other.notes;
 
   @override
   int get hashCode =>
@@ -133,5 +139,6 @@ class Record {
       crop.hashCode ^
       totalArea.hashCode ^
       pricePerAcre.hashCode ^
-      sprayVolume.hashCode;
+      sprayVolume.hashCode ^
+      notes.hashCode;
 }
