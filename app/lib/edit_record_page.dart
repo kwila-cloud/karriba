@@ -321,7 +321,6 @@ class _EditRecordPageState extends State<EditRecordPage> {
 
     final recordsDao = RecordsDao();
     await recordsDao.save(_draftRecord);
-    print('SAVE: $_draftRecord');
 
     Navigator.pop(context);
   }
