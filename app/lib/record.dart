@@ -100,6 +100,7 @@ class Record {
 
   @override
   String toString() {
+    // AI!: reorder the fields to match the order in toMap
     return 'Record{id: $id, timestamp: $timestamp, customerId: $customerId, applicatorId: $applicatorId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature, crop: $crop, totalArea: $totalArea, pricePerAcre: $pricePerAcre, sprayVolume: $sprayVolume, notes: $notes}';
   }
 
@@ -107,6 +108,7 @@ class Record {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Record &&
+          // AI!: reorder the fields to match the order in toMap
           runtimeType == other.runtimeType &&
           id == other.id &&
           timestamp == other.timestamp &&
@@ -126,6 +128,7 @@ class Record {
 
   @override
   int get hashCode =>
+      // AI!: reorder the fields to match the order in toMap
       id.hashCode ^
       timestamp.hashCode ^
       applicatorId.hashCode ^
