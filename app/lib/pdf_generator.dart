@@ -97,7 +97,6 @@ class PDFGenerator {
               _buildInlineRow("Temperature", temperatureValue, suffix: "°F"),
               pdf.SizedBox(height: 12),
               _buildRowWithBottomBox("Notes", recordData.notes, height: 100),
-              _buildBox("", height: 100),
             ],
           );
         },
