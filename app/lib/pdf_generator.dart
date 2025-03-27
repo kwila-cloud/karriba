@@ -82,6 +82,12 @@ class PDFGenerator {
                 suffix: "Acres",
               ),
               _buildInlineRow(
+                "Price per Acre",
+                recordData.pricePerAcre == 0
+                    ? ""
+                    : "${recordData.pricePerAcre}",
+              ),
+              _buildInlineRow(
                 "Spray Volume",
                 recordData.sprayVolume.toString(),
                 suffix: "GPA",

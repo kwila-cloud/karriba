@@ -51,12 +51,15 @@ class RecordsDao {
     return List.generate(maps.length, (i) {
       return Record(
         id: maps[i]['id'] as int?,
-        timestamp: DateTime.fromMillisecondsSinceEpoch(maps[i]['timestamp'] as int),
+        timestamp: DateTime.fromMillisecondsSinceEpoch(
+          maps[i]['timestamp'] as int,
+        ),
         applicatorId: maps[i]['applicator_id'] as int,
         applicatorName: maps[i]['applicator_name'] as String,
         customerId: maps[i]['customer_id'] as int,
         customerName: maps[i]['customer_name'] as String,
-        customerInformedOfRei: (maps[i]['customer_informed_of_rei'] as int) == 1,
+        customerInformedOfRei:
+            (maps[i]['customer_informed_of_rei'] as int) == 1,
         fieldName: maps[i]['field_name'] as String,
         windSpeedBefore: maps[i]['wind_speed_before'] as double?,
         windSpeedAfter: maps[i]['wind_speed_after'] as double?,
@@ -82,10 +85,13 @@ class RecordsDao {
     if (maps.isNotEmpty) {
       return Record(
         id: maps[0]['id'] as int?,
-        timestamp: DateTime.fromMillisecondsSinceEpoch(maps[0]['timestamp'] as int),
+        timestamp: DateTime.fromMillisecondsSinceEpoch(
+          maps[0]['timestamp'] as int,
+        ),
         applicatorId: maps[0]['applicator_id'] as int,
         customerId: maps[0]['customer_id'] as int,
-        customerInformedOfRei: (maps[0]['customer_informed_of_rei'] as int) == 1,
+        customerInformedOfRei:
+            (maps[0]['customer_informed_of_rei'] as int) == 1,
         fieldName: maps[0]['field_name'] as String,
         windSpeedBefore: maps[0]['wind_speed_before'] as double?,
         windSpeedAfter: maps[0]['wind_speed_after'] as double?,
