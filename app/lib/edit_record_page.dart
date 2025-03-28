@@ -97,7 +97,6 @@ class _EditRecordPageState extends State<EditRecordPage> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
         child: FutureBuilder<List<dynamic>>(
           future: _loadDataDependenciesFuture,
           builder: (context, snapshot) {
