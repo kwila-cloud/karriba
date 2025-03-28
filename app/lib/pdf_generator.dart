@@ -16,9 +16,9 @@ class PDFGenerator {
     final applicator = await ApplicatorDao().get(recordData.applicatorId);
     final customer = await CustomerDao().get(recordData.customerId);
     final formattedDate =
-        DateFormat('MM/dd/yyyy').format(recordData.timestamp).toString();
+        DateFormat('MM/dd/yyyy').format(recordData.startTimestamp).toString();
     final formattedTime =
-        DateFormat('HH_mm').format(recordData.timestamp).toString();
+        DateFormat('HH_mm').format(recordData.startTimestamp).toString();
     final beforeSpeed = recordData.windSpeedBefore;
     final afterSpeed = recordData.windSpeedAfter;
     final windVelocityValue =

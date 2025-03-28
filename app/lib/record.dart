@@ -85,8 +85,8 @@ class Record {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'startTimestamp': startTimestamp.millisecondsSinceEpoch,
-      'endTimestamp': endTimestamp.millisecondsSinceEpoch,
+      'start_timestamp': startTimestamp.millisecondsSinceEpoch,
+      'end_timestamp': endTimestamp.millisecondsSinceEpoch,
       'applicator_id': applicatorId,
       'customer_id': customerId,
       'customer_informed_of_rei': customerInformedOfRei ? 1 : 0,

@@ -157,10 +157,13 @@ class DatabaseHelper {
     }
     if (oldVersion < 6) {
       await db.execute('''
-        ALTER TABLE record RENAME COLUMN timestamp TO startTimestamp;
+        ALTER TABLE record RENAME COLUMN timestamp TO start_timestamp;
       ''');
       await db.execute('''
-        ALTER TABLE record ADD COLUMN endTimestamp INTEGER NOT NULL;
+        ALTER TABLE record ADD COLUMN end_timestamp INTEGER NOT NULL DEFAULT 0;
+      ''');
+      await db.execute('''
+        UPDATE record SET end_timestamp = start_timestamp WHERE end_timestamp = 0;
       ''');
     }
   }
