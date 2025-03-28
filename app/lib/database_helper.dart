@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:io';
 
 class DatabaseHelper {
-  static const _currentSchemaVersion = 5;
+  static const _currentSchemaVersion = 6;
 
   static getPath() async => join(await getDatabasesPath(), "karriba.db");
 
@@ -51,7 +51,8 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE record (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        timestamp INTEGER NOT NULL,
+        startTimestamp INTEGER NOT NULL,
+        endTimestamp INTEGER NOT NULL,
         applicator_id INTEGER NOT NULL,
         customer_id INTEGER NOT NULL,
         customer_informed_of_rei INTEGER NOT NULL,
@@ -152,6 +153,14 @@ class DatabaseHelper {
       ''');
       await db.execute('''
         ALTER TABLE record ADD COLUMN notes TEXT NOT NULL DEFAULT '';
+      ''');
+    }
+    if (oldVersion < 6) {
+      await db.execute('''
+        ALTER TABLE record RENAME COLUMN timestamp TO startTimestamp;
+      ''');
+      await db.execute('''
+        ALTER TABLE record ADD COLUMN endTimestamp INTEGER NOT NULL;
       ''');
     }
   }
