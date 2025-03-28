@@ -372,6 +372,9 @@ class _EditRecordPageState extends State<EditRecordPage> {
                           if (number.isNegative) {
                             return 'Please enter a non-negative number';
                           }
+                          if (number == 0) {
+                            return 'Please enter a value greater than zero';
+                          }
                           return null;
                         },
                         onChanged: (value) {
@@ -406,6 +409,9 @@ class _EditRecordPageState extends State<EditRecordPage> {
                           if (number.isNegative) {
                             return 'Please enter a non-negative number';
                           }
+                          if (number == 0) {
+                            return 'Please enter a value greater than zero';
+                          }
                           return null;
                         },
                         onChanged: (value) {
@@ -439,6 +445,9 @@ class _EditRecordPageState extends State<EditRecordPage> {
                           }
                           if (number.isNegative) {
                             return 'Please enter a non-negative number';
+                          }
+                          if (number == 0) {
+                            return 'Please enter a value greater than zero';
                           }
                           return null;
                         },
