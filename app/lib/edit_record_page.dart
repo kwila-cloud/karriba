@@ -121,106 +121,98 @@ class _EditRecordPageState extends State<EditRecordPage> {
                 child: Column(
                   spacing: 16,
                   children: [
-                    Row(
-                      children: [
-                        Text('Date:'),
-                        SizedBox(width: 16),
-                        ElevatedButton(
-                          onPressed: () async {
-                            final DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: _selectedDate,
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime(2100),
-                            );
-                            if (pickedDate != null &&
-                                pickedDate != _selectedDate) {
-                              setState(() {
-                                _selectedDate = pickedDate;
-                                _draftRecord = _draftRecord.copyWith(
-                                  startTimestamp: DateTime(
-                                    _selectedDate.year,
-                                    _selectedDate.month,
-                                    _selectedDate.day,
-                                    _selectedStartTime.hour,
-                                    _selectedStartTime.minute,
-                                  ),
-                                  endTimestamp: DateTime(
-                                    _selectedDate.year,
-                                    _selectedDate.month,
-                                    _selectedDate.day,
-                                    _selectedEndTime.hour,
-                                    _selectedEndTime.minute,
-                                  ),
-                                );
-                              });
-                            }
-                          },
-                          child: Text(
-                            '${_selectedDate.toLocal()}'.split(' ')[0],
-                          ),
-                        ),
-                      ],
+                    ListTile(
+                      title: const Text('Date'),
+                      subtitle: Text('${_selectedDate.toLocal()}'.split(' ')[0]),
+                      trailing: ElevatedButton(
+                        onPressed: () async {
+                          final DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: _selectedDate,
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2100),
+                          );
+                          if (pickedDate != null &&
+                              pickedDate != _selectedDate) {
+                            setState(() {
+                              _selectedDate = pickedDate;
+                              _draftRecord = _draftRecord.copyWith(
+                                startTimestamp: DateTime(
+                                  _selectedDate.year,
+                                  _selectedDate.month,
+                                  _selectedDate.day,
+                                  _selectedStartTime.hour,
+                                  _selectedStartTime.minute,
+                                ),
+                                endTimestamp: DateTime(
+                                  _selectedDate.year,
+                                  _selectedDate.month,
+                                  _selectedDate.day,
+                                  _selectedEndTime.hour,
+                                  _selectedEndTime.minute,
+                                ),
+                              );
+                            });
+                          }
+                        },
+                        child: const Text('Select Date'),
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Text('Start Time:'),
-                        SizedBox(width: 16),
-                        ElevatedButton(
-                          onPressed: () async {
-                            final TimeOfDay? pickedTime = await showTimePicker(
-                              context: context,
-                              initialTime: _selectedStartTime,
-                            );
-                            if (pickedTime != null &&
-                                pickedTime != _selectedStartTime) {
-                              setState(() {
-                                _selectedStartTime = pickedTime;
-                                _draftRecord = _draftRecord.copyWith(
-                                  startTimestamp: DateTime(
-                                    _selectedDate.year,
-                                    _selectedDate.month,
-                                    _selectedDate.day,
-                                    _selectedStartTime.hour,
-                                    _selectedStartTime.minute,
-                                  ),
-                                );
-                              });
-                            }
-                          },
-                          child: Text(_selectedStartTime.format(context)),
-                        ),
-                      ],
+                    ListTile(
+                      title: const Text('Start Time'),
+                      subtitle: Text(_selectedStartTime.format(context)),
+                      trailing: ElevatedButton(
+                        onPressed: () async {
+                          final TimeOfDay? pickedTime = await showTimePicker(
+                            context: context,
+                            initialTime: _selectedStartTime,
+                          );
+                          if (pickedTime != null &&
+                              pickedTime != _selectedStartTime) {
+                            setState(() {
+                              _selectedStartTime = pickedTime;
+                              _draftRecord = _draftRecord.copyWith(
+                                startTimestamp: DateTime(
+                                  _selectedDate.year,
+                                  _selectedDate.month,
+                                  _selectedDate.day,
+                                  _selectedStartTime.hour,
+                                  _selectedStartTime.minute,
+                                ),
+                              );
+                            });
+                          }
+                        },
+                        child: const Text('Select Start Time'),
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Text('End Time:'),
-                        SizedBox(width: 16),
-                        ElevatedButton(
-                          onPressed: () async {
-                            final TimeOfDay? pickedTime = await showTimePicker(
-                              context: context,
-                              initialTime: _selectedEndTime,
-                            );
-                            if (pickedTime != null &&
-                                pickedTime != _selectedEndTime) {
-                              setState(() {
-                                _selectedEndTime = pickedTime;
-                                _draftRecord = _draftRecord.copyWith(
-                                  endTimestamp: DateTime(
-                                    _selectedDate.year,
-                                    _selectedDate.month,
-                                    _selectedDate.day,
-                                    _selectedEndTime.hour,
-                                    _selectedEndTime.minute,
-                                  ),
-                                );
-                              });
-                            }
-                          },
-                          child: Text(_selectedEndTime.format(context)),
-                        ),
-                      ],
+                    ListTile(
+                      title: const Text('End Time'),
+                      subtitle: Text(_selectedEndTime.format(context)),
+                      trailing: ElevatedButton(
+                        onPressed: () async {
+                          final TimeOfDay? pickedTime = await showTimePicker(
+                            context: context,
+                            initialTime: _selectedEndTime,
+                          );
+                          if (pickedTime != null &&
+                              pickedTime != _selectedEndTime) {
+                            setState(() {
+                              _selectedEndTime = pickedTime;
+                              _draftRecord = _draftRecord.copyWith(
+                                endTimestamp: DateTime(
+                                  _selectedDate.year,
+                                  _selectedDate.month,
+                                  _selectedDate.day,
+                                  _selectedEndTime.hour,
+                                  _selectedEndTime.minute,
+                                ),
+                              );
+                            });
+                          }
+                        },
+                        child: const Text('Select End Time'),
+                      ),
                     ),
                     DropdownButtonFormField<int>(
                       decoration: const InputDecoration(
