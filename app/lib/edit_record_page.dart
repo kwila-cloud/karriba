@@ -30,7 +30,8 @@ class _EditRecordPageState extends State<EditRecordPage> {
     _draftRecord =
         widget.record ??
         Record(
-          timestamp: DateTime.now(),
+          startTimestamp: DateTime.now(),
+          endTimestamp: DateTime.now(),
           customerId: 0,
           applicatorId: 0,
           customerInformedOfRei: false,
