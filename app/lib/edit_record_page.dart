@@ -31,10 +31,16 @@ class _EditRecordPageState extends State<EditRecordPage> {
 
   @override
   void initState() {
-    final now = DateTime.now();
-    _selectedDate = DateTime(now.year, now.month, now.day);
-    _selectedStartTime = TimeOfDay.fromDateTime(DateTime.now());
-    _selectedEndTime = TimeOfDay.fromDateTime(DateTime.now());
+    if (widget.record != null) {
+      _selectedDate = widget.record!.startTimestamp;
+      _selectedStartTime = TimeOfDay.fromDateTime(widget.record!.startTimestamp);
+      _selectedEndTime = TimeOfDay.fromDateTime(widget.record!.endTimestamp);
+    } else {
+      final now = DateTime.now();
+      _selectedDate = DateTime(now.year, now.month, now.day);
+      _selectedStartTime = TimeOfDay.fromDateTime(DateTime.now());
+      _selectedEndTime = TimeOfDay.fromDateTime(DateTime.now());
+    }
 
     _draftRecord =
         widget.record ??
