@@ -97,6 +97,7 @@ class _EditRecordPageState extends State<EditRecordPage> {
         ],
       ),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
         child: FutureBuilder<List<dynamic>>(
           future: _loadDataDependenciesFuture,
           builder: (context, snapshot) {
@@ -205,218 +206,243 @@ class _EditRecordPageState extends State<EditRecordPage> {
                         }
                       },
                     ),
-                    DropdownButtonFormField<int>(
-                      decoration: const InputDecoration(
-                        labelText: 'Applicator',
-                        border: OutlineInputBorder(),
-                      ),
-                      items:
-                          applicators.map((applicator) {
-                            return DropdownMenuItem<int>(
-                              value: applicator.id,
-                              child: Text(applicator.name),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: DropdownButtonFormField<int>(
+                        decoration: const InputDecoration(
+                          labelText: 'Applicator',
+                          border: OutlineInputBorder(),
+                        ),
+                        items: applicators.map((applicator) {
+                          return DropdownMenuItem<int>(
+                            value: applicator.id,
+                            child: Text(applicator.name),
+                          );
+                        }).toList(),
+                        value: selectedApplicatorId,
+                        onChanged: (value) {
+                          if (value == null) {
+                            return;
+                          }
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(
+                              applicatorId: value,
                             );
-                          }).toList(),
-                      value: selectedApplicatorId,
-                      onChanged: (value) {
-                        if (value == null) {
-                          return;
-                        }
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(
-                            applicatorId: value,
-                          );
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please select an applicator';
-                        }
-                        return null;
-                      },
-                    ),
-                    DropdownButtonFormField<int>(
-                      decoration: const InputDecoration(
-                        labelText: 'Customer',
-                        border: OutlineInputBorder(),
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Please select an applicator';
+                          }
+                          return null;
+                        },
                       ),
-                      items:
-                          customers.map((customer) {
-                            return DropdownMenuItem<int>(
-                              value: customer.id,
-                              child: Text(customer.name),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: DropdownButtonFormField<int>(
+                        decoration: const InputDecoration(
+                          labelText: 'Customer',
+                          border: OutlineInputBorder(),
+                        ),
+                        items: customers.map((customer) {
+                          return DropdownMenuItem<int>(
+                            value: customer.id,
+                            child: Text(customer.name),
+                          );
+                        }).toList(),
+                        value: selectedCustomerId,
+                        onChanged: (value) {
+                          if (value == null) {
+                            return;
+                          }
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(
+                              customerId: value,
                             );
-                          }).toList(),
-                      value: selectedCustomerId,
-                      onChanged: (value) {
-                        if (value == null) {
-                          return;
-                        }
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(
-                            customerId: value,
-                          );
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please select a customer';
-                        }
-                        return null;
-                      },
-                    ),
-                    CheckboxListTile(
-                      title: const Text('Customer Informed of REI'),
-                      subtitle: const Text(
-                        'The customer must be notified of the Restricted-Entry Interval.',
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Please select a customer';
+                          }
+                          return null;
+                        },
                       ),
-                      value: customerInformedOfRei,
-                      onChanged: (value) {
-                        if (value == null) {
-                          return;
-                        }
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(
-                            customerInformedOfRei: value,
-                          );
-                        });
-                      },
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Field Name',
-                        border: OutlineInputBorder(),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: CheckboxListTile(
+                        title: const Text('Customer Informed of REI'),
+                        subtitle: const Text(
+                          'The customer must be notified of the Restricted-Entry Interval.',
+                        ),
+                        value: customerInformedOfRei,
+                        onChanged: (value) {
+                          if (value == null) {
+                            return;
+                          }
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(
+                              customerInformedOfRei: value,
+                            );
+                          });
+                        },
                       ),
-                      initialValue: _draftRecord.fieldName,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a field name';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(
-                            fieldName: value,
-                          );
-                        });
-                      },
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Crop',
-                        border: OutlineInputBorder(),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Field Name',
+                          border: OutlineInputBorder(),
+                        ),
+                        initialValue: _draftRecord.fieldName,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a field name';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(
+                              fieldName: value,
+                            );
+                          });
+                        },
                       ),
-                      initialValue: _draftRecord.crop,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a crop';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(crop: value);
-                        });
-                      },
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Total Area',
-                        border: OutlineInputBorder(),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Crop',
+                          border: OutlineInputBorder(),
+                        ),
+                        initialValue: _draftRecord.crop,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a crop';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(crop: value);
+                          });
+                        },
                       ),
-                      initialValue: _draftRecord.totalArea.toString(),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the total area';
-                        }
-                        final number = num.tryParse(value);
-                        if (number == null) {
-                          return 'Please enter a valid number';
-                        }
-                        if (number.isNegative) {
-                          return 'Please enter a non-negative number';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(
-                            totalArea: double.tryParse(value) ?? 0,
-                          );
-                        });
-                      },
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Price per Acre',
-                        border: OutlineInputBorder(),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Total Area',
+                          border: OutlineInputBorder(),
+                        ),
+                        initialValue: _draftRecord.totalArea.toString(),
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the total area';
+                          }
+                          final number = num.tryParse(value);
+                          if (number == null) {
+                            return 'Please enter a valid number';
+                          }
+                          if (number.isNegative) {
+                            return 'Please enter a non-negative number';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(
+                              totalArea: double.tryParse(value) ?? 0,
+                            );
+                          });
+                        },
                       ),
-                      initialValue: _draftRecord.pricePerAcre.toString(),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the price per acre';
-                        }
-                        final number = num.tryParse(value);
-                        if (number == null) {
-                          return 'Please enter a valid number';
-                        }
-                        if (number.isNegative) {
-                          return 'Please enter a non-negative number';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(
-                            pricePerAcre: double.tryParse(value) ?? 0,
-                          );
-                        });
-                      },
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Spray Volume (GPA)',
-                        border: OutlineInputBorder(),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Price per Acre',
+                          border: OutlineInputBorder(),
+                        ),
+                        initialValue: _draftRecord.pricePerAcre.toString(),
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the price per acre';
+                          }
+                          final number = num.tryParse(value);
+                          if (number == null) {
+                            return 'Please enter a valid number';
+                          }
+                          if (number.isNegative) {
+                            return 'Please enter a non-negative number';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(
+                              pricePerAcre: double.tryParse(value) ?? 0,
+                            );
+                          });
+                        },
                       ),
-                      initialValue: _draftRecord.sprayVolume.toString(),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the spray volume';
-                        }
-                        final number = num.tryParse(value);
-                        if (number == null) {
-                          return 'Please enter a valid number';
-                        }
-                        if (number.isNegative) {
-                          return 'Please enter a non-negative number';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(
-                            sprayVolume: double.tryParse(value) ?? 0,
-                          );
-                        });
-                      },
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Notes',
-                        border: OutlineInputBorder(),
-                        alignLabelWithHint: true,
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Spray Volume (GPA)',
+                          border: OutlineInputBorder(),
+                        ),
+                        initialValue: _draftRecord.sprayVolume.toString(),
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the spray volume';
+                          }
+                          final number = num.tryParse(value);
+                          if (number == null) {
+                            return 'Please enter a valid number';
+                          }
+                          if (number.isNegative) {
+                            return 'Please enter a non-negative number';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(
+                              sprayVolume: double.tryParse(value) ?? 0,
+                            );
+                          });
+                        },
                       ),
-                      initialValue: _draftRecord.notes,
-                      maxLines: 5,
-                      onChanged: (value) {
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(notes: value);
-                        });
-                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Notes',
+                          border: OutlineInputBorder(),
+                          alignLabelWithHint: true,
+                        ),
+                        initialValue: _draftRecord.notes,
+                        maxLines: 5,
+                        onChanged: (value) {
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(notes: value);
+                          });
+                        },
+                      ),
                     ),
                   ],
                 ),
