@@ -123,7 +123,9 @@ class _EditRecordPageState extends State<EditRecordPage> {
                   children: [
                     ListTile(
                       title: const Text('Date'),
-                      subtitle: Text('${_selectedDate.toLocal()}'.split(' ')[0]),
+                      subtitle: Text(
+                        '${_selectedDate.toLocal()}'.split(' ')[0],
+                      ),
                       onTap: () async {
                         final DateTime? pickedDate = await showDatePicker(
                           context: context,
@@ -131,8 +133,7 @@ class _EditRecordPageState extends State<EditRecordPage> {
                           firstDate: DateTime(2000),
                           lastDate: DateTime(2100),
                         );
-                        if (pickedDate != null &&
-                            pickedDate != _selectedDate) {
+                        if (pickedDate != null && pickedDate != _selectedDate) {
                           setState(() {
                             _selectedDate = pickedDate;
                             _draftRecord = _draftRecord.copyWith(
