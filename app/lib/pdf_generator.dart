@@ -17,6 +17,10 @@ class PDFGenerator {
     final customer = await CustomerDao().get(recordData.customerId);
     final formattedDate =
         DateFormat('MM/dd/yyyy').format(recordData.startTimestamp).toString();
+    final formattedStartTime =
+        DateFormat('h:mm a').format(recordData.startTimestamp).toString();
+    final formattedEndTime =
+        DateFormat('h:mm a').format(recordData.endTimestamp).toString();
     final formattedTime =
         DateFormat('HH_mm').format(recordData.startTimestamp).toString();
     final beforeSpeed = recordData.windSpeedBefore;
@@ -92,6 +96,8 @@ class PDFGenerator {
                 recordData.sprayVolume.toString(),
                 suffix: "GPA",
               ),
+              _buildInlineRow("Start Time", formattedStartTime),
+              _buildInlineRow("End Time", formattedEndTime),
               _buildRowWithBottomBox("Pesticides", "", height: 100),
               _buildInlineRow("Wind Velocity", windVelocityValue),
               _buildInlineRow(
