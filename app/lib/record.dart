@@ -1,6 +1,7 @@
 class Record {
   final int? id;
   final DateTime startTimestamp;
+  final DateTime endTimestamp;
   final int applicatorId;
   final String? applicatorName;
   final int customerId;
@@ -20,6 +21,7 @@ class Record {
   Record({
     this.id,
     required this.startTimestamp,
+    required this.endTimestamp,
     required this.applicatorId,
     this.applicatorName,
     required this.customerId,
@@ -40,6 +42,7 @@ class Record {
   Record copyWith({
     int? id,
     DateTime? startTimestamp,
+    DateTime? endTimestamp,
     int? applicatorId,
     String? applicatorName,
     int? customerId,
@@ -59,6 +62,7 @@ class Record {
     return Record(
       id: id ?? this.id,
       startTimestamp: startTimestamp ?? this.startTimestamp,
+      endTimestamp: endTimestamp ?? this.endTimestamp,
       applicatorId: applicatorId ?? this.applicatorId,
       applicatorName: applicatorName ?? this.applicatorName,
       customerId: customerId ?? this.customerId,
@@ -82,6 +86,7 @@ class Record {
     return {
       'id': id,
       'startTimestamp': startTimestamp.millisecondsSinceEpoch,
+      'endTimestamp': endTimestamp.millisecondsSinceEpoch,
       'applicator_id': applicatorId,
       'customer_id': customerId,
       'customer_informed_of_rei': customerInformedOfRei ? 1 : 0,
@@ -100,7 +105,7 @@ class Record {
 
   @override
   String toString() {
-    return 'Record{id: $id, startTimestamp: $startTimestamp, applicatorId: $applicatorId, customerId: $customerId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, crop: $crop, totalArea: $totalArea, pricePerAcre: $pricePerAcre, sprayVolume: $sprayVolume, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature, notes: $notes}';
+    return 'Record{id: $id, startTimestamp: $startTimestamp, endTimestamp: $endTimestamp, applicatorId: $applicatorId, customerId: $customerId, customerInformedOfRei: $customerInformedOfRei, fieldName: $fieldName, crop: $crop, totalArea: $totalArea, pricePerAcre: $pricePerAcre, sprayVolume: $sprayVolume, windSpeedBefore: $windSpeedBefore, windSpeedAfter: $windSpeedAfter, windDirection: $windDirection, temperature: $temperature, notes: $notes}';
   }
 
   @override
@@ -110,6 +115,7 @@ class Record {
           runtimeType == other.runtimeType &&
           id == other.id &&
           startTimestamp == other.startTimestamp &&
+          endTimestamp == other.endTimestamp &&
           applicatorId == other.applicatorId &&
           customerId == other.customerId &&
           customerInformedOfRei == other.customerInformedOfRei &&
@@ -128,6 +134,7 @@ class Record {
   int get hashCode =>
       id.hashCode ^
       startTimestamp.hashCode ^
+      endTimestamp.hashCode ^
       applicatorId.hashCode ^
       customerId.hashCode ^
       customerInformedOfRei.hashCode ^
