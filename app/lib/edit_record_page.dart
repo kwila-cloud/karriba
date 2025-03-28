@@ -123,7 +123,7 @@ class _EditRecordPageState extends State<EditRecordPage> {
                   children: [
                     ListTile(
                       title: const Text('Date'),
-                      subtitle: Text(
+                      trailing: Text(
                         '${_selectedDate.toLocal()}'.split(' ')[0],
                       ),
                       onTap: () async {
@@ -158,7 +158,7 @@ class _EditRecordPageState extends State<EditRecordPage> {
                     ),
                     ListTile(
                       title: const Text('Start Time'),
-                      subtitle: Text(_selectedStartTime.format(context)),
+                      trailing: Text(_selectedStartTime.format(context)),
                       onTap: () async {
                         final TimeOfDay? pickedTime = await showTimePicker(
                           context: context,
@@ -183,7 +183,7 @@ class _EditRecordPageState extends State<EditRecordPage> {
                     ),
                     ListTile(
                       title: const Text('End Time'),
-                      subtitle: Text(_selectedEndTime.format(context)),
+                      trailing: Text(_selectedEndTime.format(context)),
                       onTap: () async {
                         final TimeOfDay? pickedTime = await showTimePicker(
                           context: context,
