@@ -39,7 +39,7 @@ class _EditRecordPageState extends State<EditRecordPage> {
           totalArea: 0,
           pricePerAcre: 0,
           sprayVolume: 0,
-          notes: ''
+          notes: '',
         );
     _originalRecord = _draftRecord.copyWith();
     _title = widget.record == null ? 'New Record' : 'Edit Record';
