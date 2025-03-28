@@ -36,6 +36,8 @@ class PDFGenerator {
 
     document.addPage(
       pdf.Page(
+        margin: pdf.EdgeInsets.all(36), // 0.5 inches (36 points) on all sides
+        pageFormat: PdfPageFormat.letter,
         build: (pdf.Context context) {
           return pdf.Column(
             crossAxisAlignment: pdf.CrossAxisAlignment.start,
@@ -101,7 +103,6 @@ class PDFGenerator {
                     : recordData.windDirection.toString(),
               ),
               _buildInlineRow("Temperature", temperatureValue, suffix: "°F"),
-              pdf.SizedBox(height: 12),
               _buildRowWithBottomBox("Notes", recordData.notes, height: 100),
             ],
           );
@@ -130,6 +131,8 @@ class PDFGenerator {
     double height = 24,
     String suffix = '',
   }) {
+    print(label);
+    print(value);
     return pdf.Padding(
       padding: pdf.EdgeInsets.symmetric(vertical: 4),
       child: pdf.Column(
@@ -147,6 +150,8 @@ class PDFGenerator {
   }
 
   pdf.Widget _buildInlineRow(String label, String value, {String suffix = ''}) {
+    print(label);
+    print(value);
     return pdf.Padding(
       padding: pdf.EdgeInsets.symmetric(vertical: 4),
       child: pdf.Row(
