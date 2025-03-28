@@ -45,6 +45,7 @@ class PDFGenerator {
             crossAxisAlignment: pdf.CrossAxisAlignment.start,
             children: [
               pdf.Row(
+                crossAxisAlignment: pdf.CrossAxisAlignment.start,
                 mainAxisAlignment: pdf.MainAxisAlignment.spaceBetween,
                 children: [
                   pdf.Text(
@@ -58,21 +59,14 @@ class PDFGenerator {
                     crossAxisAlignment: pdf.CrossAxisAlignment.end,
                     children: [
                       pdf.Text(
-                        formattedDate, // Form date
-                        style: pdf.TextStyle(
-                          fontSize: 16,
-                          fontWeight: pdf.FontWeight.normal,
-                        ),
-                      ),
-                      pdf.Text(
-                        'Start: $formattedStartTime',
+                        formattedDate,
                         style: pdf.TextStyle(
                           fontSize: 12,
                           fontWeight: pdf.FontWeight.normal,
                         ),
                       ),
                       pdf.Text(
-                        'End: $formattedEndTime',
+                        '$formattedStartTime - $formattedEndTime',
                         style: pdf.TextStyle(
                           fontSize: 12,
                           fontWeight: pdf.FontWeight.normal,
@@ -133,7 +127,7 @@ class PDFGenerator {
     // TODO: use a different path on non-Android platforms
     final directoryPath = '/storage/emulated/0/Download';
     final fileName =
-        '${applicator?.name ?? 'Unknown Applicator'} ${recordData.fieldName} ${formattedDate}_$formattedTime.pdf'
+        '${applicator?.name ?? 'Unknown Applicator'} ${recordData.fieldName}.pdf'
             .replaceAll(' ', '_')
             // Remove all dangerous characters
             .replaceAll(RegExp(r'[^\w\-_]'), '');
