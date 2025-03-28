@@ -118,7 +118,6 @@ class _EditRecordPageState extends State<EditRecordPage> {
               return Form(
                 key: _formKey,
                 child: Column(
-                  spacing: 16,
                   children: [
                     ListTile(
                       title: const Text('Date'),
@@ -206,7 +205,10 @@ class _EditRecordPageState extends State<EditRecordPage> {
                       },
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
                       child: DropdownButtonFormField<int>(
                         decoration: const InputDecoration(
                           labelText: 'Applicator',
@@ -239,7 +241,10 @@ class _EditRecordPageState extends State<EditRecordPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
                       child: DropdownButtonFormField<int>(
                         decoration: const InputDecoration(
                           labelText: 'Customer',
@@ -272,7 +277,10 @@ class _EditRecordPageState extends State<EditRecordPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
                       child: CheckboxListTile(
                         title: const Text('Customer Informed of REI'),
                         subtitle: const Text(
@@ -292,7 +300,10 @@ class _EditRecordPageState extends State<EditRecordPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
                       child: TextFormField(
                         decoration: const InputDecoration(
                           labelText: 'Field Name',
@@ -315,7 +326,10 @@ class _EditRecordPageState extends State<EditRecordPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
                       child: TextFormField(
                         decoration: const InputDecoration(
                           labelText: 'Crop',
@@ -336,7 +350,10 @@ class _EditRecordPageState extends State<EditRecordPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
                       child: TextFormField(
                         decoration: const InputDecoration(
                           labelText: 'Total Area',
@@ -367,7 +384,10 @@ class _EditRecordPageState extends State<EditRecordPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
                       child: TextFormField(
                         decoration: const InputDecoration(
                           labelText: 'Price per Acre',
@@ -398,7 +418,10 @@ class _EditRecordPageState extends State<EditRecordPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
                       child: TextFormField(
                         decoration: const InputDecoration(
                           labelText: 'Spray Volume (GPA)',
@@ -429,7 +452,10 @@ class _EditRecordPageState extends State<EditRecordPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
                       child: TextFormField(
                         decoration: const InputDecoration(
                           labelText: 'Notes',
