@@ -54,12 +54,31 @@ class PDFGenerator {
                       fontWeight: pdf.FontWeight.bold,
                     ),
                   ),
-                  pdf.Text(
-                    formattedDate, // Form date
-                    style: pdf.TextStyle(
-                      fontSize: 16,
-                      fontWeight: pdf.FontWeight.normal,
-                    ),
+                  pdf.Column(
+                    crossAxisAlignment: pdf.CrossAxisAlignment.end,
+                    children: [
+                      pdf.Text(
+                        formattedDate, // Form date
+                        style: pdf.TextStyle(
+                          fontSize: 16,
+                          fontWeight: pdf.FontWeight.normal,
+                        ),
+                      ),
+                      pdf.Text(
+                        'Start: $formattedStartTime',
+                        style: pdf.TextStyle(
+                          fontSize: 12,
+                          fontWeight: pdf.FontWeight.normal,
+                        ),
+                      ),
+                      pdf.Text(
+                        'End: $formattedEndTime',
+                        style: pdf.TextStyle(
+                          fontSize: 12,
+                          fontWeight: pdf.FontWeight.normal,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -68,12 +87,10 @@ class PDFGenerator {
                 "Applicator",
                 "${applicator?.name} - ${applicator?.licenseNumber}",
               ),
-
               _buildRowWithBottomBox(
                 "Owner",
                 "${customer?.name}, ${customer?.streetAddress}, ${customer?.city}, ${customer?.state}, ${customer?.zipCode}",
               ),
-
               _buildInlineRow(
                 "Owner Informed of REI",
                 recordData.customerInformedOfRei ? 'Yes' : 'No',
@@ -96,8 +113,6 @@ class PDFGenerator {
                 recordData.sprayVolume.toString(),
                 suffix: "GPA",
               ),
-              _buildInlineRow("Start Time", formattedStartTime),
-              _buildInlineRow("End Time", formattedEndTime),
               _buildRowWithBottomBox("Pesticides", "", height: 100),
               _buildInlineRow("Wind Velocity", windVelocityValue),
               _buildInlineRow(
