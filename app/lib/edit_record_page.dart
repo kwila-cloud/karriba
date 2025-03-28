@@ -35,6 +35,11 @@ class _EditRecordPageState extends State<EditRecordPage> {
           applicatorId: 0,
           customerInformedOfRei: false,
           fieldName: '',
+          crop: '',
+          totalArea: 0,
+          pricePerAcre: 0,
+          sprayVolume: 0,
+          notes: '',
         );
     _originalRecord = _draftRecord.copyWith();
     _title = widget.record == null ? 'New Record' : 'Edit Record';
@@ -62,7 +67,7 @@ class _EditRecordPageState extends State<EditRecordPage> {
           ),
         ],
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: FutureBuilder<List<dynamic>>(
           future: _loadDataDependenciesFuture,
@@ -181,6 +186,122 @@ class _EditRecordPageState extends State<EditRecordPage> {
                           _draftRecord = _draftRecord.copyWith(
                             fieldName: value,
                           );
+                        });
+                      },
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Crop',
+                        border: OutlineInputBorder(),
+                      ),
+                      initialValue: _draftRecord.crop,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a crop';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _draftRecord = _draftRecord.copyWith(crop: value);
+                        });
+                      },
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Total Area',
+                        border: OutlineInputBorder(),
+                      ),
+                      initialValue: _draftRecord.totalArea.toString(),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the total area';
+                        }
+                        final number = num.tryParse(value);
+                        if (number == null) {
+                          return 'Please enter a valid number';
+                        }
+                        if (number.isNegative) {
+                          return 'Please enter a non-negative number';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _draftRecord = _draftRecord.copyWith(
+                            totalArea: double.tryParse(value) ?? 0,
+                          );
+                        });
+                      },
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Price per Acre',
+                        border: OutlineInputBorder(),
+                      ),
+                      initialValue: _draftRecord.pricePerAcre.toString(),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the price per acre';
+                        }
+                        final number = num.tryParse(value);
+                        if (number == null) {
+                          return 'Please enter a valid number';
+                        }
+                        if (number.isNegative) {
+                          return 'Please enter a non-negative number';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _draftRecord = _draftRecord.copyWith(
+                            pricePerAcre: double.tryParse(value) ?? 0,
+                          );
+                        });
+                      },
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Spray Volume (GPA)',
+                        border: OutlineInputBorder(),
+                      ),
+                      initialValue: _draftRecord.sprayVolume.toString(),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the spray volume';
+                        }
+                        final number = num.tryParse(value);
+                        if (number == null) {
+                          return 'Please enter a valid number';
+                        }
+                        if (number.isNegative) {
+                          return 'Please enter a non-negative number';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _draftRecord = _draftRecord.copyWith(
+                            sprayVolume: double.tryParse(value) ?? 0,
+                          );
+                        });
+                      },
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Notes',
+                        border: OutlineInputBorder(),
+                        alignLabelWithHint: true,
+                      ),
+                      initialValue: _draftRecord.notes,
+                      maxLines: 5,
+                      onChanged: (value) {
+                        setState(() {
+                          _draftRecord = _draftRecord.copyWith(notes: value);
                         });
                       },
                     ),

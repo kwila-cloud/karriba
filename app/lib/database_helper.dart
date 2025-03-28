@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:io';
 
 class DatabaseHelper {
-  static const _currentSchemaVersion = 4;
+  static const _currentSchemaVersion = 5;
 
   static getPath() async => join(await getDatabasesPath(), "karriba.db");
 
@@ -56,10 +56,15 @@ class DatabaseHelper {
         customer_id INTEGER NOT NULL,
         customer_informed_of_rei INTEGER NOT NULL,
         field_name TEXT NOT NULL,
+        crop TEXT NOT NULL,
+        total_area REAL NOT NULL,
+        price_per_acre REAL NOT NULL,
+        spray_volume REAL NOT NULL,
         wind_speed_before REAL,
         wind_speed_after REAL,
         wind_direction TEXT,
-        temperature REAL
+        temperature REAL,
+        notes TEXT NOT NULL
       )
       ''');
     await db.execute('''
@@ -131,6 +136,23 @@ class DatabaseHelper {
           FOREIGN KEY (pesticide_id) REFERENCES pesticide(id) ON DELETE CASCADE
         )
         ''');
+    }
+    if (oldVersion < 5) {
+      await db.execute('''
+        ALTER TABLE record ADD COLUMN crop TEXT NOT NULL DEFAULT '';
+      ''');
+      await db.execute('''
+        ALTER TABLE record ADD COLUMN total_area REAL NOT NULL DEFAULT 0;
+      ''');
+      await db.execute('''
+        ALTER TABLE record ADD COLUMN price_per_acre REAL NOT NULL DEFAULT 0;
+      ''');
+      await db.execute('''
+        ALTER TABLE record ADD COLUMN spray_volume REAL NOT NULL DEFAULT 0;
+      ''');
+      await db.execute('''
+        ALTER TABLE record ADD COLUMN notes TEXT NOT NULL DEFAULT '';
+      ''');
     }
   }
 
