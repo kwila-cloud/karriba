@@ -97,7 +97,6 @@ class _EditRecordPageState extends State<EditRecordPage> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
         child: FutureBuilder<List<dynamic>>(
           future: _loadDataDependenciesFuture,
           builder: (context, snapshot) {
@@ -213,12 +212,13 @@ class _EditRecordPageState extends State<EditRecordPage> {
                           labelText: 'Applicator',
                           border: OutlineInputBorder(),
                         ),
-                        items: applicators.map((applicator) {
-                          return DropdownMenuItem<int>(
-                            value: applicator.id,
-                            child: Text(applicator.name),
-                          );
-                        }).toList(),
+                        items:
+                            applicators.map((applicator) {
+                              return DropdownMenuItem<int>(
+                                value: applicator.id,
+                                child: Text(applicator.name),
+                              );
+                            }).toList(),
                         value: selectedApplicatorId,
                         onChanged: (value) {
                           if (value == null) {
@@ -245,12 +245,13 @@ class _EditRecordPageState extends State<EditRecordPage> {
                           labelText: 'Customer',
                           border: OutlineInputBorder(),
                         ),
-                        items: customers.map((customer) {
-                          return DropdownMenuItem<int>(
-                            value: customer.id,
-                            child: Text(customer.name),
-                          );
-                        }).toList(),
+                        items:
+                            customers.map((customer) {
+                              return DropdownMenuItem<int>(
+                                value: customer.id,
+                                child: Text(customer.name),
+                              );
+                            }).toList(),
                         value: selectedCustomerId,
                         onChanged: (value) {
                           if (value == null) {
