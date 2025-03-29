@@ -67,8 +67,10 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
                     final pesticide = _allPesticides.firstWhere(
                       (p) => p.id == recordPesticide.pesticideId,
                     );
-
                     return Padding(
+                      // this key is required to make sure the form inputs
+                      // don't get corrupted after the user removes a pesticide
+                      key: Key(pesticide.id.toString()),
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Row(
                         children: [
