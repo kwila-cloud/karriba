@@ -51,8 +51,8 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE record (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        startTimestamp INTEGER NOT NULL,
-        endTimestamp INTEGER NOT NULL,
+        start_timestamp INTEGER NOT NULL,
+        end_timestamp INTEGER NOT NULL,
         applicator_id INTEGER NOT NULL,
         customer_id INTEGER NOT NULL,
         customer_informed_of_rei INTEGER NOT NULL,
