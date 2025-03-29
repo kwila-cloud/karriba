@@ -3,9 +3,7 @@ import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:karriba/applicator_dao.dart';
 import 'package:karriba/customer_dao.dart';
-import 'package:karriba/pesticide/pesticide.dart';
 import 'package:karriba/pesticide/pesticide_dao.dart';
-import 'package:karriba/record_pesticide/record_pesticide.dart';
 import 'package:karriba/record_pesticide/record_pesticide_dao.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as path;
@@ -19,7 +17,9 @@ class PDFGenerator {
     final document = pdf.Document();
     final applicator = await ApplicatorDao().get(recordData.applicatorId);
     final customer = await CustomerDao().get(recordData.customerId);
-    final recordPesticides = await RecordPesticideDao().queryByRecordId(recordData.id!);
+    final recordPesticides = await RecordPesticideDao().queryByRecordId(
+      recordData.id!,
+    );
     final pesticides = await PesticideDao().queryAllRows();
 
     final formattedDate =
@@ -40,10 +40,14 @@ class PDFGenerator {
     final temperature = recordData.temperature;
     final temperatureValue =
         temperature == null ? '' : temperature.toStringAsFixed(1);
-    final pesticidesString = recordPesticides.map((rp) {
-      final name = pesticides.firstWhere((p) => p.id == rp.pesticideId).name ?? 'Unknown';
-      return '$name ${rp.rate} ${rp.rateUnit}';
-    }).join(', ');
+    final pesticidesString = recordPesticides
+        .map((rp) {
+          final name =
+              pesticides.firstWhere((p) => p.id == rp.pesticideId).name ??
+              'Unknown';
+          return '$name ${rp.rate} ${rp.rateUnit}';
+        })
+        .join(', ');
 
     document.addPage(
       pdf.Page(
@@ -105,7 +109,11 @@ class PDFGenerator {
                 recordData.sprayVolume.toString(),
                 suffix: "GPA",
               ),
-              _buildRowWithBottomBox("Pesticides", pesticidesString, height: 100),
+              _buildRowWithBottomBox(
+                "Pesticides",
+                pesticidesString,
+                height: 100,
+              ),
               _buildInlineRow("Wind Velocity", windVelocityValue),
               _buildInlineRow(
                 "Wind Direction",

@@ -64,9 +64,11 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
       context: context,
       isScrollControlled: true,
       builder: (context) {
-        List<Pesticide> selected = List.from(_allPesticides.where(
-              (p) => _selectedPesticides.any((rp) => rp.pesticideId == p.id),
-        ));
+        List<Pesticide> selected = List.from(
+          _allPesticides.where(
+            (p) => _selectedPesticides.any((rp) => rp.pesticideId == p.id),
+          ),
+        );
 
         return StatefulBuilder(
           builder: (context, setModalState) {
@@ -85,8 +87,9 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
                       itemCount: _allPesticides.length,
                       itemBuilder: (context, index) {
                         final pesticide = _allPesticides[index];
-                        final isSelected =
-                        selected.any((p) => p.id == pesticide.id);
+                        final isSelected = selected.any(
+                          (p) => p.id == pesticide.id,
+                        );
 
                         return CheckboxListTile(
                           title: Text(pesticide.name),
@@ -97,7 +100,9 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
                               if (checked == true) {
                                 selected.add(pesticide);
                               } else {
-                                selected.removeWhere((p) => p.id == pesticide.id);
+                                selected.removeWhere(
+                                  (p) => p.id == pesticide.id,
+                                );
                               }
                             });
                           },
@@ -164,7 +169,7 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
                   itemBuilder: (context, index) {
                     final recordPesticide = _selectedPesticides[index];
                     final pesticide = _allPesticides.firstWhere(
-                          (p) => p.id == recordPesticide.pesticideId,
+                      (p) => p.id == recordPesticide.pesticideId,
                     );
 
                     return Padding(
@@ -194,8 +199,8 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
                               initialValue: recordPesticide.rate.toString(),
                               onChanged:
                                   (value) =>
-                              recordPesticide.rate =
-                                  double.tryParse(value) ?? 0.0,
+                                      recordPesticide.rate =
+                                          double.tryParse(value) ?? 0.0,
                             ),
                           ),
                           const SizedBox(width: 8),
@@ -207,12 +212,12 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
                                 border: OutlineInputBorder(),
                               ),
                               items:
-                              const ['fl oz', 'oz', 'lb'].map((unit) {
-                                return DropdownMenuItem(
-                                  value: unit,
-                                  child: Text(unit),
-                                );
-                              }).toList(),
+                                  const ['fl oz', 'oz', 'lb'].map((unit) {
+                                    return DropdownMenuItem(
+                                      value: unit,
+                                      child: Text(unit),
+                                    );
+                                  }).toList(),
                               onChanged:
                                   (unit) => recordPesticide.rateUnit = unit!,
                             ),
@@ -221,8 +226,8 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
                             icon: const Icon(Icons.delete, color: Colors.red),
                             onPressed:
                                 () => _removePesticide(
-                              recordPesticide.pesticideId,
-                            ),
+                                  recordPesticide.pesticideId,
+                                ),
                           ),
                         ],
                       ),
