@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
@@ -6,6 +7,7 @@ import 'package:karriba/pesticide/pesticide.dart';
 import 'package:karriba/pesticide/pesticide_dao.dart';
 import 'package:karriba/record_pesticide/record_pesticide.dart';
 import 'package:karriba/record_pesticide/record_pesticide_dao.dart';
+import 'package:karriba/unsaved_changes_dialog.dart';
 
 class EditRecordPesticidesPage extends StatefulWidget {
   const EditRecordPesticidesPage({super.key, required this.recordId});
@@ -23,7 +25,11 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
   final RecordPesticideDao _recordPesticideDao = RecordPesticideDao();
 
   List<Pesticide> _allPesticides = [];
-  List<RecordPesticide> _selectedPesticides = [];
+  List<RecordPesticide> _draftSelectedPesticides = [];
+  List<RecordPesticide> _originalSelectedPesticides = [];
+
+  bool get _hasChanges =>
+      !listEquals(_draftSelectedPesticides, _originalSelectedPesticides);
 
   @override
   void initState() {
@@ -33,7 +39,9 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
 
   @override
   Widget build(BuildContext context) => WillPopScope(
-    onWillPop: () async => true,
+    onWillPop:
+        () async =>
+            _hasChanges ? await showUnsavedChangesDialog(context) : true,
     child: Scaffold(
       appBar: AppBar(
         title: const Text('Edit Pesticides'),
@@ -53,9 +61,9 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
             children: [
               Expanded(
                 child: ListView.builder(
-                  itemCount: _selectedPesticides.length,
+                  itemCount: _draftSelectedPesticides.length,
                   itemBuilder: (context, index) {
-                    final recordPesticide = _selectedPesticides[index];
+                    final recordPesticide = _draftSelectedPesticides[index];
                     final pesticide = _allPesticides.firstWhere(
                       (p) => p.id == recordPesticide.pesticideId,
                     );
@@ -100,22 +108,27 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
                                 border: OutlineInputBorder(),
                               ),
                               items:
-                                  const ['fl oz', 'oz', 'lb'].map((unit) {
-                                    return DropdownMenuItem(
-                                      value: unit,
-                                      child: Text(unit),
-                                    );
-                                  }).toList(),
+                                  const ['fl oz', 'oz', 'lb']
+                                      .map(
+                                        (unit) => DropdownMenuItem(
+                                          value: unit,
+                                          child: Text(unit),
+                                        ),
+                                      )
+                                      .toList(),
                               onChanged:
                                   (unit) => recordPesticide.rateUnit = unit!,
                             ),
                           ),
                           IconButton(
                             icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed:
-                                () => _removePesticide(
-                                  recordPesticide.pesticideId,
-                                ),
+                            onPressed: () {
+                              setState(() {
+                                _draftSelectedPesticides.removeWhere(
+                                  (rp) => rp.pesticideId == pesticide.id,
+                                );
+                              });
+                            },
                           ),
                         ],
                       ),
@@ -141,15 +154,17 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
     );
     setState(() {
       _allPesticides = pesticides;
-      _selectedPesticides = selected;
+      _draftSelectedPesticides = selected;
     });
   }
 
   void _addPesticides(List<Pesticide> selectedPesticides) {
     setState(() {
       for (var pesticide in selectedPesticides) {
-        if (!_selectedPesticides.any((rp) => rp.pesticideId == pesticide.id)) {
-          _selectedPesticides.add(
+        if (!_draftSelectedPesticides.any(
+          (rp) => rp.pesticideId == pesticide.id,
+        )) {
+          _draftSelectedPesticides.add(
             RecordPesticide(
               recordId: widget.recordId,
               pesticideId: pesticide.id ?? 0,
@@ -169,79 +184,86 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
       builder: (context) {
         List<Pesticide> selected = List.from(
           _allPesticides.where(
-            (p) => _selectedPesticides.any((rp) => rp.pesticideId == p.id),
+            (p) => _draftSelectedPesticides.any((rp) => rp.pesticideId == p.id),
           ),
         );
-
         return StatefulBuilder(
-          builder: (context, setModalState) {
-            return Container(
-              padding: const EdgeInsets.all(16),
-              height: 400,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Select Pesticides',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: _allPesticides.length,
-                      itemBuilder: (context, index) {
-                        final pesticide = _allPesticides[index];
-                        final isSelected = selected.any(
-                          (p) => p.id == pesticide.id,
-                        );
+          builder:
+              (context, setModalState) => Container(
+                padding: const EdgeInsets.all(16),
+                height: 400,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Select Pesticides',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: _allPesticides.length,
+                        itemBuilder: (context, index) {
+                          final pesticide = _allPesticides[index];
+                          final isSelected = selected.any(
+                            (p) => p.id == pesticide.id,
+                          );
 
-                        return CheckboxListTile(
-                          title: Text(pesticide.name),
-                          value: isSelected,
-                          contentPadding: EdgeInsets.zero,
-                          onChanged: (checked) {
-                            setModalState(() {
-                              if (checked == true) {
-                                selected.add(pesticide);
-                              } else {
-                                selected.removeWhere(
-                                  (p) => p.id == pesticide.id,
-                                );
-                              }
-                            });
-                          },
-                        );
-                      },
+                          return CheckboxListTile(
+                            title: Text(pesticide.name),
+                            value: isSelected,
+                            contentPadding: EdgeInsets.zero,
+                            onChanged: (checked) {
+                              setModalState(() {
+                                if (checked == true) {
+                                  selected.add(pesticide);
+                                } else {
+                                  selected.removeWhere(
+                                    (p) => p.id == pesticide.id,
+                                  );
+                                }
+                              });
+                            },
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        _addPesticides(selected);
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Confirm'),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          _addPesticides(selected);
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Confirm'),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            );
-          },
         );
       },
     );
   }
 
-  Future<void> _removePesticide(int pesticideId) async {
-    await _recordPesticideDao.delete(widget.recordId, pesticideId);
-    setState(() {
-      _selectedPesticides.removeWhere((rp) => rp.pesticideId == pesticideId);
-    });
-  }
+  Future<void> _removePesticide(int pesticideId) async {}
 
   Future<void> _saveRecord() async {
     if (_formKey.currentState!.validate()) {
-      await _recordPesticideDao.saveAll(_selectedPesticides);
+      await _recordPesticideDao.saveAll(_draftSelectedPesticides);
+      Iterable<int> originalSelectedPesticideIds = _originalSelectedPesticides
+          .map((p) => p.pesticideId);
+      Iterable<int> draftSelectedPesticideIds = _draftSelectedPesticides.map(
+        (p) => p.pesticideId,
+      );
+      Iterable<int> removedPesticideIds = originalSelectedPesticideIds.where(
+        (id) => draftSelectedPesticideIds.contains(id),
+      );
+      for (int pesticideId in removedPesticideIds) {
+        await _recordPesticideDao.delete(widget.recordId, pesticideId);
+      }
       Navigator.pop(context);
     }
   }
