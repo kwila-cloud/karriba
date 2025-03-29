@@ -21,7 +21,9 @@ class PDFGenerator {
       recordData.id!,
     );
     final pesticides = await PesticideDao().queryAllRows();
-    final pesticidesMap = {for (var p in pesticides) p.id: p.name};
+    final pesticidesMap = {
+      for (var p in pesticides) p.id: '${p.name} (${p.registrationNumber})',
+    };
 
     final formattedDate =
         DateFormat('MM/dd/yyyy').format(recordData.startTimestamp).toString();
@@ -46,7 +48,7 @@ class PDFGenerator {
     final pesticidesString = recordPesticides
         .map(
           (rp) =>
-              '${pesticidesMap[rp.pesticideId] ?? 'Unknown'} ${rp.rate} ${rp.rateUnit}',
+              '${pesticidesMap[rp.pesticideId] ?? 'Unknown'} - ${rp.rate} ${rp.rateUnit}',
         )
         .join(', ');
 
