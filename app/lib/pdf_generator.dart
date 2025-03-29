@@ -21,9 +21,10 @@ class PDFGenerator {
       recordData.id!,
     );
     final pesticides = await PesticideDao().queryAllRows();
+    final pesticidesMap = {for (var p in pesticides) p.id: p.name};
 
     final formattedDate =
-        DateFormat('yyyy-MM-dd').format(recordData.timestamp).toString();
+        DateFormat('MM-dd-yyyy').format(recordData.timestamp).toString();
     final formattedTime =
         DateFormat('HH_mm').format(recordData.timestamp).toString();
     final beforeSpeed = recordData.windSpeedBefore;
@@ -41,12 +42,10 @@ class PDFGenerator {
     final temperatureValue =
         temperature == null ? '' : temperature.toStringAsFixed(1);
     final pesticidesString = recordPesticides
-        .map((rp) {
-          final name =
-              pesticides.firstWhere((p) => p.id == rp.pesticideId).name ??
-              'Unknown';
-          return '$name ${rp.rate} ${rp.rateUnit}';
-        })
+        .map(
+          (rp) =>
+              '${pesticidesMap[rp.pesticideId] ?? 'Unknown'} ${rp.rate} ${rp.rateUnit}',
+        )
         .join(', ');
 
     document.addPage(
@@ -150,8 +149,6 @@ class PDFGenerator {
     double height = 24,
     String suffix = '',
   }) {
-    print(label);
-    print(value);
     return pdf.Padding(
       padding: pdf.EdgeInsets.symmetric(vertical: 4),
       child: pdf.Column(
@@ -169,8 +166,6 @@ class PDFGenerator {
   }
 
   pdf.Widget _buildInlineRow(String label, String value, {String suffix = ''}) {
-    print(label);
-    print(value);
     return pdf.Padding(
       padding: pdf.EdgeInsets.symmetric(vertical: 4),
       child: pdf.Row(
