@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:karriba/applicator_dao.dart';
 import 'package:karriba/customer_dao.dart';
+import 'package:karriba/pesticide/pesticide_dao.dart';
+import 'package:karriba/record_pesticide/record_pesticide_dao.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as path;
 import 'package:pdf/pdf.dart';
@@ -15,14 +17,20 @@ class PDFGenerator {
     final document = pdf.Document();
     final applicator = await ApplicatorDao().get(recordData.applicatorId);
     final customer = await CustomerDao().get(recordData.customerId);
+    final recordPesticides = await RecordPesticideDao().queryByRecordId(
+      recordData.id!,
+    );
+    final pesticides = await PesticideDao().queryAllRows();
+    final pesticidesMap = {
+      for (var p in pesticides) p.id: '${p.name} (${p.registrationNumber})',
+    };
+
     final formattedDate =
         DateFormat('MM/dd/yyyy').format(recordData.startTimestamp).toString();
     final formattedStartTime =
         DateFormat('h:mm a').format(recordData.startTimestamp).toString();
     final formattedEndTime =
         DateFormat('h:mm a').format(recordData.endTimestamp).toString();
-    final formattedTime =
-        DateFormat('HH_mm').format(recordData.startTimestamp).toString();
     final beforeSpeed = recordData.windSpeedBefore;
     final afterSpeed = recordData.windSpeedAfter;
     final windVelocityValue =
@@ -37,6 +45,12 @@ class PDFGenerator {
     final temperature = recordData.temperature;
     final temperatureValue =
         temperature == null ? '' : temperature.toStringAsFixed(1);
+    final pesticidesString = recordPesticides
+        .map(
+          (rp) =>
+              '${pesticidesMap[rp.pesticideId] ?? 'Unknown'} - ${rp.rate} ${rp.rateUnit}',
+        )
+        .join(', ');
 
     document.addPage(
       pdf.Page(
@@ -109,7 +123,11 @@ class PDFGenerator {
                 recordData.sprayVolume.toString(),
                 suffix: "GPA",
               ),
-              _buildRowWithBottomBox("Pesticides", "", height: 100),
+              _buildRowWithBottomBox(
+                "Pesticides",
+                pesticidesString,
+                height: 100,
+              ),
               _buildInlineRow("Wind Velocity", windVelocityValue),
               _buildInlineRow(
                 "Wind Direction",

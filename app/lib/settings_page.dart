@@ -25,7 +25,7 @@ class SettingsPage extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: const Iconify(Mdi.bug),
+          leading: const Iconify(Mdi.bottle_tonic),
           title: const Text('Pesticides'),
           onTap: () {
             Navigator.push(

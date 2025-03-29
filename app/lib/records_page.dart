@@ -3,6 +3,7 @@ import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:intl/intl.dart';
 import 'package:karriba/coming_soon_dialog.dart';
+import 'package:karriba/record_pesticide/edit_record_pesticides.dart';
 
 import 'edit_environmental_conditions_page.dart';
 import 'edit_record_page.dart';
@@ -129,10 +130,16 @@ class RecordTile extends StatelessWidget {
                   leading: Iconify(Mdi.bottle_tonic),
                   title: const Text('Pesticides'),
                   onTap: () async {
-                    await showDialog(
-                      context: context,
-                      builder: (context) => ComingSoonDialog(),
+                    Navigator.pop(context);
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) =>
+                                EditRecordPesticidesPage(recordId: record.id!),
+                      ),
                     );
+                    refresh();
                   },
                 ),
                 ListTile(
