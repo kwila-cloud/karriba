@@ -155,6 +155,8 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
     setState(() {
       _allPesticides = pesticides;
       _draftSelectedPesticides = selected;
+      // Do a deep copy
+      _originalSelectedPesticides = selected.map((p) => p.copyWith()).toList();
     });
   }
 
@@ -182,11 +184,16 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
       context: context,
       isScrollControlled: true,
       builder: (context) {
-        List<Pesticide> selected = List.from(
-          _allPesticides.where(
-            (p) => _draftSelectedPesticides.any((rp) => rp.pesticideId == p.id),
-          ),
-        );
+        List<Pesticide> options =
+            _allPesticides
+                .where(
+                  (p) =>
+                      !_draftSelectedPesticides.any(
+                        (rp) => rp.pesticideId == p.id,
+                      ),
+                )
+                .toList();
+        List<Pesticide> selected = [];
         return StatefulBuilder(
           builder:
               (context, setModalState) => Container(
@@ -204,9 +211,9 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
                     ),
                     Expanded(
                       child: ListView.builder(
-                        itemCount: _allPesticides.length,
+                        itemCount: options.length,
                         itemBuilder: (context, index) {
-                          final pesticide = _allPesticides[index];
+                          final pesticide = options[index];
                           final isSelected = selected.any(
                             (p) => p.id == pesticide.id,
                           );
@@ -248,8 +255,6 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
     );
   }
 
-  Future<void> _removePesticide(int pesticideId) async {}
-
   Future<void> _saveRecord() async {
     if (_formKey.currentState!.validate()) {
       await _recordPesticideDao.saveAll(_draftSelectedPesticides);
@@ -259,7 +264,7 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
         (p) => p.pesticideId,
       );
       Iterable<int> removedPesticideIds = originalSelectedPesticideIds.where(
-        (id) => draftSelectedPesticideIds.contains(id),
+        (id) => !draftSelectedPesticideIds.contains(id),
       );
       for (int pesticideId in removedPesticideIds) {
         await _recordPesticideDao.delete(widget.recordId, pesticideId);
