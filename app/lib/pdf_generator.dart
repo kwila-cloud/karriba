@@ -24,9 +24,11 @@ class PDFGenerator {
     final pesticidesMap = {for (var p in pesticides) p.id: p.name};
 
     final formattedDate =
-        DateFormat('MM-dd-yyyy').format(recordData.timestamp).toString();
-    final formattedTime =
-        DateFormat('HH_mm').format(recordData.timestamp).toString();
+        DateFormat('MM/dd/yyyy').format(recordData.startTimestamp).toString();
+    final formattedStartTime =
+        DateFormat('h:mm a').format(recordData.startTimestamp).toString();
+    final formattedEndTime =
+        DateFormat('h:mm a').format(recordData.endTimestamp).toString();
     final beforeSpeed = recordData.windSpeedBefore;
     final afterSpeed = recordData.windSpeedAfter;
     final windVelocityValue =
@@ -57,6 +59,7 @@ class PDFGenerator {
             crossAxisAlignment: pdf.CrossAxisAlignment.start,
             children: [
               pdf.Row(
+                crossAxisAlignment: pdf.CrossAxisAlignment.start,
                 mainAxisAlignment: pdf.MainAxisAlignment.spaceBetween,
                 children: [
                   pdf.Text(
@@ -66,12 +69,24 @@ class PDFGenerator {
                       fontWeight: pdf.FontWeight.bold,
                     ),
                   ),
-                  pdf.Text(
-                    formattedDate, // Form date
-                    style: pdf.TextStyle(
-                      fontSize: 16,
-                      fontWeight: pdf.FontWeight.normal,
-                    ),
+                  pdf.Column(
+                    crossAxisAlignment: pdf.CrossAxisAlignment.end,
+                    children: [
+                      pdf.Text(
+                        formattedDate,
+                        style: pdf.TextStyle(
+                          fontSize: 12,
+                          fontWeight: pdf.FontWeight.normal,
+                        ),
+                      ),
+                      pdf.Text(
+                        '$formattedStartTime - $formattedEndTime',
+                        style: pdf.TextStyle(
+                          fontSize: 12,
+                          fontWeight: pdf.FontWeight.normal,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -80,12 +95,10 @@ class PDFGenerator {
                 "Applicator",
                 "${applicator?.name} - ${applicator?.licenseNumber}",
               ),
-
               _buildRowWithBottomBox(
                 "Owner",
                 "${customer?.name}, ${customer?.streetAddress}, ${customer?.city}, ${customer?.state}, ${customer?.zipCode}",
               ),
-
               _buildInlineRow(
                 "Owner Informed of REI",
                 recordData.customerInformedOfRei ? 'Yes' : 'No',
@@ -131,7 +144,7 @@ class PDFGenerator {
     // TODO: use a different path on non-Android platforms
     final directoryPath = '/storage/emulated/0/Download';
     final fileName =
-        '${applicator?.name ?? 'Unknown Applicator'} ${recordData.fieldName} ${formattedDate}_$formattedTime.pdf'
+        '${applicator?.name ?? 'Unknown Applicator'} ${recordData.fieldName}.pdf'
             .replaceAll(' ', '_')
             // Remove all dangerous characters
             .replaceAll(RegExp(r'[^\w\-_]'), '');

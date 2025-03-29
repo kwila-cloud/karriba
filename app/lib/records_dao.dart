@@ -25,7 +25,8 @@ class RecordsDao {
     final List<Map<String, dynamic>> maps = await db.rawQuery('''
       SELECT 
         record.id,
-        record.timestamp,
+        record.start_timestamp,
+        record.end_timestamp,
         record.applicator_id,
         applicator.name as applicator_name,
         record.customer_id,
@@ -44,15 +45,18 @@ class RecordsDao {
       FROM record
       INNER JOIN applicator ON record.applicator_id = applicator.id
       INNER JOIN customer ON record.customer_id = customer.id
-      ORDER BY record.timestamp DESC
+      ORDER BY record.start_timestamp DESC
     ''');
 
     // Convert the List<Map<String, dynamic> into a List<Record>.
     return List.generate(maps.length, (i) {
       return Record(
         id: maps[i]['id'] as int?,
-        timestamp: DateTime.fromMillisecondsSinceEpoch(
-          maps[i]['timestamp'] as int,
+        startTimestamp: DateTime.fromMillisecondsSinceEpoch(
+          maps[i]['start_timestamp'] as int,
+        ),
+        endTimestamp: DateTime.fromMillisecondsSinceEpoch(
+          maps[i]['end_timestamp'] as int,
         ),
         applicatorId: maps[i]['applicator_id'] as int,
         applicatorName: maps[i]['applicator_name'] as String,
@@ -85,8 +89,11 @@ class RecordsDao {
     if (maps.isNotEmpty) {
       return Record(
         id: maps[0]['id'] as int?,
-        timestamp: DateTime.fromMillisecondsSinceEpoch(
-          maps[0]['timestamp'] as int,
+        startTimestamp: DateTime.fromMillisecondsSinceEpoch(
+          maps[0]['start_timestamp'] as int,
+        ),
+        endTimestamp: DateTime.fromMillisecondsSinceEpoch(
+          maps[0]['end_timestamp'] as int,
         ),
         applicatorId: maps[0]['applicator_id'] as int,
         customerId: maps[0]['customer_id'] as int,

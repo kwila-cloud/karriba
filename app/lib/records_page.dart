@@ -80,7 +80,7 @@ class RecordTile extends StatelessWidget {
     String customerName = record.customerName ?? "Unknown Customer";
     String titleString = "$customerName - ${record.fieldName}";
     String subtitleString = record.applicatorName ?? "Unknown Applicator";
-    String dateString = DateFormat.Md().format(record.timestamp);
+    String dateString = DateFormat.Md().format(record.startTimestamp);
     return ListTile(
       title: Text(titleString),
       subtitle: Text(subtitleString),

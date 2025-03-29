@@ -25,12 +25,41 @@ class _EditRecordPageState extends State<EditRecordPage> {
   late String _title;
   late Future<List<dynamic>> _loadDataDependenciesFuture;
 
+  late DateTime _selectedDate;
+  late TimeOfDay _selectedStartTime;
+  late TimeOfDay _selectedEndTime;
+
   @override
   void initState() {
+    Record? record = widget.record;
+    if (record != null) {
+      _selectedDate = record.startTimestamp;
+      _selectedStartTime = TimeOfDay.fromDateTime(record.startTimestamp);
+      _selectedEndTime = TimeOfDay.fromDateTime(record.endTimestamp);
+    } else {
+      final now = DateTime.now();
+      _selectedDate = DateTime(now.year, now.month, now.day);
+      _selectedStartTime = TimeOfDay.fromDateTime(DateTime.now());
+      _selectedEndTime = TimeOfDay.fromDateTime(DateTime.now());
+    }
+
     _draftRecord =
-        widget.record ??
+        record ??
         Record(
-          timestamp: DateTime.now(),
+          startTimestamp: DateTime(
+            _selectedDate.year,
+            _selectedDate.month,
+            _selectedDate.day,
+            _selectedStartTime.hour,
+            _selectedStartTime.minute,
+          ),
+          endTimestamp: DateTime(
+            _selectedDate.year,
+            _selectedDate.month,
+            _selectedDate.day,
+            _selectedEndTime.hour,
+            _selectedEndTime.minute,
+          ),
           customerId: 0,
           applicatorId: 0,
           customerInformedOfRei: false,
@@ -68,7 +97,6 @@ class _EditRecordPageState extends State<EditRecordPage> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
         child: FutureBuilder<List<dynamic>>(
           future: _loadDataDependenciesFuture,
           builder: (context, snapshot) {
@@ -90,220 +118,358 @@ class _EditRecordPageState extends State<EditRecordPage> {
               return Form(
                 key: _formKey,
                 child: Column(
-                  spacing: 16,
                   children: [
-                    DropdownButtonFormField<int>(
-                      decoration: const InputDecoration(
-                        labelText: 'Applicator',
-                        border: OutlineInputBorder(),
+                    ListTile(
+                      title: const Text('Date'),
+                      trailing: Text(
+                        '${_selectedDate.toLocal()}'.split(' ')[0],
                       ),
-                      items:
-                          applicators.map((applicator) {
-                            return DropdownMenuItem<int>(
-                              value: applicator.id,
-                              child: Text(applicator.name),
+                      onTap: () async {
+                        final DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: _selectedDate,
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100),
+                        );
+                        if (pickedDate != null && pickedDate != _selectedDate) {
+                          setState(() {
+                            _selectedDate = pickedDate;
+                            _draftRecord = _draftRecord.copyWith(
+                              startTimestamp: DateTime(
+                                _selectedDate.year,
+                                _selectedDate.month,
+                                _selectedDate.day,
+                                _selectedStartTime.hour,
+                                _selectedStartTime.minute,
+                              ),
+                              endTimestamp: DateTime(
+                                _selectedDate.year,
+                                _selectedDate.month,
+                                _selectedDate.day,
+                                _selectedEndTime.hour,
+                                _selectedEndTime.minute,
+                              ),
                             );
-                          }).toList(),
-                      value: selectedApplicatorId,
-                      onChanged: (value) {
-                        if (value == null) {
-                          return;
+                          });
                         }
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(
-                            applicatorId: value,
-                          );
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please select an applicator';
-                        }
-                        return null;
                       },
                     ),
-                    DropdownButtonFormField<int>(
-                      decoration: const InputDecoration(
-                        labelText: 'Customer',
-                        border: OutlineInputBorder(),
-                      ),
-                      items:
-                          customers.map((customer) {
-                            return DropdownMenuItem<int>(
-                              value: customer.id,
-                              child: Text(customer.name),
+                    ListTile(
+                      title: const Text('Start Time'),
+                      trailing: Text(_selectedStartTime.format(context)),
+                      onTap: () async {
+                        final TimeOfDay? pickedTime = await showTimePicker(
+                          context: context,
+                          initialTime: _selectedStartTime,
+                        );
+                        if (pickedTime != null &&
+                            pickedTime != _selectedStartTime) {
+                          setState(() {
+                            _selectedStartTime = pickedTime;
+                            _draftRecord = _draftRecord.copyWith(
+                              startTimestamp: DateTime(
+                                _selectedDate.year,
+                                _selectedDate.month,
+                                _selectedDate.day,
+                                _selectedStartTime.hour,
+                                _selectedStartTime.minute,
+                              ),
                             );
-                          }).toList(),
-                      value: selectedCustomerId,
-                      onChanged: (value) {
-                        if (value == null) {
-                          return;
+                          });
                         }
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(
-                            customerId: value,
-                          );
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please select a customer';
-                        }
-                        return null;
                       },
                     ),
-                    CheckboxListTile(
-                      title: const Text('Customer Informed of REI'),
-                      subtitle: const Text(
-                        'The customer must be notified of the Restricted-Entry Interval.',
-                      ),
-                      value: customerInformedOfRei,
-                      onChanged: (value) {
-                        if (value == null) {
-                          return;
+                    ListTile(
+                      title: const Text('End Time'),
+                      trailing: Text(_selectedEndTime.format(context)),
+                      onTap: () async {
+                        final TimeOfDay? pickedTime = await showTimePicker(
+                          context: context,
+                          initialTime: _selectedEndTime,
+                        );
+                        if (pickedTime != null &&
+                            pickedTime != _selectedEndTime) {
+                          setState(() {
+                            _selectedEndTime = pickedTime;
+                            _draftRecord = _draftRecord.copyWith(
+                              endTimestamp: DateTime(
+                                _selectedDate.year,
+                                _selectedDate.month,
+                                _selectedDate.day,
+                                _selectedEndTime.hour,
+                                _selectedEndTime.minute,
+                              ),
+                            );
+                          });
                         }
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(
-                            customerInformedOfRei: value,
-                          );
-                        });
                       },
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Field Name',
-                        border: OutlineInputBorder(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
                       ),
-                      initialValue: _draftRecord.fieldName,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a field name';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(
-                            fieldName: value,
-                          );
-                        });
-                      },
+                      child: DropdownButtonFormField<int>(
+                        decoration: const InputDecoration(
+                          labelText: 'Applicator',
+                          border: OutlineInputBorder(),
+                        ),
+                        items:
+                            applicators.map((applicator) {
+                              return DropdownMenuItem<int>(
+                                value: applicator.id,
+                                child: Text(applicator.name),
+                              );
+                            }).toList(),
+                        value: selectedApplicatorId,
+                        onChanged: (value) {
+                          if (value == null) {
+                            return;
+                          }
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(
+                              applicatorId: value,
+                            );
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Please select an applicator';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Crop',
-                        border: OutlineInputBorder(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
                       ),
-                      initialValue: _draftRecord.crop,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a crop';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(crop: value);
-                        });
-                      },
+                      child: DropdownButtonFormField<int>(
+                        decoration: const InputDecoration(
+                          labelText: 'Customer',
+                          border: OutlineInputBorder(),
+                        ),
+                        items:
+                            customers.map((customer) {
+                              return DropdownMenuItem<int>(
+                                value: customer.id,
+                                child: Text(customer.name),
+                              );
+                            }).toList(),
+                        value: selectedCustomerId,
+                        onChanged: (value) {
+                          if (value == null) {
+                            return;
+                          }
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(
+                              customerId: value,
+                            );
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Please select a customer';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Total Area',
-                        border: OutlineInputBorder(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
                       ),
-                      initialValue: _draftRecord.totalArea.toString(),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the total area';
-                        }
-                        final number = num.tryParse(value);
-                        if (number == null) {
-                          return 'Please enter a valid number';
-                        }
-                        if (number.isNegative) {
-                          return 'Please enter a non-negative number';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(
-                            totalArea: double.tryParse(value) ?? 0,
-                          );
-                        });
-                      },
+                      child: CheckboxListTile(
+                        title: const Text('Customer Informed of REI'),
+                        subtitle: const Text(
+                          'The customer must be notified of the Restricted-Entry Interval.',
+                        ),
+                        value: customerInformedOfRei,
+                        onChanged: (value) {
+                          if (value == null) {
+                            return;
+                          }
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(
+                              customerInformedOfRei: value,
+                            );
+                          });
+                        },
+                      ),
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Price per Acre',
-                        border: OutlineInputBorder(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
                       ),
-                      initialValue: _draftRecord.pricePerAcre.toString(),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the price per acre';
-                        }
-                        final number = num.tryParse(value);
-                        if (number == null) {
-                          return 'Please enter a valid number';
-                        }
-                        if (number.isNegative) {
-                          return 'Please enter a non-negative number';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(
-                            pricePerAcre: double.tryParse(value) ?? 0,
-                          );
-                        });
-                      },
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Field Name',
+                          border: OutlineInputBorder(),
+                        ),
+                        initialValue: _draftRecord.fieldName,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a field name';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(
+                              fieldName: value,
+                            );
+                          });
+                        },
+                      ),
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Spray Volume (GPA)',
-                        border: OutlineInputBorder(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
                       ),
-                      initialValue: _draftRecord.sprayVolume.toString(),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the spray volume';
-                        }
-                        final number = num.tryParse(value);
-                        if (number == null) {
-                          return 'Please enter a valid number';
-                        }
-                        if (number.isNegative) {
-                          return 'Please enter a non-negative number';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(
-                            sprayVolume: double.tryParse(value) ?? 0,
-                          );
-                        });
-                      },
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Crop',
+                          border: OutlineInputBorder(),
+                        ),
+                        initialValue: _draftRecord.crop,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a crop';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(crop: value);
+                          });
+                        },
+                      ),
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Notes',
-                        border: OutlineInputBorder(),
-                        alignLabelWithHint: true,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
                       ),
-                      initialValue: _draftRecord.notes,
-                      maxLines: 5,
-                      onChanged: (value) {
-                        setState(() {
-                          _draftRecord = _draftRecord.copyWith(notes: value);
-                        });
-                      },
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Total Area',
+                          border: OutlineInputBorder(),
+                        ),
+                        initialValue: _draftRecord.totalArea.toString(),
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the total area';
+                          }
+                          final number = num.tryParse(value);
+                          if (number == null) {
+                            return 'Please enter a valid number';
+                          }
+                          if (number <= 0) {
+                            return 'Please enter a value greater than zero';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(
+                              totalArea: double.tryParse(value) ?? 0,
+                            );
+                          });
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Price per Acre',
+                          border: OutlineInputBorder(),
+                        ),
+                        initialValue: _draftRecord.pricePerAcre.toString(),
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the price per acre';
+                          }
+                          final number = num.tryParse(value);
+                          if (number == null) {
+                            return 'Please enter a valid number';
+                          }
+                          if (number <= 0) {
+                            return 'Please enter a value greater than zero';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(
+                              pricePerAcre: double.tryParse(value) ?? 0,
+                            );
+                          });
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Spray Volume (GPA)',
+                          border: OutlineInputBorder(),
+                        ),
+                        initialValue: _draftRecord.sprayVolume.toString(),
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the spray volume';
+                          }
+                          final number = num.tryParse(value);
+                          if (number == null) {
+                            return 'Please enter a valid number';
+                          }
+                          if (number <= 0) {
+                            return 'Please enter a value greater than zero';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(
+                              sprayVolume: double.tryParse(value) ?? 0,
+                            );
+                          });
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Notes',
+                          border: OutlineInputBorder(),
+                          alignLabelWithHint: true,
+                        ),
+                        initialValue: _draftRecord.notes,
+                        maxLines: 5,
+                        onChanged: (value) {
+                          setState(() {
+                            _draftRecord = _draftRecord.copyWith(notes: value);
+                          });
+                        },
+                      ),
                     ),
                   ],
                 ),
