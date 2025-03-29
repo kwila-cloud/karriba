@@ -31,6 +31,109 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
     _loadPesticides();
   }
 
+  @override
+  Widget build(BuildContext context) => WillPopScope(
+    onWillPop: () async => true,
+    child: Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Pesticides'),
+        actions: [
+          IconButton(
+            icon: const Iconify(Mdi.content_save),
+            onPressed: _saveRecord,
+          ),
+        ],
+      ),
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            spacing: 16,
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _selectedPesticides.length,
+                  itemBuilder: (context, index) {
+                    final recordPesticide = _selectedPesticides[index];
+                    final pesticide = _allPesticides.firstWhere(
+                      (p) => p.id == recordPesticide.pesticideId,
+                    );
+
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              pesticide.name,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                labelText: 'Rate',
+                                border: OutlineInputBorder(),
+                              ),
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(r'^\d*\.?\d*$'),
+                                ),
+                              ],
+                              initialValue: recordPesticide.rate.toString(),
+                              onChanged:
+                                  (value) =>
+                                      recordPesticide.rate =
+                                          double.tryParse(value) ?? 0.0,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            flex: 2,
+                            child: DropdownButtonFormField<String>(
+                              value: recordPesticide.rateUnit,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
+                              items:
+                                  const ['fl oz', 'oz', 'lb'].map((unit) {
+                                    return DropdownMenuItem(
+                                      value: unit,
+                                      child: Text(unit),
+                                    );
+                                  }).toList(),
+                              onChanged:
+                                  (unit) => recordPesticide.rateUnit = unit!,
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed:
+                                () => _removePesticide(
+                                  recordPesticide.pesticideId,
+                                ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showPesticideSelectionSheet,
+        child: const Icon(Icons.add),
+      ),
+    ),
+  );
+
   Future<void> _loadPesticides() async {
     List<Pesticide> pesticides = await _pesticideDao.queryAllRows();
     List<RecordPesticide> selected = await _recordPesticideDao.queryByRecordId(
@@ -142,107 +245,4 @@ class _EditRecordPesticidesPageState extends State<EditRecordPesticidesPage> {
       Navigator.pop(context);
     }
   }
-
-  @override
-  Widget build(BuildContext context) => WillPopScope(
-    onWillPop: () async => true,
-    child: Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit Pesticides'),
-        actions: [
-          IconButton(
-            icon: const Iconify(Mdi.content_save),
-            onPressed: _saveRecord,
-          ),
-        ],
-      ),
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            spacing: 16,
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _selectedPesticides.length,
-                  itemBuilder: (context, index) {
-                    final recordPesticide = _selectedPesticides[index];
-                    final pesticide = _allPesticides.firstWhere(
-                      (p) => p.id == recordPesticide.pesticideId,
-                    );
-
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              pesticide.name,
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: TextFormField(
-                              decoration: const InputDecoration(
-                                labelText: 'Rate',
-                                border: OutlineInputBorder(),
-                              ),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                  RegExp(r'^\d*\.?\d*$'),
-                                ),
-                              ],
-                              initialValue: recordPesticide.rate.toString(),
-                              onChanged:
-                                  (value) =>
-                                      recordPesticide.rate =
-                                          double.tryParse(value) ?? 0.0,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            flex: 2,
-                            child: DropdownButtonFormField<String>(
-                              value: recordPesticide.rateUnit,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                              ),
-                              items:
-                                  const ['fl oz', 'oz', 'lb'].map((unit) {
-                                    return DropdownMenuItem(
-                                      value: unit,
-                                      child: Text(unit),
-                                    );
-                                  }).toList(),
-                              onChanged:
-                                  (unit) => recordPesticide.rateUnit = unit!,
-                            ),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed:
-                                () => _removePesticide(
-                                  recordPesticide.pesticideId,
-                                ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showPesticideSelectionSheet,
-        child: const Icon(Icons.add),
-      ),
-    ),
-  );
 }
