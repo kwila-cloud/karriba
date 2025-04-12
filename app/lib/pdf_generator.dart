@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:karriba/applicator_dao.dart';
 import 'package:karriba/customer_dao.dart';
+import 'package:karriba/data/database.dart';
 import 'package:karriba/pesticide/pesticide_dao.dart';
 import 'package:karriba/record_pesticide/record_pesticide_dao.dart';
 import 'package:open_file/open_file.dart';
@@ -10,10 +11,8 @@ import 'package:path/path.dart' as path;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pdf;
 
-import 'record.dart';
-
 class PDFGenerator {
-  Future<void> generateAndSavePDF(Record recordData) async {
+  Future<void> generateAndSavePDF(RecordData recordData) async {
     final document = pdf.Document();
     final applicator = await ApplicatorDao().get(recordData.applicatorId);
     final customer = await CustomerDao().get(recordData.customerId);

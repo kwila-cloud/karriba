@@ -1,16 +1,17 @@
+import 'package:drift/drift.dart' hide Column;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
+import 'package:karriba/data/database.dart';
+import 'package:provider/provider.dart';
 
-import 'record.dart';
-import 'records_dao.dart';
 import 'unsaved_changes_dialog.dart';
 
 class EditEnvironmentalConditionsPage extends StatefulWidget {
   const EditEnvironmentalConditionsPage({super.key, required this.record});
 
-  final Record record;
+  final RecordData record;
 
   @override
   State<EditEnvironmentalConditionsPage> createState() =>
@@ -20,8 +21,8 @@ class EditEnvironmentalConditionsPage extends StatefulWidget {
 class _EditEnvironmentalConditionsPageState
     extends State<EditEnvironmentalConditionsPage> {
   final _formKey = GlobalKey<FormState>();
-  late Record _draftRecord;
-  late Record _originalRecord;
+  late RecordData _draftRecord;
+  late RecordData _originalRecord;
 
   @override
   void initState() {
@@ -81,7 +82,7 @@ class _EditEnvironmentalConditionsPageState
                 onChanged: (value) {
                   setState(() {
                     _draftRecord = _draftRecord.copyWith(
-                      windSpeedBefore: double.tryParse(value),
+                      windSpeedBefore: Value(double.tryParse(value)),
                     );
                   });
                 },
@@ -99,7 +100,7 @@ class _EditEnvironmentalConditionsPageState
                 onChanged: (value) {
                   setState(() {
                     _draftRecord = _draftRecord.copyWith(
-                      windSpeedAfter: double.tryParse(value),
+                      windSpeedAfter: Value(double.tryParse(value)),
                     );
                   });
                 },
@@ -121,7 +122,9 @@ class _EditEnvironmentalConditionsPageState
                         .toList(),
                 onChanged: (value) {
                   setState(() {
-                    _draftRecord = _draftRecord.copyWith(windDirection: value);
+                    _draftRecord = _draftRecord.copyWith(
+                      windDirection: Value(value),
+                    );
                   });
                 },
               ),
@@ -138,7 +141,7 @@ class _EditEnvironmentalConditionsPageState
                 onChanged: (value) {
                   setState(() {
                     _draftRecord = _draftRecord.copyWith(
-                      temperature: double.tryParse(value),
+                      temperature: Value(double.tryParse(value)),
                     );
                   });
                 },
@@ -155,8 +158,10 @@ class _EditEnvironmentalConditionsPageState
       return;
     }
 
-    final recordsDao = RecordsDao();
-    await recordsDao.save(_draftRecord);
+    AppDatabase db = Provider.of<AppDatabase>(context);
+
+    await (db.update(db.record)
+      ..where((r) => r.id.equals(_draftRecord.id))).write(_draftRecord);
 
     Navigator.pop(context);
   }

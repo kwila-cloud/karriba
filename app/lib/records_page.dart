@@ -1,15 +1,16 @@
+import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:intl/intl.dart';
-import 'package:karriba/coming_soon_dialog.dart';
+import 'package:karriba/data/database.dart';
 import 'package:karriba/record_pesticide/edit_record_pesticides.dart';
+import 'package:provider/provider.dart';
 
 import 'edit_environmental_conditions_page.dart';
 import 'edit_record_page.dart';
 import 'pdf_generator.dart';
-import 'record.dart';
-import 'records_dao.dart';
 import 'top_level_page.dart';
 
 class RecordsPage extends StatefulWidget {
@@ -20,26 +21,29 @@ class RecordsPage extends StatefulWidget {
 }
 
 class _RecordsPageState extends State<RecordsPage> {
-  late Future<List<Record>> _recordsFuture;
+  late Future<List<RecordViewData>> _recordsFuture;
 
-  final _recordsDao = RecordsDao();
+  late AppDatabase _db;
 
   @override
   void initState() {
     super.initState();
-    _refreshRecords();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _db = Provider.of<AppDatabase>(context);
+      _refreshRecords();
+    });
   }
 
   _refreshRecords() {
     setState(() {
-      _recordsFuture = _recordsDao.queryAllRows();
+      _recordsFuture = _db.recordView.all().get();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return TopLevelPage(
-      body: FutureBuilder<List<Record>>(
+      body: FutureBuilder<List<RecordViewData>>(
         future: _recordsFuture,
         builder: (context, snapshot) {
           final records = snapshot.data;
@@ -72,7 +76,7 @@ class _RecordsPageState extends State<RecordsPage> {
 class RecordTile extends StatelessWidget {
   const RecordTile({super.key, required this.record, required this.refresh});
 
-  final Record record;
+  final RecordViewData record;
   final VoidCallback refresh;
 
   @override
@@ -101,12 +105,12 @@ class RecordTile extends StatelessWidget {
                   title: const Text('Edit'),
                   onTap: () async {
                     Navigator.pop(context);
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EditRecordPage(record: record),
-                      ),
-                    );
+                    // await Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => EditRecordPage(record: record),
+                    //   ),
+                    // );
                     refresh();
                   },
                 ),
@@ -119,8 +123,9 @@ class RecordTile extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder:
-                            (context) =>
-                                EditEnvironmentalConditionsPage(record: record),
+                            (context) => EditEnvironmentalConditionsPage(
+                              record: RecordData.fromJson(record.toJson()),
+                            ),
                       ),
                     );
                     refresh();
@@ -136,7 +141,7 @@ class RecordTile extends StatelessWidget {
                       MaterialPageRoute(
                         builder:
                             (context) =>
-                                EditRecordPesticidesPage(recordId: record.id!),
+                                EditRecordPesticidesPage(recordId: record.id),
                       ),
                     );
                     refresh();
@@ -146,7 +151,9 @@ class RecordTile extends StatelessWidget {
                   leading: Iconify(Mdi.file_pdf),
                   title: const Text('Generate PDF'),
                   onTap: () async {
-                    await PDFGenerator().generateAndSavePDF(record);
+                    await PDFGenerator().generateAndSavePDF(
+                      RecordData.fromJson(record.toJson()),
+                    );
                     ScaffoldMessenger.of(
                       context,
                     ).showSnackBar(SnackBar(content: Text("PDF Generated!")));

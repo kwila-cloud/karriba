@@ -1,0 +1,75 @@
+CREATE TABLE applicator (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    license_number TEXT NOT NULL
+);
+
+CREATE TABLE customer (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    street_address TEXT NOT NULL,
+    city TEXT NOT NULL,
+    state TEXT NOT NULL,
+    zip_code TEXT NOT NULL
+);
+
+CREATE TABLE record (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    start_timestamp DATETIME NOT NULL,
+    end_timestamp DATETIME NOT NULL,
+    applicator_id INTEGER NOT NULL,
+    customer_id INTEGER NOT NULL,
+    customer_informed_of_rei BOOLEAN NOT NULL,
+    field_name TEXT NOT NULL,
+    crop TEXT NOT NULL,
+    total_area REAL NOT NULL,
+    price_per_acre REAL NOT NULL,
+    spray_volume REAL NOT NULL,
+    wind_speed_before REAL,
+    wind_speed_after REAL,
+    wind_direction TEXT,
+    temperature REAL,
+    notes TEXT NOT NULL
+);
+
+CREATE TABLE pesticide (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    registration_number TEXT NOT NULL
+);
+
+CREATE TABLE record_pesticide (
+    record_id INTEGER NOT NULL,
+    pesticide_id INTEGER NOT NULL,
+    rate REAL NOT NULL,
+    rate_unit TEXT NOT NULL,
+    PRIMARY KEY (record_id, pesticide_id),
+    FOREIGN KEY (record_id) REFERENCES record(id) ON DELETE CASCADE,
+    FOREIGN KEY (pesticide_id) REFERENCES pesticide(id) ON DELETE CASCADE
+);
+
+CREATE VIEW record_view AS
+    SELECT 
+        record.id,
+        record.start_timestamp,
+        record.end_timestamp,
+        record.applicator_id,
+        applicator.name as applicator_name,
+        record.customer_id,
+        customer.name AS customer_name,
+        record.customer_informed_of_rei,
+        record.field_name,
+        record.crop,
+        record.total_area,
+        record.price_per_acre,
+        record.spray_volume,
+        record.wind_speed_before,
+        record.wind_speed_after,
+        record.wind_direction,
+        record.temperature,
+        record.notes
+    FROM record
+    LEFT JOIN applicator ON record.applicator_id = applicator.id
+    LEFT JOIN customer ON record.customer_id = customer.id
+    ORDER BY record.start_timestamp DESC;
+  

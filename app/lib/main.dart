@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
+import 'package:karriba/data/database.dart';
+import 'package:provider/provider.dart';
 
-import 'applicators_page.dart';
 import 'customers_page.dart';
 import 'records_page.dart';
 import 'settings_page.dart';
 
 void main() {
-  runApp(const KarribaApp());
+  runApp(
+    Provider<AppDatabase>(
+      create: (_) => AppDatabase(),
+      child: const KarribaApp(),
+      dispose: (_, db) => db.close(),
+    ),
+  );
 }
 
 class KarribaApp extends StatelessWidget {

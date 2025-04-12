@@ -17,6 +17,8 @@ dependencies:
   pdf: ^3.11.3
   open_file: ^3.5.10
   drift: ^2.26.0
+  drift_sqflite: ^2.0.1
+  provider: ^6.1.4
 
 dev_dependencies:
   flutter_test:
