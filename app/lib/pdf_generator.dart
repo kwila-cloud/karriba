@@ -8,7 +8,6 @@ import 'package:karriba/customer_dao.dart';
 import 'package:karriba/pesticide/pesticide_dao.dart';
 import 'package:karriba/record_pesticide/record_pesticide_dao.dart';
 import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pdf;
 import 'package:universal_html/html.dart' as html; // Import for web file saving
@@ -174,8 +173,8 @@ class PDFGenerator {
   Future<void> _saveAsPdfMobile(pdf.Document document, String fileName) async {
     final bytes = await document.save();
 
-    final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/$fileName');
+    const dir = '/storage/emulated/0/Download';
+    final file = File('$dir/$fileName');
 
     await file.writeAsBytes(bytes);
     await OpenFile.open(file.path);
