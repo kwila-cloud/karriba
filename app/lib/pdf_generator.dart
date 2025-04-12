@@ -1,4 +1,3 @@
-import 'dart:convert'; // Import for base64 encoding
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -11,7 +10,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path/path.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pdf;
-import 'package:web/web.dart' as web; // Import for web
+import 'package:universal_html/html.dart' as html; // Import for web file saving
 
 import 'record.dart';
 
@@ -162,13 +161,12 @@ class PDFGenerator {
 
   Future<void> _saveAsPdfWeb(pdf.Document document, String fileName) async {
     final bytes = await document.save();
-    final blob = web.Blob([bytes], 'application/pdf');
-    final url = web.URL.createObjectURL(blob);
-    final anchor = web.document.createElement('a') as web.AnchorElement;
-    anchor.href = url;
-    anchor.download = fileName;
-    anchor.click();
-    web.URL.revokeObjectURL(url);
+    final blob = html.Blob([bytes], 'application/pdf');
+    final url = html.Url.createObjectUrlFromBlob(blob);
+    html.AnchorElement(href: url)
+      ..setAttribute('download', fileName)
+      ..click();
+    html.Url.revokeObjectUrl(url);
   }
 
   Future<void> _saveAsPdfMobile(pdf.Document document, String fileName) async {
