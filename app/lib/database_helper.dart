@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:io';
+
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 class DatabaseHelper {
   static const _currentSchemaVersion = 6;
@@ -22,6 +25,9 @@ class DatabaseHelper {
 
   // Open the database.
   Future<Database> _initDatabase() async {
+    if (kIsWeb) {
+      databaseFactory = databaseFactoryFfiWeb;
+    }
     return await openDatabase(
       await getPath(),
       version: _currentSchemaVersion,
