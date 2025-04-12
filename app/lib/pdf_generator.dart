@@ -1,14 +1,12 @@
-import 'dart:io';
-
+import 'dart:convert'; // Import for base64 encoding
 import 'package:intl/intl.dart';
 import 'package:karriba/applicator_dao.dart';
 import 'package:karriba/customer_dao.dart';
 import 'package:karriba/pesticide/pesticide_dao.dart';
 import 'package:karriba/record_pesticide/record_pesticide_dao.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path/path.dart' as path;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pdf;
+import 'package:universal_html/html.dart' as html; // Import for web file saving
 
 import 'record.dart';
 
@@ -143,19 +141,25 @@ class PDFGenerator {
       ),
     );
 
-    // TODO: use a different path on non-Android platforms
-    final directoryPath = '/storage/emulated/0/Download';
+    // Generate file name
     final fileName =
         '${applicator?.name ?? 'Unknown Applicator'} ${recordData.fieldName}.pdf'
             .replaceAll(' ', '_')
             // Remove all dangerous characters
             .replaceAll(RegExp(r'[^\w\-_]'), '');
 
-    final outputFilePath = path.join(directoryPath, fileName);
-    final outputFile = File(outputFilePath);
+    // Save and open PDF on web
+    await _saveAsPdf(document, fileName);
+  }
 
-    await outputFile.writeAsBytes(await document.save());
-    OpenFile.open(outputFile.path);
+  Future<void> _saveAsPdf(pdf.Document document, String fileName) async {
+    final bytes = await document.save();
+    final blob = html.Blob([bytes], 'application/pdf');
+    final url = html.Url.createObjectUrlFromBlob(blob);
+    final anchor = html.AnchorElement(href: url)
+      ..setAttribute('download', fileName)
+      ..click();
+    html.Url.revokeObjectUrl(url);
   }
 
   pdf.Widget _buildRowWithBottomBox(
