@@ -8,6 +8,7 @@ import 'package:karriba/customer_dao.dart';
 import 'package:karriba/pesticide/pesticide_dao.dart';
 import 'package:karriba/record_pesticide/record_pesticide_dao.dart';
 import 'package:open_file/open_file.dart';
+import 'package:path/path.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pdf;
 import 'package:universal_html/html.dart' as html; // Import for web file saving
@@ -153,7 +154,6 @@ class PDFGenerator {
             .replaceAll(RegExp(r'[^\w\-_]'), '');
 
     if (kIsWeb) {
-      // Save and open PDF on web
       await _saveAsPdfWeb(document, fileName);
     } else {
       await _saveAsPdfMobile(document, fileName);
@@ -164,7 +164,7 @@ class PDFGenerator {
     final bytes = await document.save();
     final blob = html.Blob([bytes], 'application/pdf');
     final url = html.Url.createObjectUrlFromBlob(blob);
-    final anchor = html.AnchorElement(href: url)
+    html.AnchorElement(href: url)
       ..setAttribute('download', fileName)
       ..click();
     html.Url.revokeObjectUrl(url);
@@ -173,8 +173,9 @@ class PDFGenerator {
   Future<void> _saveAsPdfMobile(pdf.Document document, String fileName) async {
     final bytes = await document.save();
 
+    // TODO: use different path for iOS
     const dir = '/storage/emulated/0/Download';
-    final file = File('$dir/$fileName');
+    final file = File(join(dir, fileName));
 
     await file.writeAsBytes(bytes);
     await OpenFile.open(file.path);
