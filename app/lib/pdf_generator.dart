@@ -1,14 +1,16 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:karriba/applicator_dao.dart';
 import 'package:karriba/customer_dao.dart';
 import 'package:karriba/pesticide/pesticide_dao.dart';
 import 'package:karriba/record_pesticide/record_pesticide_dao.dart';
 import 'package:open_file/open_file.dart';
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pdf;
+import 'package:universal_html/html.dart' as html; // Import for web file saving
 
 import 'record.dart';
 
@@ -143,19 +145,39 @@ class PDFGenerator {
       ),
     );
 
-    // TODO: use a different path on non-Android platforms
-    final directoryPath = '/storage/emulated/0/Download';
+    // Generate file name
     final fileName =
         '${applicator?.name ?? 'Unknown Applicator'} ${recordData.fieldName}.pdf'
             .replaceAll(' ', '_')
             // Remove all dangerous characters
             .replaceAll(RegExp(r'[^\w\-_]'), '');
 
-    final outputFilePath = path.join(directoryPath, fileName);
-    final outputFile = File(outputFilePath);
+    if (kIsWeb) {
+      await _saveAsPdfWeb(document, fileName);
+    } else {
+      await _saveAsPdfMobile(document, fileName);
+    }
+  }
 
-    await outputFile.writeAsBytes(await document.save());
-    OpenFile.open(outputFile.path);
+  Future<void> _saveAsPdfWeb(pdf.Document document, String fileName) async {
+    final bytes = await document.save();
+    final blob = html.Blob([bytes], 'application/pdf');
+    final url = html.Url.createObjectUrlFromBlob(blob);
+    html.AnchorElement(href: url)
+      ..setAttribute('download', fileName)
+      ..click();
+    html.Url.revokeObjectUrl(url);
+  }
+
+  Future<void> _saveAsPdfMobile(pdf.Document document, String fileName) async {
+    final bytes = await document.save();
+
+    // TODO: use different path for iOS
+    const dir = '/storage/emulated/0/Download';
+    final file = File(join(dir, fileName));
+
+    await file.writeAsBytes(bytes);
+    await OpenFile.open(file.path);
   }
 
   pdf.Widget _buildRowWithBottomBox(
