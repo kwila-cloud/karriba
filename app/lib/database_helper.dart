@@ -8,6 +8,13 @@ import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 class DatabaseHelper {
   static const _currentSchemaVersion = 6;
+  static const List<String> tables = [
+    'applicator',
+    'customer',
+    'record',
+    'pesticide',
+    'record_pesticide',
+  ];
 
   static getPath() async => join(await getDatabasesPath(), "karriba.db");
 
@@ -192,13 +199,6 @@ class DatabaseHelper {
 
   Future<String> exportToJson() async {
     final db = await database;
-    final tables = [
-      'applicator',
-      'customer',
-      'record',
-      'pesticide',
-      'record_pesticide',
-    ];
     Map<String, dynamic> jsonMap = {};
 
     jsonMap['version'] = _currentSchemaVersion;
@@ -211,7 +211,7 @@ class DatabaseHelper {
     return jsonEncode(jsonMap);
   }
 
-  Future<void> importFromJson(String jsonData) async {
+  Future<bool> importFromJson(String jsonData) async {
     final Map<String, dynamic> jsonMap = jsonDecode(jsonData);
 
     final int importedVersion = jsonMap['version'] ?? 1;
@@ -230,13 +230,6 @@ class DatabaseHelper {
       await _onUpgrade(tempDb, 0, importedVersion);
 
       // 3. Insert data into the in-memory database
-      final tables = [
-        'applicator',
-        'customer',
-        'record',
-        'pesticide',
-        'record_pesticide',
-      ];
       for (var table in tables) {
         final List<dynamic>? tableData = jsonMap[table];
         if (tableData != null) {
