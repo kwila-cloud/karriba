@@ -227,6 +227,7 @@ class DatabaseHelper {
     return jsonEncode(jsonMap);
   }
 
+  /* WARNING: this will replace the whole DB. All data will be lost. */
   Future<bool> importFromJson(String jsonData) async {
     final Map<String, dynamic> jsonMap = jsonDecode(jsonData);
 
@@ -245,7 +246,6 @@ class DatabaseHelper {
 
       // 2. Migrate the in-memory database to the imported version
       await _onUpgrade(tempDb, 1, importedVersion);
-      print('UPGRADED!');
 
       // 3. Insert data into the in-memory database
       for (var table in importTables) {
@@ -275,7 +275,6 @@ class DatabaseHelper {
       }
       return true;
     } catch (e) {
-      print(e);
       return false;
     } finally {
       // 7. Close the in-memory database
