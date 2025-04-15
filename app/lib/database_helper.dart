@@ -77,8 +77,8 @@ class DatabaseHelper {
         spray_volume REAL NOT NULL,
         wind_speed_before REAL,
         wind_speed_after REAL,
-        wind_direction TEXT NOT NULL,
-        temperature REAL NOT NULL,
+        wind_direction TEXT,
+        temperature REAL,
         notes TEXT NOT NULL
       )
       ''');
