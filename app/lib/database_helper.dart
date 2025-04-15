@@ -70,8 +70,8 @@ class DatabaseHelper {
         spray_volume REAL NOT NULL,
         wind_speed_before REAL,
         wind_speed_after REAL,
-        wind_direction TEXT,
-        temperature REAL,
+        wind_direction TEXT NOT NULL,
+        temperature REAL NOT NULL,
         notes TEXT NOT NULL
       )
       ''');
@@ -222,18 +222,13 @@ class DatabaseHelper {
 
     try {
       // 1. Open an in-memory database
-      tempDb = await openDatabase(inMemoryDatabasePath, version: currentVersion,
+      tempDb = await openDatabase(inMemoryDatabasePath, version: importedVersion,
           onCreate: (Database db, int version) async {
         await _onCreate(db, version);
       });
 
       // 2. Migrate the in-memory database to the imported version
-      if (importedVersion < currentVersion) {
-        await _migrateInMemoryDatabase(tempDb, importedVersion, currentVersion);
-      } else if (importedVersion > currentVersion) {
-        print(
-            'Warning: Imported database version is newer than the current version.  Import may be incomplete.');
-      }
+      // No need to migrate *to* the imported version, since we create the DB at that version
 
       // 3. Insert data into the in-memory database
       final tables = [
@@ -252,10 +247,13 @@ class DatabaseHelper {
         }
       }
 
-      // 4. Get a reference to the real database
+      // 4. Migrate the in-memory database to the current version
+      await _migrateInMemoryDatabase(tempDb, importedVersion, currentVersion);
+
+      // 5. Get a reference to the real database
       final db = await database;
 
-      // 5. Copy the data from the in-memory database to the real database
+      // 6. Copy the data from the in-memory database to the real database
       for (var table in tables) {
         final List<Map<String, dynamic>> tableData = await tempDb.query(table);
         for (var row in tableData) {
@@ -263,7 +261,7 @@ class DatabaseHelper {
         }
       }
     } finally {
-      // 6. Close the in-memory database
+      // 7. Close the in-memory database
       await tempDb?.close();
     }
   }
