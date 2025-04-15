@@ -212,6 +212,26 @@ class DatabaseHelper {
   }
 
   Future<void> importFromJson(String jsonData) async {
-    // TODO: implement this, including all tables and the database version
+    final db = await database;
+    final Map<String, dynamic> jsonMap = jsonDecode(jsonData);
+
+    // Check the database version
+    final int dbVersion = jsonMap['version'] ?? 1;
+    if (dbVersion != _currentSchemaVersion) {
+      // TODO: implement DB migrations
+      print(
+          'Database version mismatch. Current version: $_currentSchemaVersion, imported version: $dbVersion.  Import may fail.');
+    }
+
+    // Insert data into tables
+    final tables = ['applicator', 'customer', 'record', 'pesticide', 'record_pesticide'];
+    for (var table in tables) {
+      final List<dynamic>? tableData = jsonMap[table];
+      if (tableData != null) {
+        for (var row in tableData) {
+          await db.insert(table, row);
+        }
+      }
+    }
   }
 }
