@@ -104,9 +104,25 @@ class DatabaseHelper {
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
-      // Create the record table if it doesn't exist
       await db.execute('''
-        CREATE TABLE IF NOT EXISTS record (
+      CREATE TABLE applicator (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        license_number TEXT NOT NULL
+      )
+      ''');
+      await db.execute('''
+      CREATE TABLE customer (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        street_address TEXT NOT NULL,
+        city TEXT NOT NULL,
+        state TEXT NOT NULL,
+        zip_code TEXT NOT NULL
+      )
+      ''');
+      await db.execute('''
+        CREATE TABLE record (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           timestamp INTEGER NOT NULL,
           applicator_id INTEGER NOT NULL,
@@ -224,14 +240,12 @@ class DatabaseHelper {
     Database? tempDb;
 
     try {
-      // 1. Open an in-memory database
-      tempDb = await openDatabase(
-        inMemoryDatabasePath,
-        version: importedVersion,
-      );
+      // 1. Open a blank in-memory database
+      tempDb = await openDatabase(inMemoryDatabasePath, version: 1);
 
       // 2. Migrate the in-memory database to the imported version
-      await _onUpgrade(tempDb, 0, importedVersion);
+      await _onUpgrade(tempDb, 1, importedVersion);
+      print('UPGRADED!');
 
       // 3. Insert data into the in-memory database
       for (var table in importTables) {
@@ -261,6 +275,7 @@ class DatabaseHelper {
       }
       return true;
     } catch (e) {
+      print(e);
       return false;
     } finally {
       // 7. Close the in-memory database
