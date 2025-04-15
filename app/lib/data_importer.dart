@@ -64,51 +64,49 @@ Future<void> importDatabase(BuildContext context) async {
   }
   if (kIsWeb) {
     final bytes = result.files.first.bytes;
-    // TODO: flip the if statement to use early return when null, reduce indentation
-    if (bytes != null) {
-      final jsonData = String.fromCharCodes(bytes);
-      try {
-        final success = await DatabaseHelper.instance.importFromJson(jsonData);
-        if (success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Data imported successfully!')),
-          );
-        } else {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('Data import failed.')));
-        }
-      } catch (e) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error importing data: $e')));
-      }
-    } else {
+    if (bytes == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Error: Could not read file data.')),
       );
+      return;
     }
-  } else if (Platform.isAndroid) {
-    String? pathToImport = result.files.single.path;
-    // TODO: flip the if statement to use early return when null, reduce indentation
-    if (pathToImport != null) {
-      try {
-        // TODO: default to using importFromJson, only use importDbFile if
-        // the path ends with .db
-        await DatabaseHelper.instance.importDbFile(pathToImport);
-
+    final jsonData = String.fromCharCodes(bytes);
+    try {
+      final success = await DatabaseHelper.instance.importFromJson(jsonData);
+      if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Data imported successfully!')),
         );
-      } catch (e) {
+      } else {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Error importing data: $e')));
+        ).showSnackBar(const SnackBar(content: Text('Data import failed.')));
       }
-    } else {
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error importing data: $e')));
+    }
+  } else if (Platform.isAndroid) {
+    String? pathToImport = result.files.single.path;
+    if (pathToImport == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Error: Could not get file path.')),
       );
+      return;
+    }
+    try {
+      // TODO: default to using importFromJson, only use importDbFile if
+      // the path ends with .db
+      await DatabaseHelper.instance.importDbFile(pathToImport);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Data imported successfully!')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error importing data: $e')));
     }
   } else {
     // User canceled the picker
