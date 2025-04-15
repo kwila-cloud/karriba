@@ -192,7 +192,13 @@ class DatabaseHelper {
 
   Future<String> exportToJson() async {
     final db = await database;
-    final tables = ['applicator', 'customer', 'record', 'pesticide', 'record_pesticide'];
+    final tables = [
+      'applicator',
+      'customer',
+      'record',
+      'pesticide',
+      'record_pesticide',
+    ];
     Map<String, dynamic> jsonMap = {};
 
     jsonMap['version'] = _currentSchemaVersion;
