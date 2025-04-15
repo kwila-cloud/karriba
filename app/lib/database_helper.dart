@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
@@ -190,8 +191,18 @@ class DatabaseHelper {
   }
 
   Future<String> exportToJson() async {
-    // TODO: implement this, including all tables and the database version
-    return "{}";
+    final db = await database;
+    final tables = ['applicator', 'customer', 'record', 'pesticide', 'record_pesticide'];
+    Map<String, dynamic> jsonMap = {};
+
+    jsonMap['version'] = _currentSchemaVersion;
+
+    for (var table in tables) {
+      final List<Map<String, dynamic>> tableData = await db.query(table);
+      jsonMap[table] = tableData;
+    }
+
+    return jsonEncode(jsonMap);
   }
 
   Future<void> importFromJson(String jsonData) async {
