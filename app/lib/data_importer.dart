@@ -57,7 +57,42 @@ Future<void> importDatabase(BuildContext context) async {
 
   if (importConfirmed == true) {
     if (kIsWeb) {
-      // TODO: allow the user to select a file, then import from JSON
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['json'],
+      );
+
+      if (result != null) {
+        final bytes = result.files.first.bytes;
+        if (bytes != null) {
+          final jsonData = String.fromCharCodes(bytes);
+          try {
+            final success = await DatabaseHelper.instance.importFromJson(jsonData);
+            if (success) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Data imported successfully!')),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Data import failed.')),
+              );
+            }
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Error importing data: $e')),
+            );
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Error: Could not read file data.')),
+          );
+        }
+      } else {
+        // User canceled the picker
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Import cancelled.')));
+      }
     } else if (Platform.isAndroid) {
       FilePickerResult? result = await FilePicker.platform.pickFiles();
 
