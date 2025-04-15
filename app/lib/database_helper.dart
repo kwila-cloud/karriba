@@ -13,7 +13,7 @@ class DatabaseHelper {
 
   // Make this a singleton class.
   DatabaseHelper._privateConstructor();
-  static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
+  static final DatabaseHelper.instance = DatabaseHelper._privateConstructor();
 
   // Only have a single app-wide reference to the database.
   static Database? _database;
@@ -212,26 +212,67 @@ class DatabaseHelper {
   }
 
   Future<void> importFromJson(String jsonData) async {
-    final db = await database;
     final Map<String, dynamic> jsonMap = jsonDecode(jsonData);
 
     // Check the database version
-    final int dbVersion = jsonMap['version'] ?? 1;
-    if (dbVersion != _currentSchemaVersion) {
-      // TODO: implement DB migrations
-      print(
-          'Database version mismatch. Current version: $_currentSchemaVersion, imported version: $dbVersion.  Import may fail.');
-    }
+    final int importedVersion = jsonMap['version'] ?? 1;
+    final int currentVersion = _currentSchemaVersion;
 
-    // Insert data into tables
-    final tables = ['applicator', 'customer', 'record', 'pesticide', 'record_pesticide'];
-    for (var table in tables) {
-      final List<dynamic>? tableData = jsonMap[table];
-      if (tableData != null) {
+    Database? tempDb;
+
+    try {
+      // 1. Open an in-memory database
+      tempDb = await openDatabase(inMemoryDatabasePath, version: currentVersion,
+          onCreate: (Database db, int version) async {
+        await _onCreate(db, version);
+      });
+
+      // 2. Migrate the in-memory database to the imported version
+      if (importedVersion < currentVersion) {
+        await _migrateInMemoryDatabase(tempDb, importedVersion, currentVersion);
+      } else if (importedVersion > currentVersion) {
+        print(
+            'Warning: Imported database version is newer than the current version.  Import may be incomplete.');
+      }
+
+      // 3. Insert data into the in-memory database
+      final tables = [
+        'applicator',
+        'customer',
+        'record',
+        'pesticide',
+        'record_pesticide'
+      ];
+      for (var table in tables) {
+        final List<dynamic>? tableData = jsonMap[table];
+        if (tableData != null) {
+          for (var row in tableData) {
+            await tempDb.insert(table, row);
+          }
+        }
+      }
+
+      // 4. Get a reference to the real database
+      final db = await database;
+
+      // 5. Copy the data from the in-memory database to the real database
+      for (var table in tables) {
+        final List<Map<String, dynamic>> tableData = await tempDb.query(table);
         for (var row in tableData) {
           await db.insert(table, row);
         }
       }
+    } finally {
+      // 6. Close the in-memory database
+      await tempDb?.close();
+    }
+  }
+
+  Future<void> _migrateInMemoryDatabase(
+      Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < newVersion) {
+      await _onUpgrade(db, oldVersion, newVersion);
+      await _migrateInMemoryDatabase(db, oldVersion + 1, newVersion);
     }
   }
 }
