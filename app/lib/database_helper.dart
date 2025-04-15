@@ -214,6 +214,10 @@ class DatabaseHelper {
   Future<bool> importFromJson(String jsonData) async {
     final Map<String, dynamic> jsonMap = jsonDecode(jsonData);
 
+    final Iterable<String> importTables = jsonMap.keys.where(
+      (t) => t != 'version',
+    );
+
     final int importedVersion = jsonMap['version'] ?? 1;
     final int currentVersion = _currentSchemaVersion;
 
@@ -230,7 +234,7 @@ class DatabaseHelper {
       await _onUpgrade(tempDb, 0, importedVersion);
 
       // 3. Insert data into the in-memory database
-      for (var table in tables) {
+      for (var table in importTables) {
         final List<dynamic>? tableData = jsonMap[table];
         if (tableData != null) {
           for (var row in tableData) {
