@@ -18,10 +18,10 @@ class DatabaseHelper {
   // Only have a single app-wide reference to the database.
   static Database? _database;
   Future<Database> get database async {
-    if (_database != null) return _database!;
+    if (_database != null) return _database;
     // Lazily instantiate the db the first time it is accessed.
     _database = await _initDatabase();
-    return _database!;
+    return _database;
   }
 
   // Open the database.
