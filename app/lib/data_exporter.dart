@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:karriba/database_helper.dart';
 
 Future<void> exportDatabase(BuildContext context) async {
+  // TODO: export to a JSON file when we are running on web
   try {
     Directory? downloadsDir;
     if (Platform.isAndroid) {
