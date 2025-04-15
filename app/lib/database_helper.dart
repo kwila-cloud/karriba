@@ -188,4 +188,13 @@ class DatabaseHelper {
     // Copy the selected database file to the application's database path
     await File(pathToImport).copy(appDbPath);
   }
+
+  Future<String> exportToJson() async {
+    // TODO: implement this, including all tables and the database version
+    return "{}";
+  }
+
+  Future<void> importFromJson(String jsonData) async {
+    // TODO: implement this, including all tables and the database version
+  }
 }
