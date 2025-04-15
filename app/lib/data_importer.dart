@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:karriba/database_helper.dart';
@@ -53,33 +56,37 @@ Future<void> importDatabase(BuildContext context) async {
   );
 
   if (importConfirmed == true) {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (kIsWeb) {
+      // TODO: allow the user to select a file, then import from JSON
+    } else if (Platform.isAndroid) {
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
 
-    if (result != null) {
-      String? pathToImport = result.files.single.path;
+      if (result != null) {
+        String? pathToImport = result.files.single.path;
 
-      if (pathToImport != null) {
-        try {
-          await DatabaseHelper.instance.importDbFile(pathToImport);
+        if (pathToImport != null) {
+          try {
+            await DatabaseHelper.instance.importDbFile(pathToImport);
 
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Data imported successfully!')),
+            );
+          } catch (e) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text('Error importing data: $e')));
+          }
+        } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Data imported successfully!')),
+            const SnackBar(content: Text('Error: Could not get file path.')),
           );
-        } catch (e) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('Error importing data: $e')));
         }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Error: Could not get file path.')),
-        );
+        // User canceled the picker
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Import cancelled.')));
       }
-    } else {
-      // User canceled the picker
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Import cancelled.')));
     }
   }
 }
