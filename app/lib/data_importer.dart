@@ -66,6 +66,8 @@ Future<void> importDatabase(BuildContext context) async {
 
         if (pathToImport != null) {
           try {
+            // TODO: default to using importFromJson, only use importDbFile if
+            // the path ends with .db
             await DatabaseHelper.instance.importDbFile(pathToImport);
 
             ScaffoldMessenger.of(context).showSnackBar(
