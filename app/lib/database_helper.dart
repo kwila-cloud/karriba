@@ -248,6 +248,9 @@ class DatabaseHelper {
       // 6. Copy the data from the in-memory database to the real database
       for (var table in tables) {
         final List<Map<String, dynamic>> tableData = await tempDb.query(table);
+        // Clear the old data from the table
+        await db.delete(table, where: null);
+        // Insert the new data
         for (var row in tableData) {
           await db.insert(table, row);
         }
