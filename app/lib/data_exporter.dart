@@ -8,11 +8,11 @@ import 'package:intl/intl.dart';
 import 'package:karriba/database_helper.dart';
 
 Future<void> exportDatabase(BuildContext context) async {
+  final String formattedDate = DateFormat('yyyy-MM-dd_HH-mm-ss').format(DateTime.now());
   try {
     if (kIsWeb) {
       // Export to JSON on web
       String jsonData = await DatabaseHelper.instance.exportToJson();
-      String formattedDate = DateFormat('yyyy-MM-dd_HH-mm-ss').format(DateTime.now());
       String fileName = 'karriba_export_$formattedDate.json';
 
       // Create a download
@@ -33,7 +33,6 @@ Future<void> exportDatabase(BuildContext context) async {
         throw Exception("Data export is not yet supported on this platform.");
       }
 
-      String formattedDate = DateFormat('yyyy-MM-dd_HH-mm-ss').format(DateTime.now());
       String exportPath = '${downloadsDir.path}/karriba_export_$formattedDate.db';
 
       File sourceFile = File(await DatabaseHelper.getPath());
