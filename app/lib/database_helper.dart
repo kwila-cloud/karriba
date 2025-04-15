@@ -13,15 +13,15 @@ class DatabaseHelper {
 
   // Make this a singleton class.
   DatabaseHelper._privateConstructor();
-  static final DatabaseHelper.instance = DatabaseHelper._privateConstructor();
+  static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
 
   // Only have a single app-wide reference to the database.
   static Database? _database;
   Future<Database> get database async {
-    if (_database != null) return _database;
+    if (_database != null) return _database!;
     // Lazily instantiate the db the first time it is accessed.
     _database = await _initDatabase();
-    return _database;
+    return _database!;
   }
 
   // Open the database.
@@ -214,7 +214,6 @@ class DatabaseHelper {
   Future<void> importFromJson(String jsonData) async {
     final Map<String, dynamic> jsonMap = jsonDecode(jsonData);
 
-    // Check the database version
     final int importedVersion = jsonMap['version'] ?? 1;
     final int currentVersion = _currentSchemaVersion;
 
@@ -222,13 +221,13 @@ class DatabaseHelper {
 
     try {
       // 1. Open an in-memory database
-      tempDb = await openDatabase(inMemoryDatabasePath, version: importedVersion,
-          onCreate: (Database db, int version) async {
-        await _onCreate(db, version);
-      });
+      tempDb = await openDatabase(
+        inMemoryDatabasePath,
+        version: importedVersion,
+      );
 
       // 2. Migrate the in-memory database to the imported version
-      // No need to migrate *to* the imported version, since we create the DB at that version
+      await _onUpgrade(tempDb, 0, importedVersion);
 
       // 3. Insert data into the in-memory database
       final tables = [
@@ -236,7 +235,7 @@ class DatabaseHelper {
         'customer',
         'record',
         'pesticide',
-        'record_pesticide'
+        'record_pesticide',
       ];
       for (var table in tables) {
         final List<dynamic>? tableData = jsonMap[table];
@@ -248,7 +247,7 @@ class DatabaseHelper {
       }
 
       // 4. Migrate the in-memory database to the current version
-      await _migrateInMemoryDatabase(tempDb, importedVersion, currentVersion);
+      await _onUpgrade(tempDb, importedVersion, currentVersion);
 
       // 5. Get a reference to the real database
       final db = await database;
@@ -260,17 +259,12 @@ class DatabaseHelper {
           await db.insert(table, row);
         }
       }
+      return true;
+    } catch (e) {
+      return false;
     } finally {
       // 7. Close the in-memory database
       await tempDb?.close();
-    }
-  }
-
-  Future<void> _migrateInMemoryDatabase(
-      Database db, int oldVersion, int newVersion) async {
-    if (oldVersion < newVersion) {
-      await _onUpgrade(db, oldVersion, newVersion);
-      await _migrateInMemoryDatabase(db, oldVersion + 1, newVersion);
     }
   }
 }
