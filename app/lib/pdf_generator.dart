@@ -146,11 +146,12 @@ class PDFGenerator {
     );
 
     // Generate file name
-    final fileName =
-        '${applicator?.name ?? 'Unknown Applicator'} ${recordData.fieldName}.pdf'
+    final name =
+        '${applicator?.name ?? 'Unknown Applicator'} ${recordData.fieldName}'
             .replaceAll(' ', '_')
             // Remove all dangerous characters
             .replaceAll(RegExp(r'[^\w\-_]'), '');
+    final fileName = '$name.pdf';
 
     if (kIsWeb) {
       await _saveAsPdfWeb(document, fileName);

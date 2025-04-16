@@ -2,11 +2,19 @@ import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 class DatabaseHelper {
   static const _currentSchemaVersion = 6;
+  static const List<String> tables = [
+    'applicator',
+    'customer',
+    'record',
+    'pesticide',
+    'record_pesticide',
+  ];
 
   static getPath() async => join(await getDatabasesPath(), "karriba.db");
 
@@ -96,9 +104,25 @@ class DatabaseHelper {
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
-      // Create the record table if it doesn't exist
       await db.execute('''
-        CREATE TABLE IF NOT EXISTS record (
+      CREATE TABLE applicator (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        license_number TEXT NOT NULL
+      )
+      ''');
+      await db.execute('''
+      CREATE TABLE customer (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        street_address TEXT NOT NULL,
+        city TEXT NOT NULL,
+        state TEXT NOT NULL,
+        zip_code TEXT NOT NULL
+      )
+      ''');
+      await db.execute('''
+        CREATE TABLE record (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           timestamp INTEGER NOT NULL,
           applicator_id INTEGER NOT NULL,
@@ -187,5 +211,74 @@ class DatabaseHelper {
 
     // Copy the selected database file to the application's database path
     await File(pathToImport).copy(appDbPath);
+  }
+
+  Future<String> exportToJson() async {
+    final db = await database;
+    Map<String, dynamic> jsonMap = {};
+
+    jsonMap['version'] = _currentSchemaVersion;
+
+    for (var table in tables) {
+      final List<Map<String, dynamic>> tableData = await db.query(table);
+      jsonMap[table] = tableData;
+    }
+
+    return jsonEncode(jsonMap);
+  }
+
+  /* WARNING: this will replace the whole DB. All data will be lost. */
+  Future<bool> importFromJson(String jsonData) async {
+    final Map<String, dynamic> jsonMap = jsonDecode(jsonData);
+
+    final Iterable<String> importTables = jsonMap.keys.where(
+      (t) => t != 'version',
+    );
+
+    final int importedVersion = jsonMap['version'] ?? 1;
+    final int currentVersion = _currentSchemaVersion;
+
+    Database? tempDb;
+
+    try {
+      // 1. Open a blank in-memory database
+      tempDb = await openDatabase(inMemoryDatabasePath, version: 1);
+
+      // 2. Migrate the in-memory database to the imported version
+      await _onUpgrade(tempDb, 1, importedVersion);
+
+      // 3. Insert data into the in-memory database
+      for (var table in importTables) {
+        final List<dynamic>? tableData = jsonMap[table];
+        if (tableData != null) {
+          for (var row in tableData) {
+            await tempDb.insert(table, row);
+          }
+        }
+      }
+
+      // 4. Migrate the in-memory database to the current version
+      await _onUpgrade(tempDb, importedVersion, currentVersion);
+
+      // 5. Get a reference to the real database
+      final db = await database;
+
+      // 6. Copy the data from the in-memory database to the real database
+      for (var table in tables) {
+        final List<Map<String, dynamic>> tableData = await tempDb.query(table);
+        // Clear the old data from the table
+        await db.delete(table, where: null);
+        // Insert the new data
+        for (var row in tableData) {
+          await db.insert(table, row);
+        }
+      }
+      return true;
+    } catch (e) {
+      return false;
+    } finally {
+      // 7. Close the in-memory database
+      await tempDb?.close();
+    }
   }
 }
