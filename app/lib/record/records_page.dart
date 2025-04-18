@@ -26,6 +26,15 @@ class _RecordsPageState extends State<RecordsPage> {
   bool get _isSelecting => _selectedRecordIds.isNotEmpty;
 
   @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: _buildAppBar(),
+      body: _buildBody(),
+      floatingActionButton: _buildFloatingActionButton(),
+    );
+  }
+
+  @override
   void initState() {
     super.initState();
     _refreshRecords();
@@ -158,6 +167,7 @@ class _RecordsPageState extends State<RecordsPage> {
                 child: const Text("Cancel"),
               ),
               TextButton(
+                style: TextButton.styleFrom(foregroundColor: Colors.red),
                 onPressed: () => Navigator.pop(context, true),
                 child: const Text("Delete"),
               ),
@@ -228,15 +238,6 @@ class _RecordsPageState extends State<RecordsPage> {
         _refreshRecords();
       },
       child: const Icon(Icons.add),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: _buildBody(),
-      floatingActionButton: _buildFloatingActionButton(),
     );
   }
 }
