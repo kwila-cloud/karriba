@@ -14,6 +14,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
+        AppBar(title: Text('Settings')),
         ListTile(
           leading: const Iconify(Mdi.account_cowboy_hat),
           title: const Text('Applicators'),

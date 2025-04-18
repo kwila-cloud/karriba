@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 
-import 'record.dart';
-import 'records_dao.dart';
+import 'record/record.dart';
+import 'record/records_dao.dart';
 import 'unsaved_changes_dialog.dart';
 
 class EditEnvironmentalConditionsPage extends StatefulWidget {

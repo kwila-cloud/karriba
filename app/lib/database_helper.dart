@@ -41,6 +41,7 @@ class DatabaseHelper {
       version: _currentSchemaVersion,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade, // Handle migrations between DB versions
+      onOpen: _onOpen,
     );
   }
 
@@ -100,6 +101,11 @@ class DatabaseHelper {
         FOREIGN KEY (pesticide_id) REFERENCES pesticide(id) ON DELETE CASCADE
       )
       ''');
+  }
+
+  Future _onOpen(Database db) async {
+    // Enable foreign keys for sqlite so CASCADE deletion works.
+    await db.execute('PRAGMA foreign_keys = ON');
   }
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {

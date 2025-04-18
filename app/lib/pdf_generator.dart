@@ -12,7 +12,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pdf;
 import 'package:universal_html/html.dart' as html; // Import for web file saving
 
-import 'record.dart';
+import 'record/record.dart';
 
 class PDFGenerator {
   Future<void> generateAndSavePDF(Record recordData) async {

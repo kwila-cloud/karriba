@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
-import 'package:karriba/record.dart';
-import 'package:karriba/records_dao.dart';
+import 'package:karriba/record/record.dart';
+import 'package:karriba/record/records_dao.dart';
 import 'package:karriba/customer.dart';
 import 'package:karriba/customer_dao.dart';
 import 'package:karriba/applicator.dart';
 import 'package:karriba/applicator_dao.dart';
-import 'unsaved_changes_dialog.dart';
+import '../unsaved_changes_dialog.dart';
 
 class EditRecordPage extends StatefulWidget {
   const EditRecordPage({super.key, this.record});

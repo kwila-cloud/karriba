@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 
-import 'applicators_page.dart';
 import 'customers_page.dart';
-import 'records_page.dart';
+import 'record/records_page.dart';
 import 'settings_page.dart';
 
 void main() {
@@ -60,7 +59,6 @@ class _KarribaHomePageState extends State<KarribaHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_pageOptions[_selectedIndex].title)),
       body: Center(child: _pageOptions[_selectedIndex].widget),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: _onItemTapped,
