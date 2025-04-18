@@ -30,6 +30,7 @@ class _CustomersPageState extends State<CustomersPage> {
   @override
   Widget build(BuildContext context) {
     return TopLevelPage(
+      appBar: AppBar(title: Text('Customers')),
       body: FutureBuilder<List<Customer>>(
         future: _customersFuture,
         builder: (context, snapshot) {
