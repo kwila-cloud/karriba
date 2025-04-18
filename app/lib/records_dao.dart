@@ -113,4 +113,10 @@ class RecordsDao {
     }
     return null;
   }
+
+  Future<void> deleteMultiple(List<int> ids) async {
+    Database db = await dbHelper.database;
+    final placeholders = List.filled(ids.length, '?').join(',');
+    await db.delete('record', where: 'id IN ($placeholders)', whereArgs: ids);
+  }
 }
