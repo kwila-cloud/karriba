@@ -4,9 +4,9 @@ import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:intl/intl.dart';
 import 'package:karriba/record_pesticide/edit_record_pesticides.dart';
 
-import 'edit_environmental_conditions_page.dart';
+import '../edit_environmental_conditions_page.dart';
 import 'edit_record_page.dart';
-import 'pdf_generator.dart';
+import '../pdf_generator.dart';
 import 'record.dart';
 import 'records_dao.dart';
 

@@ -3,7 +3,7 @@ import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 
 import 'customers_page.dart';
-import 'records_page.dart';
+import 'record/records_page.dart';
 import 'settings_page.dart';
 
 void main() {
