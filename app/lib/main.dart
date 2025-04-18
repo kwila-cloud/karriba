@@ -60,7 +60,6 @@ class _KarribaHomePageState extends State<KarribaHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_pageOptions[_selectedIndex].title)),
       body: Center(child: _pageOptions[_selectedIndex].widget),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: _onItemTapped,
