@@ -24,6 +24,7 @@ class _RecordsPageState extends State<RecordsPage> {
   final Set<int> _selectedRecordIds = {};
 
   bool get _isSelecting => _selectedRecordIds.isNotEmpty;
+  DateTimeRange? _selectedDateRange;
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +43,10 @@ class _RecordsPageState extends State<RecordsPage> {
 
   void _refreshRecords() {
     setState(() {
-      _recordsFuture = _recordsDao.queryAllRows();
-      _selectedRecordIds.clear();
+      _recordsFuture = _recordsDao.queryAllRows(
+        startDate: _selectedDateRange?.start,
+        endDate: _selectedDateRange?.end,
+      );
     });
   }
 
@@ -182,7 +185,12 @@ class _RecordsPageState extends State<RecordsPage> {
   }
 
   PreferredSizeWidget? _buildAppBar() {
-    AppBar appBar = AppBar(title: Text('Records'));
+    AppBar appBar = AppBar(
+      title: Text('Records'),
+      actions: [
+        IconButton(icon: const Icon(Icons.filter_alt), onPressed: _openFilter),
+      ],
+    );
     if (_isSelecting) {
       appBar = AppBar(
         leading: IconButton(
@@ -239,6 +247,85 @@ class _RecordsPageState extends State<RecordsPage> {
       },
       child: const Icon(Icons.add),
     );
+  }
+
+  void _openFilter() {
+    showModalBottomSheet(
+      context: context,
+      showDragHandle: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) => _buildFilterSheet(),
+    );
+  }
+
+  Widget _buildFilterSheet() {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Filter by date",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          TextButton.icon(
+            icon: const Icon(Icons.date_range),
+            label: Text(
+              _selectedDateRange == null
+                  ? "Select date range"
+                  : "${DateFormat.yMMMd().format(_selectedDateRange!.start)} → ${DateFormat.yMMMd().format(_selectedDateRange!.end)}",
+            ),
+            onPressed: _pickDateRange,
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _selectedDateRange = null;
+                  });
+                  _refreshRecords(); // reload all
+                  Navigator.pop(context);
+                },
+                child: const Text("Clear"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _refreshRecords();
+                  Navigator.pop(context);
+                },
+                child: const Text("Apply"),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _pickDateRange() async {
+    final now = DateTime.now();
+    final firstDate = DateTime(now.year - 5);
+    final lastDate = DateTime(now.year + 1);
+
+    final picked = await showDateRangePicker(
+      context: context,
+      firstDate: firstDate,
+      lastDate: lastDate,
+      initialDateRange: _selectedDateRange,
+    );
+
+    if (picked != null) {
+      setState(() {
+        _selectedDateRange = picked;
+      });
+    }
   }
 }
 
