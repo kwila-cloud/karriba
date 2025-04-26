@@ -20,8 +20,45 @@ class RecordsDao {
     }
   }
 
-  Future<List<Record>> queryAllRows() async {
+  Future<List<Record>> queryAllRows({
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
     Database db = await dbHelper.database;
+
+    final whereConditions = <String>[];
+    final whereArgs = <Object>[];
+
+    if (startDate != null) {
+      final startTimestamp =
+          DateTime(
+            startDate.year,
+            startDate.month,
+            startDate.day,
+          ).millisecondsSinceEpoch;
+      whereConditions.add('record.start_timestamp >= ?');
+      whereArgs.add(startTimestamp);
+    }
+    if (endDate != null) {
+      final endTimestamp =
+          DateTime(
+            endDate.year,
+            endDate.month,
+            endDate.day,
+            23,
+            59,
+            59,
+            999,
+          ).millisecondsSinceEpoch;
+      whereConditions.add('record.start_timestamp <= ?');
+      whereArgs.add(endTimestamp);
+    }
+
+    final whereClause =
+        whereConditions.isNotEmpty
+            ? 'WHERE ${whereConditions.join(' AND ')}'
+            : '';
+
     final List<Map<String, dynamic>> maps = await db.rawQuery('''
       SELECT 
         record.id,
@@ -45,8 +82,9 @@ class RecordsDao {
       FROM record
       INNER JOIN applicator ON record.applicator_id = applicator.id
       INNER JOIN customer ON record.customer_id = customer.id
+      $whereClause
       ORDER BY record.start_timestamp DESC
-    ''');
+    ''', whereArgs);
 
     // Convert the List<Map<String, dynamic> into a List<Record>.
     return List.generate(maps.length, (i) {

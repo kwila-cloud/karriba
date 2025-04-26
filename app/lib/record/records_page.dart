@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:intl/intl.dart';
+import 'package:karriba/record/records_filter_bottom_sheet.dart';
 import 'package:karriba/record_pesticide/edit_record_pesticides.dart';
 
 import '../edit_environmental_conditions_page.dart';
-import 'edit_record_page.dart';
 import '../pdf_generator.dart';
+import 'edit_record_page.dart';
 import 'record.dart';
 import 'records_dao.dart';
 
@@ -24,6 +25,7 @@ class _RecordsPageState extends State<RecordsPage> {
   final Set<int> _selectedRecordIds = {};
 
   bool get _isSelecting => _selectedRecordIds.isNotEmpty;
+  DateTimeRange? _selectedDateRange;
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +44,10 @@ class _RecordsPageState extends State<RecordsPage> {
 
   void _refreshRecords() {
     setState(() {
-      _recordsFuture = _recordsDao.queryAllRows();
-      _selectedRecordIds.clear();
+      _recordsFuture = _recordsDao.queryAllRows(
+        startDate: _selectedDateRange?.start,
+        endDate: _selectedDateRange?.end,
+      );
     });
   }
 
@@ -182,7 +186,12 @@ class _RecordsPageState extends State<RecordsPage> {
   }
 
   PreferredSizeWidget? _buildAppBar() {
-    AppBar appBar = AppBar(title: Text('Records'));
+    AppBar appBar = AppBar(
+      title: Text('Records'),
+      actions: [
+        IconButton(icon: const Icon(Icons.filter_alt), onPressed: _openFilter),
+      ],
+    );
     if (_isSelecting) {
       appBar = AppBar(
         leading: IconButton(
@@ -204,6 +213,11 @@ class _RecordsPageState extends State<RecordsPage> {
       builder: (context, snapshot) {
         final records = snapshot.data;
         if (records != null) {
+          if (records.isEmpty) {
+            return const Center(
+              child: Text("No records found."),
+            );
+          }
           return ListView.builder(
             itemCount: records.length,
             itemBuilder: (context, index) {
@@ -238,6 +252,26 @@ class _RecordsPageState extends State<RecordsPage> {
         _refreshRecords();
       },
       child: const Icon(Icons.add),
+    );
+  }
+
+  void _openFilter() {
+    showModalBottomSheet(
+      context: context,
+      showDragHandle: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder:
+          (context) => RecordsFilterBottomSheet(
+            initialDateRange: _selectedDateRange,
+            onFilterApplied: (range) {
+              setState(() {
+                _selectedDateRange = range;
+              });
+              _refreshRecords();
+            },
+          ),
     );
   }
 }
