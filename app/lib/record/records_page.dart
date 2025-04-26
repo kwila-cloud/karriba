@@ -213,6 +213,11 @@ class _RecordsPageState extends State<RecordsPage> {
       builder: (context, snapshot) {
         final records = snapshot.data;
         if (records != null) {
+          if (records.isEmpty) {
+            return const Center(
+              child: Text("No records found."),
+            );
+          }
           return ListView.builder(
             itemCount: records.length,
             itemBuilder: (context, index) {
