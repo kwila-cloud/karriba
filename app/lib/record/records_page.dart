@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:intl/intl.dart';
+import 'package:karriba/common/records_filter_bottom_sheet.dart';
 import 'package:karriba/record_pesticide/edit_record_pesticides.dart';
 
 import '../edit_environmental_conditions_page.dart';
-import 'edit_record_page.dart';
 import '../pdf_generator.dart';
+import 'edit_record_page.dart';
 import 'record.dart';
 import 'records_dao.dart';
 
@@ -256,76 +257,17 @@ class _RecordsPageState extends State<RecordsPage> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
-      builder: (context) => _buildFilterSheet(),
-    );
-  }
-
-  Widget _buildFilterSheet() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Filter by date",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      builder:
+          (context) => RecordsFilterBottomSheet(
+            initialDateRange: _selectedDateRange,
+            onFilterApplied: (range) {
+              setState(() {
+                _selectedDateRange = range;
+              });
+              _refreshRecords();
+            },
           ),
-          const SizedBox(height: 16),
-          TextButton.icon(
-            icon: const Icon(Icons.date_range),
-            label: Text(
-              _selectedDateRange == null
-                  ? "Select date range"
-                  : "${DateFormat.yMMMd().format(_selectedDateRange!.start)} → ${DateFormat.yMMMd().format(_selectedDateRange!.end)}",
-            ),
-            onPressed: _pickDateRange,
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    _selectedDateRange = null;
-                  });
-                  _refreshRecords(); // reload all
-                  Navigator.pop(context);
-                },
-                child: const Text("Clear"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  _refreshRecords();
-                  Navigator.pop(context);
-                },
-                child: const Text("Apply"),
-              ),
-            ],
-          ),
-        ],
-      ),
     );
-  }
-
-  Future<void> _pickDateRange() async {
-    final now = DateTime.now();
-    final firstDate = DateTime(now.year - 5);
-    final lastDate = DateTime(now.year + 1);
-
-    final picked = await showDateRangePicker(
-      context: context,
-      firstDate: firstDate,
-      lastDate: lastDate,
-      initialDateRange: _selectedDateRange,
-    );
-
-    if (picked != null) {
-      setState(() {
-        _selectedDateRange = picked;
-      });
-    }
   }
 }
 
