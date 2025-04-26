@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:intl/intl.dart';
-import 'package:karriba/common/records_filter_bottom_sheet.dart';
+import 'package:karriba/record/records_filter_bottom_sheet.dart';
 import 'package:karriba/record_pesticide/edit_record_pesticides.dart';
 
 import '../edit_environmental_conditions_page.dart';
